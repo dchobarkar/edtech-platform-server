@@ -4,7 +4,52 @@ import {
   Column,
   Entity,
   Index,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
+import { CourseEntity } from './course.entity';
+
+@Entity()
+export class CountryEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({ type: 'smallint' })
+  country_id: number;
+
+  @Column({ type: 'varchar', length: 50 })
+  country: string;
+
+  @OneToMany(
+    type => TuserEntity,
+    tuserentity => tuserentity.countryentity,
+  )
+  tuserentitys: TuserEntity[];
+
+  @OneToMany(
+    type => StateEntity,
+    stateentity => stateentity.countryentity,
+  )
+  stateentitys: StateEntity[];
+}
+
+@Entity()
+export class StateEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({ type: 'smallint' })
+  state_id: number;
+
+  @Column({ type: 'varchar', length: 50 })
+  state: string;
+
+  @OneToMany(
+    type => TuserEntity,
+    tuserentity => tuserentity.stateentity,
+  )
+  tuserentitys: TuserEntity[];
+
+  @ManyToOne(
+    type => CountryEntity,
+    countryentity => countryentity.stateentitys,
+  )
+  countryentity: CountryEntity;
+}
 
 @Entity()
 export class TuserEntity extends BaseEntity {
@@ -20,6 +65,9 @@ export class TuserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   classname: string;
 
+  @Column({ type: 'text' })
+  intro: string;
+
   @Index({ unique: true })
   @Column({ type: 'varchar', length: 10 })
   mobile: string;
@@ -28,17 +76,8 @@ export class TuserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   email: string;
 
-  @Column()
-  bannerimgurl: string;
-
   @Column({ type: 'varchar', length: 90 })
   address: string;
-
-  @Column({ type: 'smallint' })
-  country_id: number;
-
-  @Column({ type: 'smallint' })
-  state_id: number;
 
   @Column({ type: 'varchar', length: 50 })
   city: string;
@@ -46,25 +85,24 @@ export class TuserEntity extends BaseEntity {
   @Column({ type: 'integer' })
   pincode: number;
 
-  @Column({ type: 'text' })
-  intro: string;
+  @Column()
+  bannerimgurl: string;
+
+  @OneToMany(
+    type => CourseEntity,
+    courseentity => courseentity.tuserentity,
+  )
+  courseentitys: CourseEntity[];
+
+  @ManyToOne(
+    type => CountryEntity,
+    countryentity => countryentity.tuserentitys,
+  )
+  countryentity: CountryEntity;
+
+  @ManyToOne(
+    type => StateEntity,
+    stateentity => stateentity.tuserentitys,
+  )
+  stateentity: StateEntity;
 }
-
-// export class CountryEntity extends BaseEntity {
-//   @PrimaryGeneratedColumn()
-//   country_id: number;
-
-//   @Column()
-//   country: string;
-// }
-
-// export class StateEntity extends BaseEntity {
-//   @PrimaryGeneratedColumn()
-//   state_id: number;
-
-//   @Column()
-//   state: string;
-
-//   @Column()
-//   country_id: number;
-// }

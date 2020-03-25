@@ -25,6 +25,9 @@ export class CreateTuserDto {
   @MaxLength(50)
   classname: string;
 
+  @IsString()
+  intro: string;
+
   @IsNotEmpty()
   @IsMobilePhone('any')
   @Length(10)
@@ -37,26 +40,10 @@ export class CreateTuserDto {
   @Index({ unique: true })
   email: string;
 
-  @IsString()
-  @IsUrl()
-  bannerimgurl: string;
-
   @IsNotEmpty()
   @IsString()
   @MaxLength(90)
   address: string;
-
-  @IsNotEmpty()
-  // @IsInt()
-  // @Min(0)
-  // @Max(195)
-  country_id: number;
-
-  @IsNotEmpty()
-  // @IsInt()
-  // @Min(0)
-  // @Max(195)
-  state_id: number;
 
   @IsNotEmpty()
   @IsString()
@@ -67,5 +54,18 @@ export class CreateTuserDto {
   pincode: number;
 
   @IsString()
-  intro: string;
+  @IsUrl()
+  bannerimgurl: string;
+
+  @IsNotEmpty()
+  // @IsInt()
+  // @Min(0)
+  // @Max(195)
+  country_id;
+
+  @IsNotEmpty()
+  // @IsInt()
+  // @Min(0)
+  // @Max(195)
+  state_id;
 }

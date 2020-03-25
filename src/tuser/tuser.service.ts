@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTuserDto } from './dto/create-tuser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TuserRepository } from './repository/tuser.repository';
-import { TuserEntity } from './entity/tuser.entity';
+import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
 
 @Injectable()
 export class TuserService {
@@ -43,5 +43,13 @@ export class TuserService {
   ): Promise<TuserEntity> {
     const ToBeUpdated = await this.getTuserById(id);
     return this.tuserrepository.updatetuser(createtuserdto, ToBeUpdated);
+  }
+
+  async createNewCountry(country: string): Promise<CountryEntity> {
+    return this.tuserrepository.createnewcountry(country);
+  }
+
+  async createNewState(id, state: string): Promise<StateEntity> {
+    return this.tuserrepository.createnewstate(id, state);
   }
 }

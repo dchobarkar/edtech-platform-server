@@ -28,9 +28,10 @@ export class CourseService {
   }
 
   async createNewCourse(
+    id,
     createcoursedto: CreateCourseDto,
   ): Promise<CourseEntity> {
-    return this.courserepository.createnewcourse(createcoursedto);
+    return this.courserepository.createnewcourse(id, createcoursedto);
   }
 
   async deleteCourse(id: string): Promise<void> {

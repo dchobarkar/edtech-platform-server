@@ -12,7 +12,7 @@ import {
 
 import { TuserService } from './tuser.service';
 import { CreateTuserDto } from './dto/create-tuser.dto';
-import { TuserEntity } from './entity/tuser.entity';
+import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
 
 @Controller('/tuser')
 export class TuserController {
@@ -45,5 +45,18 @@ export class TuserController {
     @Body() createtuserdto: CreateTuserDto,
   ): Promise<TuserEntity> {
     return this.tuserservice.updateTuser(id, createtuserdto);
+  }
+
+  @Post('/country')
+  createNewCountry(@Body('country') country: string): Promise<CountryEntity> {
+    return this.tuserservice.createNewCountry(country);
+  }
+
+  @Post('/country/:id')
+  createNewState(
+    @Param('id') id,
+    @Body('state') state: string,
+  ): Promise<StateEntity> {
+    return this.tuserservice.createNewState(id, state);
   }
 }

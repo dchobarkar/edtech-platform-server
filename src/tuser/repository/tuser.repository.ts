@@ -1,6 +1,10 @@
 import { Repository, EntityRepository } from 'typeorm';
 
-import { TuserEntity } from '../entity/tuser.entity';
+import {
+  TuserEntity,
+  CountryEntity,
+  StateEntity,
+} from '../entity/tuser.entity';
 import { CreateTuserDto } from '../dto/create-tuser.dto';
 
 @EntityRepository(TuserEntity)
@@ -17,15 +21,15 @@ export class TuserRepository extends Repository<TuserEntity> {
       firstname,
       lastname,
       classname,
+      intro,
       mobile,
       email,
-      bannerimgurl,
       address,
-      country_id,
-      state_id,
       city,
       pincode,
-      intro,
+      bannerimgurl,
+      country_id,
+      state_id,
     } = createtuserdto;
 
     const NewTuser = new TuserEntity();
@@ -33,18 +37,17 @@ export class TuserRepository extends Repository<TuserEntity> {
     NewTuser.firstname = firstname;
     NewTuser.lastname = lastname;
     NewTuser.classname = classname;
+    NewTuser.intro = intro;
     NewTuser.mobile = mobile;
     NewTuser.email = email;
-    NewTuser.bannerimgurl = bannerimgurl;
     NewTuser.address = address;
-    NewTuser.country_id = country_id;
-    NewTuser.state_id = state_id;
     NewTuser.city = city;
     NewTuser.pincode = pincode;
-    NewTuser.intro = intro;
+    NewTuser.bannerimgurl = bannerimgurl;
 
+    NewTuser.countryentity = country_id;
+    NewTuser.stateentity = state_id;
     await NewTuser.save();
-
     return NewTuser;
   }
 
@@ -56,32 +59,50 @@ export class TuserRepository extends Repository<TuserEntity> {
       firstname,
       lastname,
       classname,
+      intro,
       mobile,
       email,
-      bannerimgurl,
       address,
-      country_id,
-      state_id,
       city,
       pincode,
-      intro,
+      bannerimgurl,
+      country_id,
+      state_id,
     } = createtuserdto;
 
     ToBeUpdated.firstname = firstname;
     ToBeUpdated.lastname = lastname;
     ToBeUpdated.classname = classname;
+    ToBeUpdated.intro = intro;
     ToBeUpdated.mobile = mobile;
     ToBeUpdated.email = email;
-    ToBeUpdated.bannerimgurl = bannerimgurl;
     ToBeUpdated.address = address;
-    ToBeUpdated.country_id = country_id;
-    ToBeUpdated.state_id = state_id;
     ToBeUpdated.city = city;
     ToBeUpdated.pincode = pincode;
-    ToBeUpdated.intro = intro;
-
+    ToBeUpdated.bannerimgurl = bannerimgurl;
+    ToBeUpdated.countryentity = country_id;
+    ToBeUpdated.stateentity = state_id;
     await ToBeUpdated.save();
-
     return ToBeUpdated;
+  }
+
+  async createnewcountry(country: string): Promise<CountryEntity> {
+    const NewCountry = new CountryEntity();
+
+    NewCountry.country = country;
+
+    await NewCountry.save();
+
+    return NewCountry;
+  }
+  async createnewstate(id, state: string): Promise<StateEntity> {
+    const NewState = new StateEntity();
+
+    NewState.state = state;
+    NewState.countryentity = id;
+
+    await NewState.save();
+
+    return NewState;
   }
 }

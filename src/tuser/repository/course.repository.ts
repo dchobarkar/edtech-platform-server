@@ -12,31 +12,30 @@ export class CourseRepository extends Repository<CourseEntity> {
   }
 
   async createnewcourse(
+    id,
     createcoursedto: CreateCourseDto,
   ): Promise<CourseEntity> {
     const {
-      tuser_id,
       coursetitle,
       courseintro,
       targetaudience_id,
       subject_id,
-      studentsenrolled,
       fee,
-      rating,
-      noofrating,
     } = createcoursedto;
 
     const NewCourse = new CourseEntity();
 
-    NewCourse.tuser_id = tuser_id;
     NewCourse.coursetitle = coursetitle;
     NewCourse.courseintro = courseintro;
     NewCourse.targetaudience_id = targetaudience_id;
     NewCourse.subject_id = subject_id;
-    NewCourse.studentsenrolled = studentsenrolled;
     NewCourse.fee = fee;
-    NewCourse.rating = rating;
-    NewCourse.noofrating = noofrating;
+
+    NewCourse.studentsenrolled = 0;
+    NewCourse.rating = 0;
+    NewCourse.noofrating = 0;
+
+    NewCourse.tuserentity = id;
 
     await NewCourse.save();
 
@@ -48,26 +47,18 @@ export class CourseRepository extends Repository<CourseEntity> {
     ToBeUpdated: CourseEntity,
   ): Promise<CourseEntity> {
     const {
-      tuser_id,
       coursetitle,
       courseintro,
       targetaudience_id,
       subject_id,
-      studentsenrolled,
       fee,
-      rating,
-      noofrating,
     } = createcoursedto;
 
-    ToBeUpdated.tuser_id = tuser_id;
     ToBeUpdated.coursetitle = coursetitle;
     ToBeUpdated.courseintro = courseintro;
     ToBeUpdated.targetaudience_id = targetaudience_id;
     ToBeUpdated.subject_id = subject_id;
-    ToBeUpdated.studentsenrolled = studentsenrolled;
     ToBeUpdated.fee = fee;
-    ToBeUpdated.rating = rating;
-    ToBeUpdated.noofrating = noofrating;
 
     await ToBeUpdated.save();
 

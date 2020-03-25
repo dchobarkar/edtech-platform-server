@@ -27,12 +27,13 @@ export class CourseController {
     return this.courseservice.getCourseById(id);
   }
 
-  @Post()
+  @Post('/:id')
   @UsePipes(ValidationPipe)
   createNewCourse(
+    @Param('id') id,
     @Body() createcoursedto: CreateCourseDto,
   ): Promise<CourseEntity> {
-    return this.courseservice.createNewCourse(createcoursedto);
+    return this.courseservice.createNewCourse(id, createcoursedto);
   }
 
   @Delete('/:id')

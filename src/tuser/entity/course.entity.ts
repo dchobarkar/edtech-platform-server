@@ -1,34 +1,48 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
+import { TuserEntity } from './tuser.entity';
 
 @Entity()
 export class CourseEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   course_id: string;
 
-  @Column()
-  tuser_id: string;
-
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   coursetitle: string;
 
-  @Column()
+  @Column({ type: 'text' })
   courseintro: string;
 
-  @Column()
+  @Column({ type: 'smallint' })
   targetaudience_id: number;
 
-  @Column()
+  @Column({ type: 'smallint' })
   subject_id: number;
 
-  @Column()
-  studentsenrolled: number;
-
-  @Column()
+  @Column({ type: 'integer' })
   fee: number;
 
-  @Column()
+  @Column({ type: 'integer' })
+  studentsenrolled: number;
+
+  @Column({ type: 'integer' })
   rating: number;
 
-  @Column()
+  @Column({ type: 'integer' })
   noofrating: number;
+
+  @CreateDateColumn()
+  date: Date;
+
+  @ManyToOne(
+    type => TuserEntity,
+    tuserentity => tuserentity.courseentitys,
+  )
+  tuserentity: TuserEntity;
 }
