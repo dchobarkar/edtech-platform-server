@@ -5,8 +5,10 @@ import {
   Column,
   ManyToOne,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { TuserEntity } from './tuser.entity';
+import { SectionEntity } from './section.entity';
 
 @Entity()
 export class CourseEntity extends BaseEntity {
@@ -45,4 +47,10 @@ export class CourseEntity extends BaseEntity {
     tuserentity => tuserentity.courseentitys,
   )
   tuserentity: TuserEntity;
+
+  @OneToMany(
+    type => SectionEntity,
+    sectionentity => sectionentity.courseentity,
+  )
+  sectionentitys: SectionEntity[];
 }
