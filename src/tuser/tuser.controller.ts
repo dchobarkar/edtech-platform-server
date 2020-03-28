@@ -8,13 +8,16 @@ import {
   Patch,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 
 import { TuserService } from './tuser.service';
 import { CreateTuserDto } from './dto/create-tuser.dto';
 import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/tuser')
+@UseGuards(AuthGuard())
 export class TuserController {
   constructor(private tuserservice: TuserService) {}
 
@@ -30,8 +33,9 @@ export class TuserController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createNewTuser(@Body() createtuserdto: CreateTuserDto): Promise<TuserEntity> {
+  createNewTuser(@Body() createtuserdto: CreateTuserDto) {
     return this.tuserservice.createNewTuser(createtuserdto);
+    // console.log('here');
   }
 
   @Delete('/:id')

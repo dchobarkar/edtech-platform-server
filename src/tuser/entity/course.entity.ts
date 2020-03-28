@@ -7,8 +7,8 @@ import {
   CreateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { TuserEntity } from './tuser.entity';
 import { SectionEntity } from './section.entity';
+import { UserEntity } from '../../auth/user.entity';
 
 @Entity()
 export class CourseEntity extends BaseEntity {
@@ -39,14 +39,17 @@ export class CourseEntity extends BaseEntity {
   @Column({ type: 'integer' })
   noofrating: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'date' })
   date: Date;
 
   @ManyToOne(
-    type => TuserEntity,
-    tuserentity => tuserentity.courseentitys,
+    type => UserEntity,
+    userentity => userentity.courseentitys,
   )
-  tuserentity: TuserEntity;
+  userentity: UserEntity;
+
+  @Column()
+  userentityId: string;
 
   @OneToMany(
     type => SectionEntity,

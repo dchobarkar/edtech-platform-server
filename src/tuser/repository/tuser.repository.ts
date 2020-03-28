@@ -80,8 +80,8 @@ export class TuserRepository extends Repository<TuserEntity> {
     ToBeUpdated.city = city;
     ToBeUpdated.pincode = pincode;
     ToBeUpdated.bannerimgurl = bannerimgurl;
-    ToBeUpdated.countryentity = country_id;
-    ToBeUpdated.stateentity = state_id;
+    // ToBeUpdated.countryentity = country_id;
+    // ToBeUpdated.stateentity = state_id;
     await ToBeUpdated.save();
     return ToBeUpdated;
   }

@@ -6,8 +6,12 @@ import {
   Index,
   OneToMany,
   ManyToOne,
+  Unique,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { CourseEntity } from './course.entity';
+import { UserEntity } from '../../auth/user.entity';
 
 @Entity()
 export class CountryEntity extends BaseEntity {
@@ -56,43 +60,35 @@ export class TuserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({})
   firstname: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column()
   lastname: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column()
   classname: string;
 
-  @Column({ type: 'text' })
+  @Column()
   intro: string;
 
-  @Index({ unique: true })
-  @Column({ type: 'varchar', length: 10 })
+  @Column()
   mobile: string;
 
-  @Index({ unique: true })
-  @Column({ type: 'varchar', length: 255 })
+  @Column()
   email: string;
 
-  @Column({ type: 'varchar', length: 90 })
+  @Column()
   address: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column()
   city: string;
 
-  @Column({ type: 'integer' })
+  @Column()
   pincode: number;
 
   @Column()
   bannerimgurl: string;
-
-  @OneToMany(
-    type => CourseEntity,
-    courseentity => courseentity.tuserentity,
-  )
-  courseentitys: CourseEntity[];
 
   @ManyToOne(
     type => CountryEntity,
@@ -105,4 +101,8 @@ export class TuserEntity extends BaseEntity {
     stateentity => stateentity.tuserentitys,
   )
   stateentity: StateEntity;
+
+  @OneToOne(type => UserEntity)
+  @JoinColumn()
+  user: UserEntity;
 }

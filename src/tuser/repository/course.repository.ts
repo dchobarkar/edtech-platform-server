@@ -1,19 +1,21 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { CourseEntity } from '../entity/course.entity';
 import { CreateCourseDto } from '../dto/create-course.dto';
+import { UserEntity } from '../../auth/user.entity';
 
 @EntityRepository(CourseEntity)
 export class CourseRepository extends Repository<CourseEntity> {
-  async getallcourses(): Promise<CourseEntity[]> {
+  async getallcourses(user: UserEntity): Promise<CourseEntity[]> {
     const query = this.createQueryBuilder('course');
+    query.where('course.userentityId=:userId', { userId: user.id });
     const getallcourses = await query.getMany();
 
     return getallcourses;
   }
 
   async createnewcourse(
-    id,
     createcoursedto: CreateCourseDto,
+    user: UserEntity,
   ): Promise<CourseEntity> {
     const {
       coursetitle,
@@ -22,7 +24,6 @@ export class CourseRepository extends Repository<CourseEntity> {
       subject_id,
       fee,
     } = createcoursedto;
-
     const NewCourse = new CourseEntity();
 
     NewCourse.coursetitle = coursetitle;
@@ -35,10 +36,10 @@ export class CourseRepository extends Repository<CourseEntity> {
     NewCourse.rating = 0;
     NewCourse.noofrating = 0;
 
-    NewCourse.tuserentity = id;
+    NewCourse.userentity = user;
 
     await NewCourse.save();
-
+    delete NewCourse.userentity;
     return NewCourse;
   }
 

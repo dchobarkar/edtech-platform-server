@@ -8,44 +8,57 @@ import {
   Body,
   Delete,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
 import { CourseService } from './course.service';
 import { CourseEntity } from './entity/course.entity';
 import { CreateCourseDto } from './dto/create-course.dto';
+import { UserEntity } from '../auth/user.entity';
+import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('/course')
+@UseGuards(AuthGuard())
 export class CourseController {
   constructor(private courseservice: CourseService) {}
 
   @Get()
-  getAllCourses(): Promise<CourseEntity[]> {
-    return this.courseservice.getAllCourses();
+  getAllCourses(@GetUser() user: UserEntity): Promise<CourseEntity[]> {
+    return this.courseservice.getAllCourses(user);
   }
 
   @Get('/:id')
-  getCourseById(@Param('id') id: string): Promise<CourseEntity> {
-    return this.courseservice.getCourseById(id);
+  getCourseById(
+    @Param('id') id: string,
+    @GetUser() user: UserEntity,
+  ): Promise<CourseEntity> {
+    return this.courseservice.getCourseById(id, user);
   }
 
-  @Post('/:id')
+  @Post()
   @UsePipes(ValidationPipe)
   createNewCourse(
-    @Param('id') id,
     @Body() createcoursedto: CreateCourseDto,
+    @GetUser() user: UserEntity,
   ): Promise<CourseEntity> {
-    return this.courseservice.createNewCourse(id, createcoursedto);
+    return this.courseservice.createNewCourse(createcoursedto, user);
   }
 
   @Delete('/:id')
-  deletecourse(@Param('id') id: string): Promise<void> {
-    return this.courseservice.deleteCourse(id);
+  deletecourse(
+    @Param('id') id: string,
+    @GetUser() user: UserEntity,
+  ): Promise<void> {
+    return this.courseservice.deleteCourse(id, user);
   }
 
   @Patch('/:id/update')
   updateCourse(
     @Param('id') id: string,
     @Body() createcoursedto: CreateCourseDto,
+    @GetUser() user: UserEntity,
   ): Promise<CourseEntity> {
-    return this.courseservice.updateCourse(id, createcoursedto);
+    return this.courseservice.updateCourse(id, createcoursedto, user);
   }
 }

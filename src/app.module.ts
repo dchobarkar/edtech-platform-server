@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmConfig } from './config/typeorm.config';
 
 import { TuserModule } from './tuser/tuser.module';
-import { typeOrmConfig } from './config/typeorm.config';
 import { CourseModule } from './tuser/course.module';
 import { SectionModule } from './tuser/section.module';
 import { LectureModule } from './tuser/lecture.module';
 import { ExamModule } from './tuser/exam.module';
 import { QuestionModule } from './tuser/question.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { QuestionModule } from './tuser/question.module';
     LectureModule,
     ExamModule,
     QuestionModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
