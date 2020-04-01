@@ -34,7 +34,6 @@ export class SectionService {
 
   async deleteSection(id: string): Promise<void> {
     const result = await this.sectionrepository.delete(id);
-
     if (result.affected === 0) {
       throw new NotFoundException('Item to be deleted is not present');
     }

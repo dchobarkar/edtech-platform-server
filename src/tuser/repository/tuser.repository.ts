@@ -6,6 +6,7 @@ import {
   StateEntity,
 } from '../entity/tuser.entity';
 import { CreateTuserDto } from '../dto/create-tuser.dto';
+import { UserEntity } from '../../auth/user.entity';
 
 @EntityRepository(TuserEntity)
 export class TuserRepository extends Repository<TuserEntity> {
@@ -16,14 +17,12 @@ export class TuserRepository extends Repository<TuserEntity> {
     return getalltuser;
   }
 
-  async createtuser(createtuserdto: CreateTuserDto): Promise<TuserEntity> {
+  async createtuser(
+    createtuserdto: CreateTuserDto,
+    user: UserEntity,
+  ): Promise<TuserEntity> {
     const {
-      firstname,
-      lastname,
-      classname,
-      intro,
-      mobile,
-      email,
+      classintro,
       address,
       city,
       pincode,
@@ -34,20 +33,21 @@ export class TuserRepository extends Repository<TuserEntity> {
 
     const NewTuser = new TuserEntity();
 
-    NewTuser.firstname = firstname;
-    NewTuser.lastname = lastname;
-    NewTuser.classname = classname;
-    NewTuser.intro = intro;
-    NewTuser.mobile = mobile;
-    NewTuser.email = email;
+    NewTuser.classintro = classintro;
     NewTuser.address = address;
     NewTuser.city = city;
-    NewTuser.pincode = pincode;
+    NewTuser.pincode = 431517;
     NewTuser.bannerimgurl = bannerimgurl;
 
     NewTuser.countryentity = country_id;
     NewTuser.stateentity = state_id;
+
+    NewTuser.userentity = user;
     await NewTuser.save();
+
+    delete NewTuser.userentity.password;
+    delete NewTuser.userentity.salt;
+
     return NewTuser;
   }
 
@@ -56,12 +56,7 @@ export class TuserRepository extends Repository<TuserEntity> {
     ToBeUpdated: TuserEntity,
   ): Promise<TuserEntity> {
     const {
-      firstname,
-      lastname,
-      classname,
-      intro,
-      mobile,
-      email,
+      classintro,
       address,
       city,
       pincode,
@@ -70,12 +65,7 @@ export class TuserRepository extends Repository<TuserEntity> {
       state_id,
     } = createtuserdto;
 
-    ToBeUpdated.firstname = firstname;
-    ToBeUpdated.lastname = lastname;
-    ToBeUpdated.classname = classname;
-    ToBeUpdated.intro = intro;
-    ToBeUpdated.mobile = mobile;
-    ToBeUpdated.email = email;
+    ToBeUpdated.classintro = classintro;
     ToBeUpdated.address = address;
     ToBeUpdated.city = city;
     ToBeUpdated.pincode = pincode;
@@ -104,5 +94,13 @@ export class TuserRepository extends Repository<TuserEntity> {
     await NewState.save();
 
     return NewState;
+  }
+
+  async getuserprofile(user: UserEntity) {
+    const query = this.createQueryBuilder('tuser');
+    query.where('tuser.userentityId=:userId', { userId: user.id });
+    const getprofile = await query.getMany();
+
+    return getprofile;
   }
 }

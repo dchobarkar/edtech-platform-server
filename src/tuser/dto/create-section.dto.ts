@@ -1,9 +1,8 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 
 export class CreateSectionDto {
-  @IsNotEmpty()
   @IsString()
-  @MaxLength(50)
+  @Length(1, 50)
   sectiontitle: string;
 
   @IsString()

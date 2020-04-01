@@ -24,6 +24,7 @@ export class LectureEntity extends BaseEntity {
   @ManyToOne(
     type => SectionEntity,
     sectionentity => sectionentity.lectureentitys,
+    { onDelete: 'CASCADE' },
   )
   sectionentity: SectionEntity;
 }

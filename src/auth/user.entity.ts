@@ -5,9 +5,11 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CourseEntity } from '../tuser/entity/course.entity';
+import { TuserEntity } from '../tuser/entity/tuser.entity';
 
 @Entity()
 @Unique(['mobile'])
@@ -42,6 +44,12 @@ export class UserEntity extends BaseEntity {
     courseentity => courseentity.userentity,
   )
   courseentitys: CourseEntity[];
+
+  @OneToOne(
+    type => TuserEntity,
+    tuserentity => tuserentity.userentity,
+  )
+  tuserentity: TuserEntity;
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

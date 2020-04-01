@@ -42,4 +42,16 @@ export class ExamService {
     const ToBeUpdated = await this.getExamById(id);
     return this.examrepository.updateexam(createexamdto, ToBeUpdated);
   }
+
+  async getAllQuestions(id: string) {
+    const exam = await this.getExamById(id);
+    const examdetails = await this.examrepository.findOne(
+      { exam_id: exam.exam_id },
+      {
+        relations: ['questionentitys'],
+      },
+    );
+
+    return examdetails;
+  }
 }

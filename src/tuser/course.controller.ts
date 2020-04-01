@@ -9,6 +9,7 @@ import {
   Delete,
   Patch,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -21,10 +22,12 @@ import { GetUser } from 'src/auth/get-user.decorator';
 @Controller('/course')
 @UseGuards(AuthGuard())
 export class CourseController {
+  private logger = new Logger('CourseController');
   constructor(private courseservice: CourseService) {}
 
   @Get()
   getAllCourses(@GetUser() user: UserEntity): Promise<CourseEntity[]> {
+    this.logger.verbose('User' + { user } + 'retrieving all courses');
     return this.courseservice.getAllCourses(user);
   }
 
@@ -60,5 +63,19 @@ export class CourseController {
     @GetUser() user: UserEntity,
   ): Promise<CourseEntity> {
     return this.courseservice.updateCourse(id, createcoursedto, user);
+  }
+
+  @Get('/:id/allsections')
+  getAllSections(@Param('id') id: string, @GetUser() user: UserEntity) {
+    return this.courseservice.getAllSections(id, user);
+  }
+
+  @Get('/:id/allquestions/:eid')
+  geAllQuestions(
+    @Param('id') id: string,
+    @Param('eid') eid: string,
+    @GetUser() user: UserEntity,
+  ) {
+    return this.courseservice.getAllQuestions(id, eid, user);
   }
 }

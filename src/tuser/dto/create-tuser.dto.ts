@@ -11,35 +11,8 @@ import {
 import { Index } from 'typeorm';
 
 export class CreateTuserDto {
-  // @IsNotEmpty()
   // @IsString()
-  // @MaxLength(50)
-  firstname: string;
-
-  // @IsNotEmpty()
-  // @IsString()
-  // @MaxLength(50)
-  lastname: string;
-
-  // @IsNotEmpty()
-  // @IsString()
-  // @MaxLength(50)
-  classname: string;
-
-  // @IsString()
-  intro: string;
-
-  // @IsNotEmpty()
-  // @IsMobilePhone('any')
-  // @Length(10)
-  // @Index({ unique: true })
-  mobile: string;
-
-  // @IsNotEmpty()
-  // @IsEmail()
-  // @MaxLength(255)
-  // @Index({ unique: true })
-  email: string;
+  classintro: string;
 
   // @IsNotEmpty()
   // @IsString()

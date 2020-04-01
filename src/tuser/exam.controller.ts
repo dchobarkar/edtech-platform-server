@@ -48,4 +48,9 @@ export class ExamController {
   ): Promise<ExamEntity> {
     return this.examservice.updateExam(id, createexamdto);
   }
+
+  @Get('/:id/allquestions')
+  geAllQuestions(@Param('id') id: string) {
+    return this.examservice.getAllQuestions(id);
+  }
 }

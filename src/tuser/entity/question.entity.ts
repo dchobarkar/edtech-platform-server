@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm';
+
 import { ExamEntity } from './exam.entity';
 
 @Entity()
@@ -36,6 +37,7 @@ export class QuestionEntity extends BaseEntity {
   @ManyToOne(
     type => ExamEntity,
     examentity => examentity.questionentitys,
+    { onDelete: 'CASCADE' },
   )
   examentity: ExamEntity;
 }

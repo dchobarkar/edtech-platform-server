@@ -26,6 +26,7 @@ export class ExamEntity extends BaseEntity {
   @ManyToOne(
     type => SectionEntity,
     sectionentity => sectionentity.examentitys,
+    { onDelete: 'CASCADE' },
   )
   sectionentity: SectionEntity;
 

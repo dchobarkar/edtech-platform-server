@@ -1,9 +1,8 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateExamDto {
-  @IsNotEmpty()
   @IsString()
-  @MaxLength(50)
+  @Length(1, 50)
   examtitle: string;
 
   @IsString()

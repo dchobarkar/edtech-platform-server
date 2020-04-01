@@ -7,7 +7,6 @@ export class SectionRepository extends Repository<SectionEntity> {
   async getallsections(): Promise<SectionEntity[]> {
     const query = this.createQueryBuilder('section');
     const getallsections = await query.getMany();
-
     return getallsections;
   }
 
@@ -16,16 +15,13 @@ export class SectionRepository extends Repository<SectionEntity> {
     createsectiondto: CreateSectionDto,
   ): Promise<SectionEntity> {
     const { sectiontitle, sectionintro } = createsectiondto;
-
     const NewSection = new SectionEntity();
-
     NewSection.sectiontitle = sectiontitle;
     NewSection.sectionintro = sectionintro;
 
-    NewSection.courseentity = id;
+    NewSection.courseentityCourseId = id;
 
     await NewSection.save();
-
     return NewSection;
   }
 
@@ -34,12 +30,9 @@ export class SectionRepository extends Repository<SectionEntity> {
     ToBeUpdated: SectionEntity,
   ): Promise<SectionEntity> {
     const { sectiontitle, sectionintro } = createsectiondto;
-
     ToBeUpdated.sectiontitle = sectiontitle;
     ToBeUpdated.sectionintro = sectionintro;
-
     await ToBeUpdated.save();
-
     return ToBeUpdated;
   }
 }

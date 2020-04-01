@@ -56,4 +56,38 @@ export class CourseService {
     const ToBeUpdated = await this.getCourseById(id, user);
     return this.courserepository.updatecourse(createcoursedto, ToBeUpdated);
   }
+
+  async getAllSections(id: string, user: UserEntity) {
+    // console.log(id, user);
+    const course = await this.getCourseById(id, user);
+    const sections = await this.courserepository.findOne(
+      { course_id: course.course_id },
+      {
+        relations: [
+          'sectionentitys',
+          'sectionentitys.lectureentitys',
+          'sectionentitys.examentitys',
+        ],
+      },
+    );
+    return sections;
+  }
+
+  async getAllQuestions(id: string, qid: string, user: UserEntity) {
+    const course = await this.getCourseById(id, user);
+    const exams = await this.courserepository.findOne(
+      { course_id: course.course_id },
+      {
+        relations: [
+          'sectionentitys',
+          'sectionentitys.examentitys',
+          'sectionentitys.examentitys.questionentitys',
+        ],
+      },
+    );
+
+    const pre = exams.sectionentitys[0].examentitys[0];
+
+    return pre;
+  }
 }

@@ -3,6 +3,7 @@ import { CreateTuserDto } from './dto/create-tuser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TuserRepository } from './repository/tuser.repository';
 import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
+import { UserEntity } from '../auth/user.entity';
 
 @Injectable()
 export class TuserService {
@@ -25,8 +26,11 @@ export class TuserService {
     return found;
   }
 
-  async createNewTuser(createtuserdto: CreateTuserDto): Promise<TuserEntity> {
-    return this.tuserrepository.createtuser(createtuserdto);
+  async createNewTuser(
+    createtuserdto: CreateTuserDto,
+    user: UserEntity,
+  ): Promise<TuserEntity> {
+    return this.tuserrepository.createtuser(createtuserdto, user);
   }
 
   async deleteTuser(id: string): Promise<void> {
@@ -51,5 +55,40 @@ export class TuserService {
 
   async createNewState(id, state: string): Promise<StateEntity> {
     return this.tuserrepository.createnewstate(id, state);
+  }
+
+  async getUserProfile(user: UserEntity) {
+    const onlyprofile = await this.tuserrepository.getuserprofile(user);
+
+    if (onlyprofile.length === 0) {
+      const temp = {
+        classintro: '',
+        address: '',
+        city: '',
+        pincode: 0,
+        bannerimgurl: '',
+        country_id: null,
+        state_id: null,
+      };
+      return this.tuserrepository.createtuser(temp, user);
+    } else {
+      const userprofile = await this.tuserrepository.findOne(
+        { id: onlyprofile[0].id },
+        // course_id: course.course_id },
+        {
+          relations: ['userentity'],
+        },
+      );
+
+      const profile = userprofile;
+
+      // delete profile.id,
+      delete profile.userentity.id;
+      delete profile.userentity.password;
+      delete profile.userentity.salt;
+      delete profile.userentityId;
+
+      return profile;
+    }
   }
 }

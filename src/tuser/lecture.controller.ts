@@ -9,6 +9,7 @@ import {
   Delete,
   Patch,
 } from '@nestjs/common';
+
 import { LectureService } from './lecture.service';
 import { LectureEntity } from './entity/lecture.entity';
 import { CreateLectureDto } from './dto/create-lecture.dto';

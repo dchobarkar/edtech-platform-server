@@ -10,7 +10,6 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { CourseEntity } from './course.entity';
 import { UserEntity } from '../../auth/user.entity';
 
 @Entity()
@@ -60,23 +59,8 @@ export class TuserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({})
-  firstname: string;
-
   @Column()
-  lastname: string;
-
-  @Column()
-  classname: string;
-
-  @Column()
-  intro: string;
-
-  @Column()
-  mobile: string;
-
-  @Column()
-  email: string;
+  classintro: string;
 
   @Column()
   address: string;
@@ -102,7 +86,12 @@ export class TuserEntity extends BaseEntity {
   )
   stateentity: StateEntity;
 
-  @OneToOne(type => UserEntity)
+  @OneToOne(
+    type => UserEntity,
+    userentity => userentity.tuserentity,
+  )
   @JoinColumn()
-  user: UserEntity;
+  userentity: UserEntity;
+  @Column()
+  userentityId: string;
 }
