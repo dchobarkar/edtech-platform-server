@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreateQuestionDto } from './dto/create-question.dto';
 import { QuestionRepository } from './repository/question.repository';
 import { QuestionEntity } from './entity/question.entity';
-import { CreateQuestionDto } from './dto/create-question.dto';
 
 @Injectable()
 export class QuestionService {
@@ -11,33 +12,11 @@ export class QuestionService {
     private questionrepository: QuestionRepository,
   ) {}
 
-  async getAllQuestions(): Promise<QuestionEntity[]> {
-    return this.questionrepository.getallquestions();
-  }
-
-  async getQuestionById(id: string): Promise<QuestionEntity> {
-    const found = await this.questionrepository.findOne(id);
-    if (!found) {
-      throw new NotFoundException(
-        'The question you are searching is not Present',
-      );
-    }
-    return found;
-  }
-
   async createNewQuestion(
-    id,
+    id: string,
     createquestiondto: CreateQuestionDto,
   ): Promise<QuestionEntity> {
     return this.questionrepository.createnewquestion(id, createquestiondto);
-  }
-
-  async deleteQuestion(id: string): Promise<void> {
-    const result = await this.questionrepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException('Item to be deleted is not present');
-    }
   }
 
   async updateQuestion(
@@ -49,5 +28,23 @@ export class QuestionService {
       createquestiondto,
       ToBeUpdated,
     );
+  }
+
+  async getQuestionById(id: string): Promise<QuestionEntity> {
+    const question = await this.questionrepository.findOne(id);
+    if (!question) {
+      throw new NotFoundException(
+        'The question you are searching is not Present',
+      );
+    }
+    return question;
+  }
+
+  async deleteQuestion(id: string): Promise<void> {
+    const deleted = await this.questionrepository.delete(id);
+
+    if (deleted.affected === 0) {
+      throw new NotFoundException('The question to be deleted is not present');
+    }
   }
 }

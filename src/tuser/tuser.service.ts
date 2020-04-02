@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTuserDto } from './dto/create-tuser.dto';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreateTuserDto } from './dto/create-tuser.dto';
 import { TuserRepository } from './repository/tuser.repository';
 import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
 import { UserEntity } from '../auth/user.entity';
@@ -12,83 +13,49 @@ export class TuserService {
     private tuserrepository: TuserRepository,
   ) {}
 
-  async getAllTusers(): Promise<TuserEntity[]> {
-    return this.tuserrepository.getalltuser();
-  }
+  async getUserProfile(user: UserEntity): Promise<TuserEntity> {
+    const tuserinfo = await this.tuserrepository.tuserdetails(user);
+    if (tuserinfo.length === 0) {
+      const tempuserprofile = {
+        classintro: '',
+        country_id: 2,
+        state_id: 2,
+        address: '',
+        city: '',
+        pincode: '000000',
+        bannerimgurl: '',
+      };
+      return this.tuserrepository.createnewtuser(tempuserprofile, user);
+    } else {
+      const userprofile = await this.tuserrepository.findOne(
+        { id: tuserinfo[0].id },
+        {
+          relations: ['userentity'],
+        },
+      );
 
-  async getTuserById(id: string): Promise<TuserEntity> {
-    const found = await this.tuserrepository.findOne(id);
+      delete userprofile.userentityId;
+      delete userprofile.userentity.id;
+      delete userprofile.userentity.password;
+      delete userprofile.userentity.salt;
 
-    if (!found) {
-      throw new NotFoundException('The User you are searching is not Present');
-    }
-
-    return found;
-  }
-
-  async createNewTuser(
-    createtuserdto: CreateTuserDto,
-    user: UserEntity,
-  ): Promise<TuserEntity> {
-    return this.tuserrepository.createtuser(createtuserdto, user);
-  }
-
-  async deleteTuser(id: string): Promise<void> {
-    const result = await this.tuserrepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException('Item to be deleted is not present');
+      return userprofile;
     }
   }
 
   async updateTuser(
-    id: string,
+    uesr: UserEntity,
     createtuserdto: CreateTuserDto,
   ): Promise<TuserEntity> {
-    const ToBeUpdated = await this.getTuserById(id);
-    return this.tuserrepository.updatetuser(createtuserdto, ToBeUpdated);
+    const ToBeUpdated = await this.tuserrepository.tuserdetails(uesr);
+    return this.tuserrepository.updatetuser(createtuserdto, ToBeUpdated[0]);
   }
 
   async createNewCountry(country: string): Promise<CountryEntity> {
     return this.tuserrepository.createnewcountry(country);
   }
 
-  async createNewState(id, state: string): Promise<StateEntity> {
+  async createNewState(id: number, state: string): Promise<StateEntity> {
     return this.tuserrepository.createnewstate(id, state);
-  }
-
-  async getUserProfile(user: UserEntity) {
-    const onlyprofile = await this.tuserrepository.getuserprofile(user);
-
-    if (onlyprofile.length === 0) {
-      const temp = {
-        classintro: '',
-        address: '',
-        city: '',
-        pincode: 0,
-        bannerimgurl: '',
-        country_id: null,
-        state_id: null,
-      };
-      return this.tuserrepository.createtuser(temp, user);
-    } else {
-      const userprofile = await this.tuserrepository.findOne(
-        { id: onlyprofile[0].id },
-        // course_id: course.course_id },
-        {
-          relations: ['userentity'],
-        },
-      );
-
-      const profile = userprofile;
-
-      // delete profile.id,
-      delete profile.userentity.id;
-      delete profile.userentity.password;
-      delete profile.userentity.salt;
-      delete profile.userentityId;
-
-      return profile;
-    }
   }
 }

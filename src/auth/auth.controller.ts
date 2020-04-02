@@ -1,15 +1,8 @@
-import {
-  Controller,
-  Post,
-  Body,
-  ValidationPipe,
-  Delete,
-  Param,
-} from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
 
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -23,14 +16,9 @@ export class AuthController {
   }
 
   @Post('/login')
-  LogIn(
+  logIn(
     @Body(ValidationPipe) authlogindto: AuthLoginDto,
   ): Promise<{ accessToken: string }> {
-    return this.authoservice.LogIn(authlogindto);
-  }
-
-  @Delete('/:id')
-  deleteUser(@Param('id') id: string): Promise<void> {
-    return this.authoservice.deleteUser(id);
+    return this.authoservice.logIn(authlogindto);
   }
 }

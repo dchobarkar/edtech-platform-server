@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { SectionController } from './section.controller';
 import { SectionService } from './section.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { SectionRepository } from './repository/section.repository';
 
 @Module({

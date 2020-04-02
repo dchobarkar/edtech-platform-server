@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   OneToMany,
 } from 'typeorm';
+
 import { SectionEntity } from './section.entity';
 import { UserEntity } from '../../auth/user.entity';
 
@@ -15,7 +16,7 @@ export class CourseEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   course_id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 100 })
   coursetitle: string;
 
   @Column({ type: 'text' })
@@ -34,7 +35,7 @@ export class CourseEntity extends BaseEntity {
   studentsenrolled: number;
 
   @Column({ type: 'integer' })
-  rating: number;
+  ratingpoint: number;
 
   @Column({ type: 'integer' })
   noofrating: number;
@@ -47,7 +48,6 @@ export class CourseEntity extends BaseEntity {
     userentity => userentity.courseentitys,
   )
   userentity: UserEntity;
-
   @Column()
   userentityId: string;
 

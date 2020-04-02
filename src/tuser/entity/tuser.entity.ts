@@ -3,16 +3,17 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Entity,
-  Index,
   OneToMany,
   ManyToOne,
   Unique,
   OneToOne,
   JoinColumn,
 } from 'typeorm';
+
 import { UserEntity } from '../../auth/user.entity';
 
 @Entity()
+@Unique(['country'])
 export class CountryEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'smallint' })
   country_id: number;
@@ -52,6 +53,8 @@ export class StateEntity extends BaseEntity {
     countryentity => countryentity.stateentitys,
   )
   countryentity: CountryEntity;
+  @Column()
+  countryentityCountryId: number;
 }
 
 @Entity()
@@ -59,19 +62,19 @@ export class TuserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'text' })
   classintro: string;
 
-  @Column()
+  @Column({ type: 'text' })
   address: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   city: string;
 
-  @Column()
-  pincode: number;
+  @Column({ type: 'varchar', length: 6 })
+  pincode: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   bannerimgurl: string;
 
   @ManyToOne(
@@ -79,12 +82,16 @@ export class TuserEntity extends BaseEntity {
     countryentity => countryentity.tuserentitys,
   )
   countryentity: CountryEntity;
+  @Column()
+  countryentityCountryId: number;
 
   @ManyToOne(
     type => StateEntity,
     stateentity => stateentity.tuserentitys,
   )
   stateentity: StateEntity;
+  @Column()
+  stateentityStateId: number;
 
   @OneToOne(
     type => UserEntity,

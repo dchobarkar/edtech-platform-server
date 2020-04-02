@@ -1,18 +1,13 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
-import { LectureEntity } from '../entity/lecture.entity';
+
 import { CreateLectureDto } from '../dto/create-lecture.dto';
+import { LectureEntity } from '../entity/lecture.entity';
 
 @EntityRepository(LectureEntity)
 export class LectureRepository extends Repository<LectureEntity> {
-  async getalllectures(): Promise<LectureEntity[]> {
-    const query = this.createQueryBuilder('lecture');
-    const getalllectures = await query.getMany();
-
-    return getalllectures;
-  }
-
   async createnewlecture(
-    id,
+    id: string,
     createlecturedto: CreateLectureDto,
   ): Promise<LectureEntity> {
     const { lecturetitle, lectureintro, lecturevideo } = createlecturedto;
@@ -23,8 +18,22 @@ export class LectureRepository extends Repository<LectureEntity> {
     NewLecture.lectureintro = lectureintro;
     NewLecture.lecturevideo = lecturevideo;
 
-    NewLecture.sectionentity = id;
-    await NewLecture.save();
+    NewLecture.sectionentitySectionId = id;
+
+    try {
+      await NewLecture.save();
+    } catch (error) {
+      if (error.code === '23502') {
+        throw new InternalServerErrorException(
+          'Please provide all information',
+        );
+      } else if (error.code === '22001') {
+        throw new InternalServerErrorException('Value too long for given type');
+      } else {
+        throw new InternalServerErrorException('Unknown');
+      }
+    }
+
     return NewLecture;
   }
 

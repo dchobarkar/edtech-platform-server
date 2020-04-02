@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
+
 import { SectionEntity } from './section.entity';
 import { QuestionEntity } from './question.entity';
 
@@ -14,7 +15,7 @@ export class ExamEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   exam_id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 100 })
   examtitle: string;
 
   @Column({ type: 'text' })
@@ -29,6 +30,8 @@ export class ExamEntity extends BaseEntity {
     { onDelete: 'CASCADE' },
   )
   sectionentity: SectionEntity;
+  @Column()
+  sectionentitySectionId: string;
 
   @OneToMany(
     type => QuestionEntity,

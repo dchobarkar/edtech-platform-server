@@ -1,17 +1,15 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
-import { ExamEntity } from '../entity/exam.entity';
+
 import { CreateExamDto } from '../dto/create-exam.dto';
+import { ExamEntity } from '../entity/exam.entity';
 
 @EntityRepository(ExamEntity)
 export class ExamRepository extends Repository<ExamEntity> {
-  async getallexams(): Promise<ExamEntity[]> {
-    const query = this.createQueryBuilder('exam');
-    const getallexams = await query.getMany();
-
-    return getallexams;
-  }
-
-  async createnewexam(id, createexamdto: CreateExamDto): Promise<ExamEntity> {
+  async createnewexam(
+    id: string,
+    createexamdto: CreateExamDto,
+  ): Promise<ExamEntity> {
     const { examtitle, examinstruction, duration } = createexamdto;
 
     const NewExam = new ExamEntity();
@@ -20,10 +18,21 @@ export class ExamRepository extends Repository<ExamEntity> {
     NewExam.examinstruction = examinstruction;
     NewExam.duration = duration;
 
-    NewExam.sectionentity = id;
+    NewExam.sectionentitySectionId = id;
 
-    await NewExam.save();
-
+    try {
+      await NewExam.save();
+    } catch (error) {
+      if (error.code === '23502') {
+        throw new InternalServerErrorException(
+          'Please provide all information',
+        );
+      } else if (error.code === '22001') {
+        throw new InternalServerErrorException('Value too long for given type');
+      } else {
+        throw new InternalServerErrorException('Unknown');
+      }
+    }
     return NewExam;
   }
 

@@ -1,12 +1,14 @@
-import { IsString, Length } from 'class-validator';
+import { IsString, IsNotEmpty, MaxLength, IsUrl } from 'class-validator';
 
 export class CreateLectureDto {
+  @IsNotEmpty()
   @IsString()
-  @Length(1, 50)
+  @MaxLength(100)
   lecturetitle: string;
 
   @IsString()
   lectureintro: string;
 
+  @IsUrl()
   lecturevideo: string;
 }

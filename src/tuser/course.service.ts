@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreateCourseDto } from './dto/create-course.dto';
 import { CourseRepository } from './repository/course.repository';
 import { CourseEntity } from './entity/course.entity';
-import { CreateCourseDto } from './dto/create-course.dto';
 import { UserEntity } from '../auth/user.entity';
 
 @Injectable()
@@ -12,54 +13,41 @@ export class CourseService {
     private courserepository: CourseRepository,
   ) {}
 
+  async createNewCourse(
+    user: UserEntity,
+    createcoursedto: CreateCourseDto,
+  ): Promise<CourseEntity> {
+    return this.courserepository.createnewcourse(user, createcoursedto);
+  }
+
   async getAllCourses(user: UserEntity): Promise<CourseEntity[]> {
     return this.courserepository.getallcourses(user);
   }
 
-  async getCourseById(id: string, user: UserEntity): Promise<CourseEntity> {
-    const found = await this.courserepository.findOne({
+  async updateCourse(
+    user: UserEntity,
+    id: string,
+    createcoursedto: CreateCourseDto,
+  ): Promise<CourseEntity> {
+    const ToBeUpdated = await this.getCourseById(user, id);
+    return this.courserepository.updatecourse(createcoursedto, ToBeUpdated);
+  }
+
+  async getCourseById(user: UserEntity, id: string): Promise<CourseEntity> {
+    const course = await this.courserepository.findOne({
       where: { course_id: id, userentityId: user.id },
     });
 
-    if (!found) {
+    if (!course) {
       throw new NotFoundException(
         'The Course you are searching is not Present',
       );
     }
-
-    return found;
+    return course;
   }
 
-  async createNewCourse(
-    createcoursedto: CreateCourseDto,
-    user: UserEntity,
-  ): Promise<CourseEntity> {
-    return this.courserepository.createnewcourse(createcoursedto, user);
-  }
-
-  async deleteCourse(id: string, user: UserEntity): Promise<void> {
-    const result = await this.courserepository.delete({
-      course_id: id,
-      userentityId: user.id,
-    });
-
-    if (result.affected === 0) {
-      throw new NotFoundException('Item to be deleted is not present');
-    }
-  }
-
-  async updateCourse(
-    id: string,
-    createcoursedto: CreateCourseDto,
-    user: UserEntity,
-  ): Promise<CourseEntity> {
-    const ToBeUpdated = await this.getCourseById(id, user);
-    return this.courserepository.updatecourse(createcoursedto, ToBeUpdated);
-  }
-
-  async getAllSections(id: string, user: UserEntity) {
-    // console.log(id, user);
-    const course = await this.getCourseById(id, user);
+  async getAllSections(user: UserEntity, id: string): Promise<CourseEntity> {
+    const course = await this.getCourseById(user, id);
     const sections = await this.courserepository.findOne(
       { course_id: course.course_id },
       {
@@ -70,24 +58,7 @@ export class CourseService {
         ],
       },
     );
+
     return sections;
-  }
-
-  async getAllQuestions(id: string, qid: string, user: UserEntity) {
-    const course = await this.getCourseById(id, user);
-    const exams = await this.courserepository.findOne(
-      { course_id: course.course_id },
-      {
-        relations: [
-          'sectionentitys',
-          'sectionentitys.examentitys',
-          'sectionentitys.examentitys.questionentitys',
-        ],
-      },
-    );
-
-    const pre = exams.sectionentitys[0].examentitys[0];
-
-    return pre;
   }
 }

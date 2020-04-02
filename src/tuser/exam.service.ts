@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreateExamDto } from './dto/create-exam.dto';
 import { ExamRepository } from './repository/exam.repository';
 import { ExamEntity } from './entity/exam.entity';
-import { CreateExamDto } from './dto/create-exam.dto';
 
 @Injectable()
 export class ExamService {
@@ -11,28 +12,11 @@ export class ExamService {
     private examrepository: ExamRepository,
   ) {}
 
-  async getAllExams(): Promise<ExamEntity[]> {
-    return this.examrepository.getallexams();
-  }
-
-  async getExamById(id: string): Promise<ExamEntity> {
-    const found = await this.examrepository.findOne(id);
-    if (!found) {
-      throw new NotFoundException('The exam you are searching is not Present');
-    }
-    return found;
-  }
-
-  async createNewExam(id, createexamdto: CreateExamDto): Promise<ExamEntity> {
+  async createNewExam(
+    id: string,
+    createexamdto: CreateExamDto,
+  ): Promise<ExamEntity> {
     return this.examrepository.createnewexam(id, createexamdto);
-  }
-
-  async deleteExam(id: string): Promise<void> {
-    const result = await this.examrepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException('Item to be deleted is not present');
-    }
   }
 
   async updateExam(
@@ -43,7 +27,23 @@ export class ExamService {
     return this.examrepository.updateexam(createexamdto, ToBeUpdated);
   }
 
-  async getAllQuestions(id: string) {
+  async getExamById(id: string): Promise<ExamEntity> {
+    const exam = await this.examrepository.findOne(id);
+    if (!exam) {
+      throw new NotFoundException('The exam you are searching is not Present');
+    }
+    return exam;
+  }
+
+  async deleteExam(id: string): Promise<void> {
+    const deleted = await this.examrepository.delete(id);
+
+    if (deleted.affected === 0) {
+      throw new NotFoundException('The Exam to be deleted is not present');
+    }
+  }
+
+  async getAllQuestions(id: string): Promise<ExamEntity> {
     const exam = await this.getExamById(id);
     const examdetails = await this.examrepository.findOne(
       { exam_id: exam.exam_id },

@@ -13,7 +13,7 @@ export class QuestionEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   que_id: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'text' })
   que: string;
 
   @Column({ type: 'varchar' })
@@ -28,11 +28,11 @@ export class QuestionEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   opt4: string;
 
-  @Column()
-  queimage: string;
+  @Column({ type: 'varchar', length: 1 })
+  answer: string;
 
-  @Column({ type: 'smallint' })
-  answer: number;
+  @Column({ type: 'varchar' })
+  queimage: string;
 
   @ManyToOne(
     type => ExamEntity,
@@ -40,4 +40,6 @@ export class QuestionEntity extends BaseEntity {
     { onDelete: 'CASCADE' },
   )
   examentity: ExamEntity;
+  @Column()
+  examentityExamId: string;
 }

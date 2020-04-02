@@ -1,32 +1,36 @@
 import {
   IsEmail,
   Matches,
-  IsString,
-  Length,
-  IsPhoneNumber,
+  IsNumberString,
+  IsAlpha,
+  MinLength,
+  MaxLength,
 } from 'class-validator';
 
 export class AuthCredentialsDto {
-  @IsString()
-  @Length(1, 50)
+  @IsAlpha()
+  @MaxLength(50)
   firstname: string;
 
-  @IsString()
-  @Length(1, 50)
+  @IsAlpha()
+  @MaxLength(50)
   lastname: string;
 
-  @IsString()
-  @Length(1, 100)
+  @MinLength(1)
+  @MaxLength(100)
   classname: string;
 
-  @IsPhoneNumber('IN')
-  mobile: number;
+  @IsNumberString()
+  @MinLength(10)
+  @MaxLength(10)
+  mobile: string;
 
-  @Length(1, 50)
   @IsEmail()
+  @MaxLength(50)
   email: string;
 
-  @Length(8, 20)
+  @MinLength(8)
+  @MaxLength(20)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'Password too weak',
   })

@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm';
+
 import { SectionEntity } from './section.entity';
 
 @Entity()
@@ -12,13 +13,13 @@ export class LectureEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   lecture_id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 100 })
   lecturetitle: string;
 
   @Column({ type: 'text' })
   lectureintro: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   lecturevideo: string;
 
   @ManyToOne(
@@ -27,4 +28,6 @@ export class LectureEntity extends BaseEntity {
     { onDelete: 'CASCADE' },
   )
   sectionentity: SectionEntity;
+  @Column()
+  sectionentitySectionId: string;
 }

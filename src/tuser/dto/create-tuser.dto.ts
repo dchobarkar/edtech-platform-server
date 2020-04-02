@@ -1,45 +1,34 @@
 import {
   IsNotEmpty,
   IsString,
-  IsEmail,
   IsUrl,
-  IsMobilePhone,
   MaxLength,
-  Length,
-  IsInt,
+  MinLength,
+  IsNumberString,
 } from 'class-validator';
-import { Index } from 'typeorm';
 
 export class CreateTuserDto {
-  // @IsString()
+  @IsString()
   classintro: string;
 
-  // @IsNotEmpty()
-  // @IsString()
-  // @MaxLength(90)
+  @IsString()
   address: string;
 
-  // @IsNotEmpty()
-  // @IsString()
-  // @MaxLength(50)
+  @IsString()
+  @MaxLength(50)
   city: string;
 
-  // @IsNotEmpty()
-  pincode: number;
+  @IsNumberString()
+  @MinLength(6)
+  @MaxLength(6)
+  pincode: string;
 
-  // @IsString()
-  // @IsUrl()
+  @IsUrl()
   bannerimgurl: string;
 
-  // @IsNotEmpty()
-  // @IsInt()
-  // @Min(0)
-  // @Max(195)
-  country_id;
+  @IsNotEmpty()
+  country_id: number;
 
-  // @IsNotEmpty()
-  // @IsInt()
-  // @Min(0)
-  // @Max(195)
-  state_id;
+  @IsNotEmpty()
+  state_id: number;
 }

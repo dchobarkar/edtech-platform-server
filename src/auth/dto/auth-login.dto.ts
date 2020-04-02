@@ -1,13 +1,11 @@
-import { Length, IsEmail, Matches } from 'class-validator';
+import { IsEmail, MaxLength, MinLength } from 'class-validator';
 
 export class AuthLoginDto {
-  @Length(1, 50)
   @IsEmail()
+  @MaxLength(50)
   email: string;
 
-  @Length(8, 20)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Password too weak',
-  })
+  @MinLength(8)
+  @MaxLength(20)
   password: string;
 }

@@ -5,7 +5,6 @@ import {
   Column,
   ManyToOne,
   OneToMany,
-  JoinColumn,
 } from 'typeorm';
 
 import { CourseEntity } from './course.entity';
@@ -17,20 +16,20 @@ export class SectionEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   section_id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 100 })
   sectiontitle: string;
 
   @Column({ type: 'text' })
   sectionintro: string;
 
-  @Column()
-  courseentityCourseId: string;
   @ManyToOne(
     type => CourseEntity,
     courseentity => courseentity.sectionentitys,
+    { onDelete: 'CASCADE' },
   )
-  @JoinColumn({ name: 'courseentityCourseId' })
   courseentity: CourseEntity;
+  @Column()
+  courseentityCourseId: string;
 
   @OneToMany(
     type => LectureEntity,

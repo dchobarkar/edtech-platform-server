@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreateLectureDto } from './dto/create-lecture.dto';
 import { LectureRepository } from './repository/lecture.repository';
 import { LectureEntity } from './entity/lecture.entity';
-import { CreateLectureDto } from './dto/create-lecture.dto';
 
 @Injectable()
 export class LectureService {
@@ -11,35 +12,11 @@ export class LectureService {
     private lecturerepository: LectureRepository,
   ) {}
 
-  async getAllLectures(): Promise<LectureEntity[]> {
-    return this.lecturerepository.getalllectures();
-  }
-
-  async getLectureById(id: string): Promise<LectureEntity> {
-    const found = await this.lecturerepository.findOne(id);
-
-    if (!found) {
-      throw new NotFoundException(
-        'The Course you are searching is not Present',
-      );
-    }
-
-    return found;
-  }
-
   async createNewLecture(
-    id,
+    id: string,
     createlecturedto: CreateLectureDto,
   ): Promise<LectureEntity> {
     return this.lecturerepository.createnewlecture(id, createlecturedto);
-  }
-
-  async deleteLecture(id: string): Promise<void> {
-    const result = await this.lecturerepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException('Item to be deleted is not present');
-    }
   }
 
   async updateLecture(
@@ -48,5 +25,25 @@ export class LectureService {
   ): Promise<LectureEntity> {
     const ToBeUpdated = await this.getLectureById(id);
     return this.lecturerepository.updatelecture(createlecturedto, ToBeUpdated);
+  }
+
+  async getLectureById(id: string): Promise<LectureEntity> {
+    const lecture = await this.lecturerepository.findOne(id);
+
+    if (!lecture) {
+      throw new NotFoundException(
+        'The Lecture you are searching is not Present',
+      );
+    }
+
+    return lecture;
+  }
+
+  async deleteLecture(id: string): Promise<void> {
+    const deleted = await this.lecturerepository.delete(id);
+
+    if (deleted.affected === 0) {
+      throw new NotFoundException('The Lecture to be deleted is not present');
+    }
   }
 }
