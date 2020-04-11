@@ -1,7 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 
-import { CreateExamDto } from '../dto/create-exam.dto';
+import { CreateExamDto } from '../tuser/dto/create-exam.dto';
 import { ExamEntity } from '../entity/exam.entity';
 
 @EntityRepository(ExamEntity)

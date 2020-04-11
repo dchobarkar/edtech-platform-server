@@ -9,9 +9,9 @@ import {
   Patch,
 } from '@nestjs/common';
 
-import { CreateQuestionDto } from './dto/create-question.dto';
+import { CreateQuestionDto } from '../dto/create-question.dto';
 import { QuestionService } from './question.service';
-import { QuestionEntity } from './entity/question.entity';
+import { QuestionEntity } from '../../entity/question.entity';
 
 @Controller('/question')
 export class QuestionController {

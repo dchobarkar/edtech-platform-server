@@ -1,7 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 
-import { CreateQuestionDto } from '../dto/create-question.dto';
+import { CreateQuestionDto } from '../tuser/dto/create-question.dto';
 import { QuestionEntity } from '../entity/question.entity';
 
 @EntityRepository(QuestionEntity)

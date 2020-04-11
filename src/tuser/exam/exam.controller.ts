@@ -10,9 +10,9 @@ import {
   Patch,
 } from '@nestjs/common';
 
-import { CreateExamDto } from './dto/create-exam.dto';
+import { CreateExamDto } from '../dto/create-exam.dto';
 import { ExamService } from './exam.service';
-import { ExamEntity } from './entity/exam.entity';
+import { ExamEntity } from '../../entity/exam.entity';
 
 @Controller('exam')
 export class ExamController {

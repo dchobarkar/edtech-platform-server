@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 
 import { SectionService } from './section.service';
-import { SectionEntity } from './entity/section.entity';
-import { CreateSectionDto } from './dto/create-section.dto';
+import { SectionEntity } from '../../entity/section.entity';
+import { CreateSectionDto } from '../dto/create-section.dto';
 
 @Controller('section')
 export class SectionController {

@@ -1,7 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 
-import { CreateSectionDto } from '../dto/create-section.dto';
+import { CreateSectionDto } from '../tuser/dto/create-section.dto';
 import { SectionEntity } from '../entity/section.entity';
 
 @EntityRepository(SectionEntity)

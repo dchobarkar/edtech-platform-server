@@ -10,7 +10,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { UserEntity } from '../../auth/user.entity';
+import { UserEntity } from '../auth/user.entity';
 
 @Entity()
 @Unique(['country'])

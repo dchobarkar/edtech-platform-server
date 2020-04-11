@@ -1,12 +1,12 @@
 import { Repository, EntityRepository } from 'typeorm';
 
-import { CreateTuserDto } from '../dto/create-tuser.dto';
+import { CreateTuserDto } from '../tuser/dto/create-tuser.dto';
 import {
   TuserEntity,
   CountryEntity,
   StateEntity,
 } from '../entity/tuser.entity';
-import { UserEntity } from '../../auth/user.entity';
+import { UserEntity } from '../auth/user.entity';
 
 @EntityRepository(TuserEntity)
 export class TuserRepository extends Repository<TuserEntity> {

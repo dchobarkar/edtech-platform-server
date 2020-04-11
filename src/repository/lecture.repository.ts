@@ -1,7 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 
-import { CreateLectureDto } from '../dto/create-lecture.dto';
+import { CreateLectureDto } from '../tuser/dto/create-lecture.dto';
 import { LectureEntity } from '../entity/lecture.entity';
 
 @EntityRepository(LectureEntity)
@@ -9,14 +9,15 @@ export class LectureRepository extends Repository<LectureEntity> {
   async createnewlecture(
     id: string,
     createlecturedto: CreateLectureDto,
+    videoUrl: string
   ): Promise<LectureEntity> {
-    const { lecturetitle, lectureintro, lecturevideo } = createlecturedto;
+    const { lecturetitle, lectureintro } = createlecturedto;
 
     const NewLecture = new LectureEntity();
 
     NewLecture.lecturetitle = lecturetitle;
     NewLecture.lectureintro = lectureintro;
-    NewLecture.lecturevideo = lecturevideo;
+    NewLecture.lecturevideo = videoUrl;
 
     NewLecture.sectionentitySectionId = id;
 
@@ -40,12 +41,13 @@ export class LectureRepository extends Repository<LectureEntity> {
   async updatelecture(
     createlecturedto: CreateLectureDto,
     ToBeUpdated: LectureEntity,
+    videoUrl: string,
   ): Promise<LectureEntity> {
-    const { lecturetitle, lectureintro, lecturevideo } = createlecturedto;
+    const { lecturetitle, lectureintro } = createlecturedto;
 
     ToBeUpdated.lecturetitle = lecturetitle;
     ToBeUpdated.lectureintro = lectureintro;
-    ToBeUpdated.lecturevideo = lecturevideo;
+    ToBeUpdated.lecturevideo = videoUrl;
 
     await ToBeUpdated.save();
 

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateTuserDto } from './dto/create-tuser.dto';
-import { TuserRepository } from './repository/tuser.repository';
-import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
+import { TuserRepository } from '../repository/tuser.repository';
+import { TuserEntity, CountryEntity, StateEntity } from '../entity/tuser.entity';
 import { UserEntity } from '../auth/user.entity';
 
 @Injectable()

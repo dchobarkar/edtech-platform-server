@@ -8,7 +8,4 @@ export class CreateLectureDto {
 
   @IsString()
   lectureintro: string;
-
-  @IsUrl()
-  lecturevideo: string;
 }

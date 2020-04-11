@@ -12,10 +12,10 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { GetUser } from 'src/auth/get-user.decorator';
-import { CreateCourseDto } from './dto/create-course.dto';
+import { CreateCourseDto } from '../dto/create-course.dto';
 import { CourseService } from './course.service';
-import { CourseEntity } from './entity/course.entity';
-import { UserEntity } from '../auth/user.entity';
+import { CourseEntity } from '../../entity/course.entity';
+import { UserEntity } from '../../auth/user.entity';
 
 @Controller('course')
 @UseGuards(AuthGuard())

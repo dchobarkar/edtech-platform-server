@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ExamController } from './exam.controller';
 import { ExamService } from './exam.service';
-import { ExamRepository } from './repository/exam.repository';
+import { ExamRepository } from '../../repository/exam.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ExamRepository])],

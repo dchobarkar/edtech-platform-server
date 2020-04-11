@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { CourseController } from './course.controller';
 import { CourseService } from './course.service';
-import { CourseRepository } from './repository/course.repository';
+import { CourseRepository } from '../../repository/course.repository';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({

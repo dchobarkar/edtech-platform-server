@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import { SectionEntity } from './section.entity';
-import { UserEntity } from '../../auth/user.entity';
+import { UserEntity } from '../auth/user.entity';
 
 @Entity()
 export class CourseEntity extends BaseEntity {

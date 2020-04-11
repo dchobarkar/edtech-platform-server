@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { CreateTuserDto } from './dto/create-tuser.dto';
 import { TuserService } from './tuser.service';
-import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
+import { TuserEntity, CountryEntity, StateEntity } from '../entity/tuser.entity';
 import { UserEntity } from '../auth/user.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
 

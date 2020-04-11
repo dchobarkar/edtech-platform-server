@@ -1,9 +1,8 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
-
-import { CreateCourseDto } from '../dto/create-course.dto';
+import { CreateCourseDto } from '../tuser/dto/create-course.dto';
 import { CourseEntity } from '../entity/course.entity';
-import { UserEntity } from '../../auth/user.entity';
+import { UserEntity } from '../auth/user.entity';
 
 @EntityRepository(CourseEntity)
 export class CourseRepository extends Repository<CourseEntity> {
