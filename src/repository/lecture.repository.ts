@@ -9,7 +9,7 @@ export class LectureRepository extends Repository<LectureEntity> {
   async createnewlecture(
     id: string,
     createlecturedto: CreateLectureDto,
-    videoUrl: string
+    videoUrl: string,
   ): Promise<LectureEntity> {
     const { lecturetitle, lectureintro } = createlecturedto;
 

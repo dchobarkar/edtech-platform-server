@@ -14,7 +14,11 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateCourseDto } from '../dto/create-course.dto';
 import { CourseService } from './course.service';
-import { CourseEntity } from '../../entity/course.entity';
+import {
+  CourseEntity,
+  TargetAudienceEntity,
+  SubjectEntity,
+} from '../../entity/course.entity';
 import { UserEntity } from '../../auth/user.entity';
 
 @Controller('course')
@@ -36,21 +40,33 @@ export class CourseController {
     return this.courseservice.getAllCourses(user);
   }
 
-  @Patch('/:id/update')
-  @UsePipes(ValidationPipe)
-  updateCourse(
-    @GetUser() user: UserEntity,
-    @Param('id') id: string,
-    @Body() createcoursedto: CreateCourseDto,
-  ): Promise<CourseEntity> {
-    return this.courseservice.updateCourse(user, id, createcoursedto);
+  // @Patch('/:id/update')
+  // @UsePipes(ValidationPipe)
+  // updateCourse(
+  //   @GetUser() user: UserEntity,
+  //   @Param('id') id: string,
+  //   @Body() createcoursedto: CreateCourseDto,
+  // ): Promise<CourseEntity> {
+  //   return this.courseservice.updateCourse(user, id, createcoursedto);
+  // }
+
+  // @Get('/:id/allsections')
+  // getAllSections(
+  //   @GetUser() user: UserEntity,
+  //   @Param('id') id: string,
+  // ): Promise<CourseEntity> {
+  //   return this.courseservice.getAllSections(user, id);
+  // }
+
+  @Post('/targetaudience')
+  createNewTargetaudience(
+    @Body('targetaudience') targetaudience: string,
+  ): Promise<TargetAudienceEntity> {
+    return this.courseservice.createNewTargetaudience(targetaudience);
   }
 
-  @Get('/:id/allsections')
-  getAllSections(
-    @GetUser() user: UserEntity,
-    @Param('id') id: string,
-  ): Promise<CourseEntity> {
-    return this.courseservice.getAllSections(user, id);
+  @Post('/subject')
+  createNewSubject(@Body('subject') subject: string): Promise<SubjectEntity> {
+    return this.courseservice.createNewSubject(subject);
   }
 }

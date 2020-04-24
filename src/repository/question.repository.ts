@@ -9,8 +9,9 @@ export class QuestionRepository extends Repository<QuestionEntity> {
   async createnewquestion(
     id: string,
     createquestiondto: CreateQuestionDto,
+    imageUrl: string,
   ): Promise<QuestionEntity> {
-    const { que, opt1, opt2, opt3, opt4, answer, queimage } = createquestiondto;
+    const { que, opt1, opt2, opt3, opt4, answer } = createquestiondto;
 
     const NewQuestion = new QuestionEntity();
 
@@ -20,7 +21,7 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     NewQuestion.opt3 = opt3;
     NewQuestion.opt4 = opt4;
     NewQuestion.answer = answer;
-    NewQuestion.queimage = queimage;
+    NewQuestion.queimage = imageUrl;
 
     NewQuestion.examentityExamId = id;
 
@@ -43,8 +44,9 @@ export class QuestionRepository extends Repository<QuestionEntity> {
   async updatequestion(
     createquestiondto: CreateQuestionDto,
     ToBeUpdated: QuestionEntity,
+    imageUrl: any,
   ): Promise<QuestionEntity> {
-    const { que, opt1, opt2, opt3, opt4, answer, queimage } = createquestiondto;
+    const { que, opt1, opt2, opt3, opt4, answer } = createquestiondto;
 
     ToBeUpdated.que = que;
     ToBeUpdated.opt1 = opt1;
@@ -52,7 +54,7 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     ToBeUpdated.opt3 = opt3;
     ToBeUpdated.opt4 = opt4;
     ToBeUpdated.answer = answer;
-    ToBeUpdated.queimage = queimage;
+    ToBeUpdated.queimage = imageUrl;
 
     await ToBeUpdated.save();
 

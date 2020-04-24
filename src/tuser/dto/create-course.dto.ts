@@ -1,20 +1,20 @@
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateCourseDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(100)
+  // @IsString()
+  // @IsNotEmpty()
+  // @MaxLength(100)
   coursetitle: string;
 
-  @IsString()
+  // @IsString()
   courseintro: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   targetaudience_id: number;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   subject_id: number;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   fee: number;
 }

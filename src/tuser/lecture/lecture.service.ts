@@ -21,33 +21,58 @@ export class LectureService {
     private sectionRepository: SectionRepository,
     private userRepository: UserRepository,
     private awsHelper: AwsHelper,
-  ) { }
+  ) {}
 
   async createNewLecture(
     id: string,
     createlecturedto: CreateLectureDto,
-    video: any
+    video: any,
   ): Promise<any> {
     const sectionData = await this.sectionRepository.findOne(id);
-    const courseData = await this.courseRepository.findOne(sectionData.courseentityCourseId);
-    const userData = await this.userRepository.findOne(courseData.userentityId)
-    const folderPath = `${userData.classname}/${courseData.coursetitle}/${sectionData.sectiontitle}/${createlecturedto.lecturetitle}/${video.originalname}`
+    const courseData = await this.courseRepository.findOne(
+      sectionData.courseentityCourseId,
+    );
+    const userData = await this.userRepository.findOne(courseData.userentityId);
+    const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${createlecturedto.lecturetitle}`;
     const videoData = await this.awsHelper.UPLOAD_VIDEO(video, folderPath);
-    return this.lecturerepository.createnewlecture(id, createlecturedto, videoData.Location);
+    return this.lecturerepository.createnewlecture(
+      id,
+      createlecturedto,
+      videoData.Location,
+    );
   }
 
   async updateLecture(
     id: string,
     createlecturedto: CreateLectureDto,
-    video: any
+    video: any,
   ): Promise<LectureEntity> {
     const ToBeUpdated = await this.getLectureById(id);
-    const sectionData = await this.sectionRepository.findOne(ToBeUpdated.sectionentitySectionId);
-    const courseData = await this.courseRepository.findOne(sectionData.courseentityCourseId);
-    const userData = await this.userRepository.findOne(courseData.userentityId)
-    const folderPath = `${userData.classname}/${courseData.coursetitle}/${sectionData.sectiontitle}/${createlecturedto.lecturetitle}/${video.originalname}`
-    const videoData = await this.awsHelper.UPLOAD_VIDEO(video, folderPath);
-    return this.lecturerepository.updatelecture(createlecturedto, ToBeUpdated, videoData.Location);
+
+    if (video) {
+      const sectionData = await this.sectionRepository.findOne(
+        ToBeUpdated.sectionentitySectionId,
+      );
+      const courseData = await this.courseRepository.findOne(
+        sectionData.courseentityCourseId,
+      );
+      const userData = await this.userRepository.findOne(
+        courseData.userentityId,
+      );
+      const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${createlecturedto.lecturetitle}`;
+      const videoData = await this.awsHelper.UPLOAD_VIDEO(video, folderPath);
+      return this.lecturerepository.updatelecture(
+        createlecturedto,
+        ToBeUpdated,
+        videoData.Location,
+      );
+    } else {
+      return this.lecturerepository.updatelecture(
+        createlecturedto,
+        ToBeUpdated,
+        ToBeUpdated.lecturevideo,
+      );
+    }
   }
 
   async getLectureById(id: string): Promise<LectureEntity> {

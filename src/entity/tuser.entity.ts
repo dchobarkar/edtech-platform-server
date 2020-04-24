@@ -60,7 +60,7 @@ export class StateEntity extends BaseEntity {
 @Entity()
 export class TuserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  tuser_id: string;
 
   @Column({ type: 'text' })
   classintro: string;

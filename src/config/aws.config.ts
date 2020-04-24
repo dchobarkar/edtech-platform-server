@@ -1,6 +1,5 @@
-
 export const AwsConfig: any = {
-  accessKeyId: '11',
-  secretAccessKey: '1/1',
-  region: 'ap-south-1'
-}
+  accessKeyId: 'AKIAJUSTHBHH4F6U32EQ',
+  secretAccessKey: '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',
+  region: 'ap-south-1',
+};

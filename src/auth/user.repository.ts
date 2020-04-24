@@ -20,9 +20,7 @@ export class UserRepository extends Repository<UserEntity> {
       email,
       password,
     } = authcredentialsdto;
-
     const NewUser = new UserEntity();
-
     NewUser.firstname = firstname;
     NewUser.lastname = lastname;
     NewUser.classname = classname;
@@ -30,7 +28,6 @@ export class UserRepository extends Repository<UserEntity> {
     NewUser.email = email;
     NewUser.salt = await bcrypt.genSalt();
     NewUser.password = await this.hashPassword(password, NewUser.salt);
-
     try {
       await NewUser.save();
     } catch (error) {
@@ -41,7 +38,6 @@ export class UserRepository extends Repository<UserEntity> {
       }
     }
   }
-
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }

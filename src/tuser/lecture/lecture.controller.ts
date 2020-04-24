@@ -9,6 +9,7 @@ import {
   Patch,
   UseInterceptors,
   UploadedFile,
+  Get,
 } from '@nestjs/common';
 
 import { CreateLectureDto } from '../dto/create-lecture.dto';
@@ -18,12 +19,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('lecture')
 export class LectureController {
-  constructor(private lectureservice: LectureService) { }
+  constructor(private lectureservice: LectureService) {}
 
   @Post('/:id')
-  @UseInterceptors(
-    FileInterceptor('video'),
-  )
+  @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
   createNewLecture(
     @UploadedFile() video: any,
@@ -34,9 +33,7 @@ export class LectureController {
   }
 
   @Patch('/:id/update')
-  @UseInterceptors(
-    FileInterceptor('video'),
-  )
+  @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
   updateLecture(
     @Param('id') id: string,
@@ -51,7 +48,6 @@ export class LectureController {
     return this.lectureservice.deleteLecture(id);
   }
 
-
   //For futute file upload feature
   // @Post('/files/:id')
   // @UseInterceptors(
@@ -65,5 +61,4 @@ export class LectureController {
   // ): Promise<LectureEntity> {
   //   //return this.lectureservice.addStudyDocuments(id, createlecturedto, file);
   // }
-
 }

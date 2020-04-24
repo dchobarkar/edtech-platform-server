@@ -36,7 +36,4 @@ export class CreateQuestionDto {
   @NotContains('9')
   @NotContains('0')
   answer: string;
-
-  @IsString()
-  queimage: string;
 }

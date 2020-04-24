@@ -4,12 +4,44 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  CreateDateColumn,
   OneToMany,
+  Unique,
 } from 'typeorm';
 
-import { SectionEntity } from './section.entity';
 import { UserEntity } from '../auth/user.entity';
+import { SectionEntity } from './section.entity';
+
+@Entity()
+@Unique(['targetaudience'])
+export class TargetAudienceEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({ type: 'smallint' })
+  targetaudience_id: number;
+
+  @Column({ type: 'varchar', length: 50 })
+  targetaudience: string;
+
+  @OneToMany(
+    type => CourseEntity,
+    courseentity => courseentity.targetaudienceentity,
+  )
+  courseentitys: CourseEntity[];
+}
+
+@Entity()
+@Unique(['subject'])
+export class SubjectEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({ type: 'smallint' })
+  subject_id: number;
+
+  @Column({ type: 'varchar', length: 50 })
+  subject: string;
+
+  @OneToMany(
+    type => CourseEntity,
+    courseentity => courseentity.subjectentity,
+  )
+  courseentitys: CourseEntity[];
+}
 
 @Entity()
 export class CourseEntity extends BaseEntity {
@@ -21,12 +53,6 @@ export class CourseEntity extends BaseEntity {
 
   @Column({ type: 'text' })
   courseintro: string;
-
-  @Column({ type: 'smallint' })
-  targetaudience_id: number;
-
-  @Column({ type: 'smallint' })
-  subject_id: number;
 
   @Column({ type: 'integer' })
   fee: number;
@@ -40,8 +66,8 @@ export class CourseEntity extends BaseEntity {
   @Column({ type: 'integer' })
   noofrating: number;
 
-  @CreateDateColumn({ type: 'date' })
-  date: Date;
+  @Column({ type: 'varchar', length: 19 })
+  created: string;
 
   @ManyToOne(
     type => UserEntity,
@@ -50,6 +76,22 @@ export class CourseEntity extends BaseEntity {
   userentity: UserEntity;
   @Column()
   userentityId: string;
+
+  @ManyToOne(
+    type => TargetAudienceEntity,
+    targetaudienceentity => targetaudienceentity.courseentitys,
+  )
+  targetaudienceentity: TargetAudienceEntity;
+  @Column()
+  targetaudienceentityTargetaudienceId: number;
+
+  @ManyToOne(
+    type => SubjectEntity,
+    subjectentity => subjectentity.courseentitys,
+  )
+  subjectentity: SubjectEntity;
+  @Column()
+  subjectentitySubjectId: number;
 
   @OneToMany(
     type => SectionEntity,

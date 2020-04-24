@@ -1,12 +1,12 @@
 import { Repository, EntityRepository } from 'typeorm';
 
 import { CreateTuserDto } from '../tuser/dto/create-tuser.dto';
+import { UserEntity } from '../auth/user.entity';
 import {
   TuserEntity,
   CountryEntity,
   StateEntity,
 } from '../entity/tuser.entity';
-import { UserEntity } from '../auth/user.entity';
 
 @EntityRepository(TuserEntity)
 export class TuserRepository extends Repository<TuserEntity> {
@@ -20,7 +20,7 @@ export class TuserRepository extends Repository<TuserEntity> {
   async createnewtuser(
     createtuserdto: CreateTuserDto,
     user: UserEntity,
-  ): Promise<TuserEntity> {
+  ): Promise<String> {
     const {
       classintro,
       country_id,
@@ -28,29 +28,25 @@ export class TuserRepository extends Repository<TuserEntity> {
       address,
       city,
       pincode,
-      bannerimgurl,
     } = createtuserdto;
     const NewTuser = new TuserEntity();
-
     NewTuser.classintro = classintro;
     NewTuser.address = address;
     NewTuser.city = city;
     NewTuser.pincode = pincode;
-    NewTuser.bannerimgurl = bannerimgurl;
-
+    NewTuser.bannerimgurl = '';
     NewTuser.countryentityCountryId = country_id;
     NewTuser.stateentityStateId = state_id;
     NewTuser.userentityId = user.id;
-
     await NewTuser.save();
-
-    return NewTuser;
+    return NewTuser.tuser_id;
   }
 
   async updatetuser(
     createtuserdto: CreateTuserDto,
     ToBeUpdated: TuserEntity,
-  ): Promise<TuserEntity> {
+    bannerimgurl: string,
+  ): Promise<string> {
     const {
       classintro,
       country_id,
@@ -58,7 +54,6 @@ export class TuserRepository extends Repository<TuserEntity> {
       address,
       city,
       pincode,
-      bannerimgurl,
     } = createtuserdto;
 
     ToBeUpdated.classintro = classintro;
@@ -66,32 +61,24 @@ export class TuserRepository extends Repository<TuserEntity> {
     ToBeUpdated.city = city;
     ToBeUpdated.pincode = pincode;
     ToBeUpdated.bannerimgurl = bannerimgurl;
-
     ToBeUpdated.countryentityCountryId = country_id;
     ToBeUpdated.stateentityStateId = state_id;
-
     await ToBeUpdated.save();
-
-    return ToBeUpdated;
+    return ToBeUpdated.tuser_id;
   }
 
   async createnewcountry(country: string): Promise<CountryEntity> {
     const NewCountry = new CountryEntity();
     NewCountry.country = country;
-
     await NewCountry.save();
-
     return NewCountry;
   }
 
   async createnewstate(id: number, state: string): Promise<StateEntity> {
     const NewState = new StateEntity();
-
     NewState.state = state;
     NewState.countryentityCountryId = id;
-
     await NewState.save();
-
     return NewState;
   }
 }

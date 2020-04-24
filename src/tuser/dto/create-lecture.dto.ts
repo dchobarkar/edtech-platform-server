@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, MaxLength, IsUrl } from 'class-validator';
+import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
 
 export class CreateLectureDto {
   @IsNotEmpty()

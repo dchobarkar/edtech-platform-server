@@ -8,13 +8,16 @@ import {
   UsePipes,
   ValidationPipe,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CreateTuserDto } from './dto/create-tuser.dto';
-import { TuserService } from './tuser.service';
-import { TuserEntity, CountryEntity, StateEntity } from '../entity/tuser.entity';
 import { UserEntity } from '../auth/user.entity';
+import { CountryEntity, StateEntity } from '../entity/tuser.entity';
+import { TuserService } from './tuser.service';
 import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('tuser')
@@ -23,17 +26,19 @@ export class TuserController {
   constructor(private tuserservice: TuserService) {}
 
   @Get('/profile')
-  getUserProfile(@GetUser() user: UserEntity): Promise<TuserEntity> {
+  getUserProfile(@GetUser() user: UserEntity): Promise<Object> {
     return this.tuserservice.getUserProfile(user);
   }
 
   @Patch('/update')
+  @UseInterceptors(FileInterceptor('bannerimg'))
   @UsePipes(ValidationPipe)
   updateTuser(
     @GetUser() user: UserEntity,
     @Body() createtuserdto: CreateTuserDto,
-  ): Promise<TuserEntity> {
-    return this.tuserservice.updateTuser(user, createtuserdto);
+    @UploadedFile() bannerimg: any,
+  ): Promise<Object> {
+    return this.tuserservice.updateTuser(user, createtuserdto, bannerimg);
   }
 
   @Post('/country')
