@@ -1,20 +1,23 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { MaxLength, Matches } from 'class-validator';
 
 export class CreateCourseDto {
-  // @IsString()
-  // @IsNotEmpty()
-  // @MaxLength(100)
+  @MaxLength(100)
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   coursetitle: string;
 
-  // @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
+  )
   courseintro: string;
 
-  // @IsNotEmpty()
+  @Matches(/^[1-9]$/)
   targetaudience_id: number;
 
-  // @IsNotEmpty()
+  @Matches(/^[1-9]$/)
   subject_id: number;
 
-  // @IsNotEmpty()
+  @Matches(/^[0-9]+$/)
   fee: number;
 }
