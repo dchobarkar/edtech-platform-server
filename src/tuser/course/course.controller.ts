@@ -26,47 +26,47 @@ import { UserEntity } from '../../auth/user.entity';
 export class CourseController {
   constructor(private courseservice: CourseService) {}
 
-  @Post()
-  @UsePipes(ValidationPipe)
-  createNewCourse(
-    @GetUser() user: UserEntity,
-    @Body() createcoursedto: CreateCourseDto,
-  ): Promise<CourseEntity> {
-    return this.courseservice.createNewCourse(user, createcoursedto);
-  }
-
-  @Get()
-  getAllCourses(@GetUser() user: UserEntity): Promise<CourseEntity[]> {
-    return this.courseservice.getAllCourses(user);
-  }
-
-  // @Patch('/:id/update')
+  // @Post()
   // @UsePipes(ValidationPipe)
-  // updateCourse(
+  // createNewCourse(
   //   @GetUser() user: UserEntity,
-  //   @Param('id') id: string,
   //   @Body() createcoursedto: CreateCourseDto,
   // ): Promise<CourseEntity> {
-  //   return this.courseservice.updateCourse(user, id, createcoursedto);
+  //   return this.courseservice.createNewCourse(user, createcoursedto);
   // }
 
-  // @Get('/:id/allsections')
-  // getAllSections(
-  //   @GetUser() user: UserEntity,
-  //   @Param('id') id: string,
-  // ): Promise<CourseEntity> {
-  //   return this.courseservice.getAllSections(user, id);
+  // @Get()
+  // getAllCourses(@GetUser() user: UserEntity): Promise<CourseEntity[]> {
+  //   return this.courseservice.getAllCourses(user);
   // }
 
-  @Post('/targetaudience')
-  createNewTargetaudience(
-    @Body('targetaudience') targetaudience: string,
-  ): Promise<TargetAudienceEntity> {
-    return this.courseservice.createNewTargetaudience(targetaudience);
-  }
+  // // @Patch('/:id/update')
+  // // @UsePipes(ValidationPipe)
+  // // updateCourse(
+  // //   @GetUser() user: UserEntity,
+  // //   @Param('id') id: string,
+  // //   @Body() createcoursedto: CreateCourseDto,
+  // // ): Promise<CourseEntity> {
+  // //   return this.courseservice.updateCourse(user, id, createcoursedto);
+  // // }
 
-  @Post('/subject')
-  createNewSubject(@Body('subject') subject: string): Promise<SubjectEntity> {
-    return this.courseservice.createNewSubject(subject);
-  }
+  // // @Get('/:id/allsections')
+  // // getAllSections(
+  // //   @GetUser() user: UserEntity,
+  // //   @Param('id') id: string,
+  // // ): Promise<CourseEntity> {
+  // //   return this.courseservice.getAllSections(user, id);
+  // // }
+
+  // @Post('/targetaudience')
+  // createNewTargetaudience(
+  //   @Body('targetaudience') targetaudience: string,
+  // ): Promise<TargetAudienceEntity> {
+  //   return this.courseservice.createNewTargetaudience(targetaudience);
+  // }
+
+  // @Post('/subject')
+  // createNewSubject(@Body('subject') subject: string): Promise<SubjectEntity> {
+  //   return this.courseservice.createNewSubject(subject);
+  // }
 }
