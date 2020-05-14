@@ -5,7 +5,6 @@ import {
   IsAlpha,
   MinLength,
   MaxLength,
-  IsString,
   Length,
 } from 'class-validator';
 
@@ -18,8 +17,9 @@ export class AuthCredentialsDto {
   @MaxLength(50)
   lastname: string;
 
-  @IsString()
-  @Matches(/\w/)
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   @MaxLength(100)
   classname: string;
 

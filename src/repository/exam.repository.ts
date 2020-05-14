@@ -33,12 +33,12 @@ export class ExamRepository extends Repository<ExamEntity> {
     ToBeUpdated.examinstruction = examinstruction;
     ToBeUpdated.duration = duration;
     await ToBeUpdated.save();
-    const UpdatedExam = {
+    const updatedExam = {
       exam_id: ToBeUpdated.exam_id,
       examtitle: ToBeUpdated.examtitle,
       examinstruction: ToBeUpdated.examinstruction,
       duration: ToBeUpdated.duration,
     };
-    return UpdatedExam;
+    return updatedExam;
   }
 }

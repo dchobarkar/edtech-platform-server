@@ -6,11 +6,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateLectureDto } from '../dto/create-lecture.dto';
-import { LectureEntity } from '../../entity/lecture.entity';
 import { UserRepository } from 'src/auth/user.repository';
 import { CourseRepository } from '../../repository/course.repository';
 import { SectionRepository } from '../../repository/section.repository';
 import { LectureRepository } from '../../repository/lecture.repository';
+import { LectureEntity } from '../../entity/lecture.entity';
 
 import { AwsHelper } from 'src/utils/AwsHelper';
 
@@ -43,18 +43,11 @@ export class LectureService {
     const userData = await this.userRepository.findOne(courseData.userentityId);
     const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${createlecturedto.lecturetitle}`;
     const videoData = await this.awsHelper.UPLOAD_VIDEO(video, folderPath);
-    const NewLecture = await this.lecturerepository.createnewlecture(
+    return this.lecturerepository.createnewlecture(
       id,
       createlecturedto,
       videoData.Location,
     );
-    const newLecture = {
-      lecture_id: NewLecture.lecture_id,
-      lecturetitle: NewLecture.lecturetitle,
-      lectureintro: NewLecture.lectureintro,
-      lecturevideo: NewLecture.lecturevideo,
-    };
-    return newLecture;
   }
 
   async updateLecture(
@@ -78,18 +71,11 @@ export class LectureService {
       const videoData = await this.awsHelper.UPLOAD_VIDEO(video, folderPath);
       videoUrl = videoData.Location;
     }
-    const UpdatedLecture = await this.lecturerepository.updatelecture(
+    return this.lecturerepository.updatelecture(
       createlecturedto,
       ToBeUpdated,
       videoUrl,
     );
-    const updatedLecture = {
-      lecture_id: UpdatedLecture.lecture_id,
-      lecturetitle: UpdatedLecture.lecturetitle,
-      lectureintro: UpdatedLecture.lectureintro,
-      lecturevideo: UpdatedLecture.lecturevideo,
-    };
-    return updatedLecture;
   }
 
   async getLectureById(id: string): Promise<LectureEntity> {

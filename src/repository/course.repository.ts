@@ -44,6 +44,7 @@ export class CourseRepository extends Repository<CourseEntity> {
       } else if (error.code === '22003') {
         throw new BadRequestException();
       } else {
+        console.log(error);
         throw new InternalServerErrorException();
       }
     }
@@ -58,7 +59,7 @@ export class CourseRepository extends Repository<CourseEntity> {
       'targetaudienceentity',
     );
     query.leftJoinAndSelect('course.subjectentity', 'subjectentity');
-    const courses = await query.getMany();
+    const Courses = await query.getMany();
     function compare(a, b) {
       if (a.created_at < b.created_at) {
         return -1;
@@ -68,8 +69,8 @@ export class CourseRepository extends Repository<CourseEntity> {
       }
       return 0;
     }
-    courses.sort(compare);
-    return courses;
+    Courses.sort(compare);
+    return Courses;
   }
 
   async updatecourse(
@@ -96,6 +97,7 @@ export class CourseRepository extends Repository<CourseEntity> {
       } else if (error.code === '22003') {
         throw new BadRequestException();
       } else {
+        console.log(error);
         throw new InternalServerErrorException();
       }
     }

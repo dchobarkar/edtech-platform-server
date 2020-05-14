@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
+import { Injectable } from '@nestjs/common';
 
-import { Injectable, Body } from '@nestjs/common';
 import { AwsConfig } from '../config/aws.config';
 
 @Injectable()
@@ -47,7 +47,6 @@ export class AwsHelper {
       Key: folderPath,
       Body: image.buffer,
     };
-    // const options = { partSize: image.size, queueSize: 1 };
     const data = await this.S3.upload(params).promise();
     return data;
   }

@@ -10,11 +10,10 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CreateQuestionDto } from '../dto/create-question.dto';
 import { QuestionService } from './question.service';
-
-import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/question')
 export class QuestionController {

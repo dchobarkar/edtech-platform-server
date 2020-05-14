@@ -24,6 +24,7 @@ export class SectionRepository extends Repository<SectionEntity> {
       if (error.code === '22P02') {
         throw new NotAcceptableException();
       } else {
+        console.log(error);
         throw new InternalServerErrorException();
       }
     }

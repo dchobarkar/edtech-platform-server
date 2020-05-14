@@ -1,4 +1,3 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 
 import { CreateLectureDto } from '../tuser/dto/create-lecture.dto';
@@ -10,7 +9,7 @@ export class LectureRepository extends Repository<LectureEntity> {
     id: string,
     createlecturedto: CreateLectureDto,
     videoUrl: string,
-  ): Promise<LectureEntity> {
+  ): Promise<Object> {
     const { lecturetitle, lectureintro } = createlecturedto;
     const NewLecture = new LectureEntity();
     NewLecture.lecturetitle = lecturetitle;
@@ -18,19 +17,31 @@ export class LectureRepository extends Repository<LectureEntity> {
     NewLecture.lecturevideo = videoUrl;
     NewLecture.sectionentitySectionId = id;
     await NewLecture.save();
-    return NewLecture;
+    const newLecture = {
+      lecture_id: NewLecture.lecture_id,
+      lecturetitle: NewLecture.lecturetitle,
+      lectureintro: NewLecture.lectureintro,
+      lecturevideo: NewLecture.lecturevideo,
+    };
+    return newLecture;
   }
 
   async updatelecture(
     createlecturedto: CreateLectureDto,
     ToBeUpdated: LectureEntity,
     videoUrl: string,
-  ): Promise<LectureEntity> {
+  ): Promise<Object> {
     const { lecturetitle, lectureintro } = createlecturedto;
     ToBeUpdated.lecturetitle = lecturetitle;
     ToBeUpdated.lectureintro = lectureintro;
     ToBeUpdated.lecturevideo = videoUrl;
     await ToBeUpdated.save();
-    return ToBeUpdated;
+    const updatedLecture = {
+      lecture_id: ToBeUpdated.lecture_id,
+      lecturetitle: ToBeUpdated.lecturetitle,
+      lectureintro: ToBeUpdated.lectureintro,
+      lecturevideo: ToBeUpdated.lecturevideo,
+    };
+    return updatedLecture;
   }
 }

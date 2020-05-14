@@ -15,8 +15,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 
 import { CreateLectureDto } from '../dto/create-lecture.dto';
-import { UserEntity } from '../../auth/user.entity';
 import { LectureService } from './lecture.service';
+import { UserEntity } from '../../auth/user.entity';
 
 import { GetUser } from 'src/auth/get-user.decorator';
 

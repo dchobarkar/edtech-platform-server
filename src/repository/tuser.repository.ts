@@ -13,8 +13,8 @@ export class TuserRepository extends Repository<TuserEntity> {
   async tuserdetails(user: UserEntity): Promise<TuserEntity[]> {
     const query = this.createQueryBuilder('tuser');
     query.where('tuser.userentityId=:userId', { userId: user.id });
-    const tuserinfo = await query.getMany();
-    return tuserinfo;
+    const TuserInfo = await query.getMany();
+    return TuserInfo;
   }
 
   async createnewtuser(

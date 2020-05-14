@@ -40,19 +40,19 @@ export class ExamService {
   }
 
   async getAllQuestions(id: string): Promise<Object> {
-    const exam = await this.getExamById(id);
-    const examdetails = await this.examrepository.findOne(
-      { exam_id: exam.exam_id },
+    const Exam = await this.getExamById(id);
+    const ExamDetails = await this.examrepository.findOne(
+      { exam_id: Exam.exam_id },
       {
         relations: ['questionentitys'],
       },
     );
     const examDetails = {
-      exam_id: examdetails.exam_id,
-      examtitle: examdetails.examtitle,
-      examinstruction: examdetails.examinstruction,
-      duration: examdetails.duration,
-      questions: examdetails.questionentitys,
+      exam_id: ExamDetails.exam_id,
+      examtitle: ExamDetails.examtitle,
+      examinstruction: ExamDetails.examinstruction,
+      duration: ExamDetails.duration,
+      questions: ExamDetails.questionentitys,
     };
     return examDetails;
   }

@@ -12,8 +12,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { CreateSectionDto } from '../dto/create-section.dto';
-import { UserEntity } from '../../auth/user.entity';
 import { SectionService } from './section.service';
+import { UserEntity } from '../../auth/user.entity';
 
 import { GetUser } from 'src/auth/get-user.decorator';
 

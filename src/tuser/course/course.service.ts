@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateCourseDto } from '../dto/create-course.dto';
+import { CourseRepository } from '../../repository/course.repository';
 import { UserEntity } from '../../auth/user.entity';
 import {
   CourseEntity,
   TargetAudienceEntity,
   SubjectEntity,
 } from '../../entity/course.entity';
-import { CourseRepository } from '../../repository/course.repository';
 
 @Injectable()
 export class CourseService {
@@ -21,34 +21,34 @@ export class CourseService {
     user: UserEntity,
     createcoursedto: CreateCourseDto,
   ): Promise<Object> {
-    const courseid = await this.courserepository.createnewcourse(
+    const courseId = await this.courserepository.createnewcourse(
       user,
       createcoursedto,
     );
-    const FullNewCourse = await this.courserepository.findOne(
-      { course_id: courseid },
+    const NewCourse = await this.courserepository.findOne(
+      { course_id: courseId },
       {
         relations: ['targetaudienceentity', 'subjectentity'],
       },
     );
     const newCourse = {
-      course_id: FullNewCourse.course_id,
-      coursetitle: FullNewCourse.coursetitle,
-      fee: FullNewCourse.fee,
-      studentsenrolled: FullNewCourse.studentsenrolled,
-      ratingpoint: FullNewCourse.ratingpoint,
-      noofrating: FullNewCourse.noofrating,
-      created_at: FullNewCourse.created_at,
-      targetaudience: FullNewCourse.targetaudienceentity.targetaudience,
-      subject: FullNewCourse.subjectentity.subject,
+      course_id: NewCourse.course_id,
+      coursetitle: NewCourse.coursetitle,
+      fee: NewCourse.fee,
+      studentsenrolled: NewCourse.studentsenrolled,
+      ratingpoint: NewCourse.ratingpoint,
+      noofrating: NewCourse.noofrating,
+      created_at: NewCourse.created_at,
+      targetaudience: NewCourse.targetaudienceentity.targetaudience,
+      subject: NewCourse.subjectentity.subject,
     };
     return newCourse;
   }
 
   async getAllCourses(user: UserEntity): Promise<Object[]> {
-    const Fullcourses = await this.courserepository.getallcourses(user);
+    const Courses = await this.courserepository.getallcourses(user);
     let courses = [];
-    Fullcourses.map(course => {
+    Courses.map(course => {
       const tempcourse = {
         course_id: course.course_id,
         coursetitle: course.coursetitle,
@@ -71,28 +71,27 @@ export class CourseService {
     createcoursedto: CreateCourseDto,
   ): Promise<Object> {
     const ToBeUpdated = await this.getCourseById(user, id);
-    const courseid = await this.courserepository.updatecourse(
+    const courseId = await this.courserepository.updatecourse(
       createcoursedto,
       ToBeUpdated,
     );
-    const FullUpdatedCourse = await this.courserepository.findOne(
-      { course_id: courseid },
+    const UpdatedCourse = await this.courserepository.findOne(
+      { course_id: courseId },
       {
         relations: ['targetaudienceentity', 'subjectentity'],
       },
     );
-    const UpdatedCourse = {
-      course_id: FullUpdatedCourse.course_id,
-      coursetitle: FullUpdatedCourse.coursetitle,
-      courseintro: FullUpdatedCourse.courseintro,
-      fee: FullUpdatedCourse.fee,
-      targetaudience_id:
-        FullUpdatedCourse.targetaudienceentity.targetaudience_id,
-      targetaudience: FullUpdatedCourse.targetaudienceentity.targetaudience,
-      subject_id: FullUpdatedCourse.subjectentity.subject_id,
-      subject: FullUpdatedCourse.subjectentity.subject,
+    const updatedCourse = {
+      course_id: UpdatedCourse.course_id,
+      coursetitle: UpdatedCourse.coursetitle,
+      courseintro: UpdatedCourse.courseintro,
+      fee: UpdatedCourse.fee,
+      targetaudience_id: UpdatedCourse.targetaudienceentity.targetaudience_id,
+      targetaudience: UpdatedCourse.targetaudienceentity.targetaudience,
+      subject_id: UpdatedCourse.subjectentity.subject_id,
+      subject: UpdatedCourse.subjectentity.subject,
     };
-    return UpdatedCourse;
+    return updatedCourse;
   }
 
   async getCourseById(user: UserEntity, id: string): Promise<CourseEntity> {
@@ -107,7 +106,7 @@ export class CourseService {
 
   async getAllSections(user: UserEntity, id: string): Promise<Object> {
     const course = await this.getCourseById(user, id);
-    const Fullsections = await this.courserepository.findOne(
+    const Sections = await this.courserepository.findOne(
       { course_id: course.course_id },
       {
         relations: [
@@ -120,18 +119,18 @@ export class CourseService {
       },
     );
     const sections = {
-      course_id: Fullsections.course_id,
-      coursetitle: Fullsections.coursetitle,
-      courseintro: Fullsections.courseintro,
-      fee: Fullsections.fee,
-      studentsenrolled: Fullsections.studentsenrolled,
-      ratingpoint: Fullsections.ratingpoint,
-      noofrating: Fullsections.noofrating,
-      targetaudience_id: Fullsections.targetaudienceentity.targetaudience_id,
-      targetaudience: Fullsections.targetaudienceentity.targetaudience,
-      subject_id: Fullsections.subjectentity.subject_id,
-      subject: Fullsections.subjectentity.subject,
-      sections: Fullsections.sectionentitys,
+      course_id: Sections.course_id,
+      coursetitle: Sections.coursetitle,
+      courseintro: Sections.courseintro,
+      fee: Sections.fee,
+      studentsenrolled: Sections.studentsenrolled,
+      ratingpoint: Sections.ratingpoint,
+      noofrating: Sections.noofrating,
+      targetaudience_id: Sections.targetaudienceentity.targetaudience_id,
+      targetaudience: Sections.targetaudienceentity.targetaudience,
+      subject_id: Sections.subjectentity.subject_id,
+      subject: Sections.subjectentity.subject,
+      sections: Sections.sectionentitys,
     };
     return sections;
   }

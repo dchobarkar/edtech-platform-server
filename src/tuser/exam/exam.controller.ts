@@ -13,8 +13,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { CreateExamDto } from '../dto/create-exam.dto';
-import { UserEntity } from '../../auth/user.entity';
 import { ExamService } from './exam.service';
+import { UserEntity } from '../../auth/user.entity';
 
 import { GetUser } from 'src/auth/get-user.decorator';
 

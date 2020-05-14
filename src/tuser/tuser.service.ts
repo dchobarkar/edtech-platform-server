@@ -17,9 +17,9 @@ export class TuserService {
   ) {}
 
   async getUserProfile(user: UserEntity): Promise<Object> {
-    const tuserinfo = await this.tuserrepository.tuserdetails(user);
+    const TuserInfo = await this.tuserrepository.tuserdetails(user);
     let tuserid = null;
-    if (tuserinfo.length === 0) {
+    if (TuserInfo.length === 0) {
       const tempuserprofile = {
         classintro: '',
         country_id: 1,
@@ -33,31 +33,31 @@ export class TuserService {
         user,
       );
     } else {
-      tuserid = tuserinfo[0].tuser_id;
+      tuserid = TuserInfo[0].tuser_id;
     }
-    const tempuserprofile = await this.tuserrepository.findOne(
+    const TuserProfile = await this.tuserrepository.findOne(
       { tuser_id: tuserid },
       {
         relations: ['userentity', 'countryentity', 'stateentity'],
       },
     );
-    const userprofile = {
-      firstname: tempuserprofile.userentity.firstname,
-      lastname: tempuserprofile.userentity.lastname,
-      classname: tempuserprofile.userentity.classname,
-      classintro: tempuserprofile.classintro,
-      mobile: tempuserprofile.userentity.mobile,
-      email: tempuserprofile.userentity.email,
-      country: tempuserprofile.countryentity.country,
-      country_id: tempuserprofile.countryentity.country_id,
-      state: tempuserprofile.stateentity.state,
-      state_id: tempuserprofile.stateentity.state_id,
-      address: tempuserprofile.address,
-      city: tempuserprofile.city,
-      pincode: tempuserprofile.pincode,
-      bannerimgurl: tempuserprofile.bannerimgurl,
+    const userProfile = {
+      firstname: TuserProfile.userentity.firstname,
+      lastname: TuserProfile.userentity.lastname,
+      classname: TuserProfile.userentity.classname,
+      classintro: TuserProfile.classintro,
+      mobile: TuserProfile.userentity.mobile,
+      email: TuserProfile.userentity.email,
+      country: TuserProfile.countryentity.country,
+      country_id: TuserProfile.countryentity.country_id,
+      state: TuserProfile.stateentity.state,
+      state_id: TuserProfile.stateentity.state_id,
+      address: TuserProfile.address,
+      city: TuserProfile.city,
+      pincode: TuserProfile.pincode,
+      bannerimgurl: TuserProfile.bannerimgurl,
     };
-    return userprofile;
+    return userProfile;
   }
 
   async updateTuser(
@@ -77,24 +77,24 @@ export class TuserService {
       ToBeUpdated[0],
       bannerimgurl,
     );
-    const tempUpdatedUser = await this.tuserrepository.findOne(
+    const UpdatedTuserProfile = await this.tuserrepository.findOne(
       { tuser_id: tuserid },
       {
         relations: ['countryentity', 'stateentity'],
       },
     );
-    const updatedUserProfile = {
-      classintro: tempUpdatedUser.classintro,
-      country: tempUpdatedUser.countryentity.country,
-      country_id: tempUpdatedUser.countryentity.country_id,
-      state: tempUpdatedUser.stateentity.state,
-      state_id: tempUpdatedUser.stateentity.state_id,
-      address: tempUpdatedUser.address,
-      city: tempUpdatedUser.city,
-      pincode: tempUpdatedUser.pincode,
-      bannerimgurl: tempUpdatedUser.bannerimgurl,
+    const updatedTuserProfile = {
+      classintro: UpdatedTuserProfile.classintro,
+      country: UpdatedTuserProfile.countryentity.country,
+      country_id: UpdatedTuserProfile.countryentity.country_id,
+      state: UpdatedTuserProfile.stateentity.state,
+      state_id: UpdatedTuserProfile.stateentity.state_id,
+      address: UpdatedTuserProfile.address,
+      city: UpdatedTuserProfile.city,
+      pincode: UpdatedTuserProfile.pincode,
+      bannerimgurl: UpdatedTuserProfile.bannerimgurl,
     };
-    return updatedUserProfile;
+    return updatedTuserProfile;
   }
 
   async createNewCountry(country: string): Promise<CountryEntity> {
