@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateCourseDto } from '../dto/create-course.dto';
-import { CourseRepository } from '../../repository/course.repository';
 import { UserEntity } from '../../auth/user.entity';
 import {
   CourseEntity,
   TargetAudienceEntity,
   SubjectEntity,
 } from '../../entity/course.entity';
+import { CourseRepository } from '../../repository/course.repository';
 
 @Injectable()
 export class CourseService {
@@ -38,7 +38,7 @@ export class CourseService {
       studentsenrolled: FullNewCourse.studentsenrolled,
       ratingpoint: FullNewCourse.ratingpoint,
       noofrating: FullNewCourse.noofrating,
-      created: FullNewCourse.created,
+      created_at: FullNewCourse.created_at,
       targetaudience: FullNewCourse.targetaudienceentity.targetaudience,
       subject: FullNewCourse.subjectentity.subject,
     };
@@ -56,7 +56,7 @@ export class CourseService {
         studentsenrolled: course.studentsenrolled,
         ratingpoint: course.ratingpoint,
         noofrating: course.noofrating,
-        created: course.created,
+        created_at: course.created_at,
         targetaudience: course.targetaudienceentity.targetaudience,
         subject: course.subjectentity.subject,
       };

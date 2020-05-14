@@ -1,13 +1,14 @@
-import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateQuestionDto } from '../dto/create-question.dto';
-import { QuestionRepository } from '../../repository/question.repository';
 import { QuestionEntity } from '../../entity/question.entity';
-import { ExamRepository } from 'src/repository/exam.repository';
-import { SectionRepository } from 'src/repository/section.repository';
-import { CourseRepository } from 'src/repository/course.repository';
 import { UserRepository } from 'src/auth/user.repository';
+import { CourseRepository } from 'src/repository/course.repository';
+import { SectionRepository } from 'src/repository/section.repository';
+import { ExamRepository } from 'src/repository/exam.repository';
+import { QuestionRepository } from '../../repository/question.repository';
+
 import { AwsHelper } from '../../utils/AwsHelper';
 
 @Injectable()
@@ -30,7 +31,8 @@ export class QuestionService {
     id: string,
     createquestiondto: CreateQuestionDto,
     image: any,
-  ): Promise<QuestionEntity> {
+  ): Promise<Object> {
+    let imgurl = 'none';
     if (image) {
       const examData = await this.examrepository.findOne(id);
       const sectionData = await this.sectionrepository.findOne(
@@ -42,32 +44,24 @@ export class QuestionService {
       const userData = await this.userrepository.findOne(
         courseData.userentityId,
       );
-
       const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${examData.exam_id}/${createquestiondto.que}`;
-
       const imageData = await this.awshelper.UPLOAD_IMAGE(image, folderPath);
-
-      return this.questionrepository.createnewquestion(
-        id,
-        createquestiondto,
-        imageData.Location,
-      );
-    } else {
-      image = 'none';
-      return this.questionrepository.createnewquestion(
-        id,
-        createquestiondto,
-        image,
-      );
+      imgurl = imageData.Location;
     }
+    return this.questionrepository.createnewquestion(
+      id,
+      createquestiondto,
+      imgurl,
+    );
   }
 
   async updateQuestion(
     id: string,
     createquestiondto: CreateQuestionDto,
     image: any,
-  ): Promise<QuestionEntity> {
+  ): Promise<Object> {
     const ToBeUpdated = await this.getQuestionById(id);
+    let imgurl = ToBeUpdated.queimage;
     if (image) {
       const examData = await this.examrepository.findOne(
         ToBeUpdated.examentityExamId,
@@ -81,39 +75,29 @@ export class QuestionService {
       const userData = await this.userrepository.findOne(
         courseData.userentityId,
       );
-
       const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${examData.exam_id}/${createquestiondto.que}`;
-
       const imageData = await this.awshelper.UPLOAD_IMAGE(image, folderPath);
-      return this.questionrepository.updatequestion(
-        createquestiondto,
-        ToBeUpdated,
-        imageData.Location,
-      );
-    } else {
-      return this.questionrepository.updatequestion(
-        createquestiondto,
-        ToBeUpdated,
-        ToBeUpdated.queimage,
-      );
+      imgurl = imageData.Location;
     }
+    return this.questionrepository.updatequestion(
+      createquestiondto,
+      ToBeUpdated,
+      imgurl,
+    );
   }
 
   async getQuestionById(id: string): Promise<QuestionEntity> {
     const question = await this.questionrepository.findOne(id);
     if (!question) {
-      throw new NotFoundException(
-        'The question you are searching is not Present',
-      );
+      throw new NotFoundException('Unknown Question');
     }
     return question;
   }
 
   async deleteQuestion(id: string): Promise<void> {
     const deleted = await this.questionrepository.delete(id);
-
     if (deleted.affected === 0) {
-      throw new NotFoundException('The question to be deleted is not present');
+      throw new NotFoundException();
     }
   }
 }

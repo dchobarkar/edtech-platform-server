@@ -9,15 +9,19 @@ import {
   Patch,
   UseInterceptors,
   UploadedFile,
-  Get,
+  UseGuards,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '@nestjs/passport';
 
 import { CreateLectureDto } from '../dto/create-lecture.dto';
+import { UserEntity } from '../../auth/user.entity';
 import { LectureService } from './lecture.service';
-import { LectureEntity } from '../../entity/lecture.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
+
+import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('lecture')
+@UseGuards(AuthGuard())
 export class LectureController {
   constructor(private lectureservice: LectureService) {}
 
@@ -25,10 +29,11 @@ export class LectureController {
   @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
   createNewLecture(
+    @GetUser() user: UserEntity,
     @UploadedFile() video: any,
     @Param('id') id: string,
     @Body() createlecturedto: CreateLectureDto,
-  ): Promise<any> {
+  ): Promise<Object> {
     return this.lectureservice.createNewLecture(id, createlecturedto, video);
   }
 
@@ -36,15 +41,19 @@ export class LectureController {
   @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
   updateLecture(
+    @GetUser() user: UserEntity,
     @Param('id') id: string,
     @UploadedFile() video: any,
     @Body() createlecturedto: CreateLectureDto,
-  ): Promise<LectureEntity> {
+  ): Promise<Object> {
     return this.lectureservice.updateLecture(id, createlecturedto, video);
   }
 
   @Delete('/:id')
-  deleteSection(@Param('id') id: string): Promise<void> {
+  deleteLecture(
+    @GetUser() user: UserEntity,
+    @Param('id') id: string,
+  ): Promise<void> {
     return this.lectureservice.deleteLecture(id);
   }
 

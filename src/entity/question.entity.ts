@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  CreateDateColumn,
 } from 'typeorm';
 
 import { ExamEntity } from './exam.entity';
@@ -33,6 +34,9 @@ export class QuestionEntity extends BaseEntity {
 
   @Column({ type: 'varchar' })
   queimage: string;
+
+  @CreateDateColumn({ type: 'timestamp without time zone' })
+  created_at: Date;
 
   @ManyToOne(
     type => ExamEntity,

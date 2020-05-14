@@ -1,14 +1,17 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { MaxLength, Matches } from 'class-validator';
 
 export class CreateExamDto {
-  @IsNotEmpty()
-  @IsString()
   @MaxLength(100)
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   examtitle: string;
 
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
+  )
   examinstruction: string;
 
-  @IsNotEmpty()
+  @Matches(/^[0-9]+$/)
   duration: number;
 }

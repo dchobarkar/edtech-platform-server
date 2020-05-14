@@ -13,8 +13,8 @@ import {
 
 import { CreateQuestionDto } from '../dto/create-question.dto';
 import { QuestionService } from './question.service';
-import { QuestionEntity } from '../../entity/question.entity';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/question')
 export class QuestionController {
@@ -27,7 +27,7 @@ export class QuestionController {
     @UploadedFile() image: any,
     @Param('id') id: string,
     @Body() createquestiondto: CreateQuestionDto,
-  ): Promise<QuestionEntity> {
+  ): Promise<Object> {
     return this.questionservice.createNewQuestion(id, createquestiondto, image);
   }
 
@@ -38,7 +38,7 @@ export class QuestionController {
     @UploadedFile() image: any,
     @Param('id') id: string,
     @Body() createquestiondto: CreateQuestionDto,
-  ): Promise<QuestionEntity> {
+  ): Promise<Object> {
     return this.questionservice.updateQuestion(id, createquestiondto, image);
   }
 

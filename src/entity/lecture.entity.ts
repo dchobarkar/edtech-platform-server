@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  CreateDateColumn,
 } from 'typeorm';
 
 import { SectionEntity } from './section.entity';
@@ -21,6 +22,9 @@ export class LectureEntity extends BaseEntity {
 
   @Column({ type: 'varchar' })
   lecturevideo: string;
+
+  @CreateDateColumn({ type: 'timestamp without time zone' })
+  created_at: Date;
 
   @ManyToOne(
     type => SectionEntity,

@@ -5,6 +5,7 @@ import { CreateTuserDto } from './dto/create-tuser.dto';
 import { TuserRepository } from '../repository/tuser.repository';
 import { UserEntity } from '../auth/user.entity';
 import { CountryEntity, StateEntity } from '../entity/tuser.entity';
+
 import { AwsHelper } from 'src/utils/AwsHelper';
 
 @Injectable()

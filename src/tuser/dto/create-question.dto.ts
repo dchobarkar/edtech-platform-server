@@ -1,39 +1,31 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsNumberString,
-  MaxLength,
-  NotContains,
-} from 'class-validator';
+import { Matches } from 'class-validator';
 
 export class CreateQuestionDto {
-  @IsNotEmpty()
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   que: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   opt1: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   opt2: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   opt3: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   opt4: string;
 
-  @IsNumberString()
-  @MaxLength(1)
-  @NotContains('5')
-  @NotContains('6')
-  @NotContains('7')
-  @NotContains('8')
-  @NotContains('9')
-  @NotContains('0')
+  @Matches(/^[1 2 3 4]$/)
   answer: string;
 }

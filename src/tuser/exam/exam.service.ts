@@ -15,14 +15,11 @@ export class ExamService {
   async createNewExam(
     id: string,
     createexamdto: CreateExamDto,
-  ): Promise<ExamEntity> {
+  ): Promise<Object> {
     return this.examrepository.createnewexam(id, createexamdto);
   }
 
-  async updateExam(
-    id: string,
-    createexamdto: CreateExamDto,
-  ): Promise<ExamEntity> {
+  async updateExam(id: string, createexamdto: CreateExamDto): Promise<Object> {
     const ToBeUpdated = await this.getExamById(id);
     return this.examrepository.updateexam(createexamdto, ToBeUpdated);
   }
@@ -30,20 +27,19 @@ export class ExamService {
   async getExamById(id: string): Promise<ExamEntity> {
     const exam = await this.examrepository.findOne(id);
     if (!exam) {
-      throw new NotFoundException('The exam you are searching is not Present');
+      throw new NotFoundException('Unknown Exam');
     }
     return exam;
   }
 
   async deleteExam(id: string): Promise<void> {
     const deleted = await this.examrepository.delete(id);
-
     if (deleted.affected === 0) {
-      throw new NotFoundException('The Exam to be deleted is not present');
+      throw new NotFoundException();
     }
   }
 
-  async getAllQuestions(id: string): Promise<ExamEntity> {
+  async getAllQuestions(id: string): Promise<Object> {
     const exam = await this.getExamById(id);
     const examdetails = await this.examrepository.findOne(
       { exam_id: exam.exam_id },
@@ -51,7 +47,13 @@ export class ExamService {
         relations: ['questionentitys'],
       },
     );
-
-    return examdetails;
+    const examDetails = {
+      exam_id: examdetails.exam_id,
+      examtitle: examdetails.examtitle,
+      examinstruction: examdetails.examinstruction,
+      duration: examdetails.duration,
+      questions: examdetails.questionentitys,
+    };
+    return examDetails;
   }
 }

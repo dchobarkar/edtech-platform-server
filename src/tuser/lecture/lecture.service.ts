@@ -1,13 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  NotAcceptableException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateLectureDto } from '../dto/create-lecture.dto';
-import { LectureRepository } from '../../repository/lecture.repository';
 import { LectureEntity } from '../../entity/lecture.entity';
-import { AwsHelper } from 'src/utils/AwsHelper';
+import { UserRepository } from 'src/auth/user.repository';
 import { CourseRepository } from '../../repository/course.repository';
 import { SectionRepository } from '../../repository/section.repository';
-import { UserRepository } from 'src/auth/user.repository';
+import { LectureRepository } from '../../repository/lecture.repository';
+
+import { AwsHelper } from 'src/utils/AwsHelper';
 
 @Injectable()
 export class LectureService {
@@ -27,7 +32,10 @@ export class LectureService {
     id: string,
     createlecturedto: CreateLectureDto,
     video: any,
-  ): Promise<any> {
+  ): Promise<Object> {
+    if (!video) {
+      throw new NotAcceptableException();
+    }
     const sectionData = await this.sectionRepository.findOne(id);
     const courseData = await this.courseRepository.findOne(
       sectionData.courseentityCourseId,
@@ -35,20 +43,27 @@ export class LectureService {
     const userData = await this.userRepository.findOne(courseData.userentityId);
     const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${createlecturedto.lecturetitle}`;
     const videoData = await this.awsHelper.UPLOAD_VIDEO(video, folderPath);
-    return this.lecturerepository.createnewlecture(
+    const NewLecture = await this.lecturerepository.createnewlecture(
       id,
       createlecturedto,
       videoData.Location,
     );
+    const newLecture = {
+      lecture_id: NewLecture.lecture_id,
+      lecturetitle: NewLecture.lecturetitle,
+      lectureintro: NewLecture.lectureintro,
+      lecturevideo: NewLecture.lecturevideo,
+    };
+    return newLecture;
   }
 
   async updateLecture(
     id: string,
     createlecturedto: CreateLectureDto,
     video: any,
-  ): Promise<LectureEntity> {
+  ): Promise<Object> {
     const ToBeUpdated = await this.getLectureById(id);
-
+    let videoUrl = ToBeUpdated.lecturevideo;
     if (video) {
       const sectionData = await this.sectionRepository.findOne(
         ToBeUpdated.sectionentitySectionId,
@@ -61,37 +76,34 @@ export class LectureService {
       );
       const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${createlecturedto.lecturetitle}`;
       const videoData = await this.awsHelper.UPLOAD_VIDEO(video, folderPath);
-      return this.lecturerepository.updatelecture(
-        createlecturedto,
-        ToBeUpdated,
-        videoData.Location,
-      );
-    } else {
-      return this.lecturerepository.updatelecture(
-        createlecturedto,
-        ToBeUpdated,
-        ToBeUpdated.lecturevideo,
-      );
+      videoUrl = videoData.Location;
     }
+    const UpdatedLecture = await this.lecturerepository.updatelecture(
+      createlecturedto,
+      ToBeUpdated,
+      videoUrl,
+    );
+    const updatedLecture = {
+      lecture_id: UpdatedLecture.lecture_id,
+      lecturetitle: UpdatedLecture.lecturetitle,
+      lectureintro: UpdatedLecture.lectureintro,
+      lecturevideo: UpdatedLecture.lecturevideo,
+    };
+    return updatedLecture;
   }
 
   async getLectureById(id: string): Promise<LectureEntity> {
     const lecture = await this.lecturerepository.findOne(id);
-
     if (!lecture) {
-      throw new NotFoundException(
-        'The Lecture you are searching is not Present',
-      );
+      throw new NotFoundException('Unknown Lecture');
     }
-
     return lecture;
   }
 
   async deleteLecture(id: string): Promise<void> {
     const deleted = await this.lecturerepository.delete(id);
-
     if (deleted.affected === 0) {
-      throw new NotFoundException('The Lecture to be deleted is not present');
+      throw new NotFoundException();
     }
   }
 }

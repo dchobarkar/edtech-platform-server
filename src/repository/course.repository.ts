@@ -1,4 +1,9 @@
 import { EntityRepository, Repository } from 'typeorm';
+import {
+  ForbiddenException,
+  InternalServerErrorException,
+  BadRequestException,
+} from '@nestjs/common';
 
 import { CreateCourseDto } from '../tuser/dto/create-course.dto';
 import { UserEntity } from '../auth/user.entity';
@@ -7,11 +12,6 @@ import {
   TargetAudienceEntity,
   SubjectEntity,
 } from '../entity/course.entity';
-import {
-  ForbiddenException,
-  InternalServerErrorException,
-  BadRequestException,
-} from '@nestjs/common';
 
 @EntityRepository(CourseEntity)
 export class CourseRepository extends Repository<CourseEntity> {
@@ -19,16 +19,6 @@ export class CourseRepository extends Repository<CourseEntity> {
     user: UserEntity,
     createcoursedto: CreateCourseDto,
   ): Promise<string> {
-    const today = new Date();
-    const date =
-      today.getDate() +
-      '/' +
-      (today.getMonth() + 1) +
-      '/' +
-      today.getFullYear();
-    const time =
-      today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-    const createdat = date + ' ' + time;
     const {
       coursetitle,
       courseintro,
@@ -43,7 +33,6 @@ export class CourseRepository extends Repository<CourseEntity> {
     NewCourse.studentsenrolled = 0;
     NewCourse.ratingpoint = 0;
     NewCourse.noofrating = 0;
-    NewCourse.created = createdat;
     NewCourse.userentityId = user.id;
     NewCourse.targetaudienceentityTargetaudienceId = targetaudience_id;
     NewCourse.subjectentitySubjectId = subject_id;
@@ -55,7 +44,6 @@ export class CourseRepository extends Repository<CourseEntity> {
       } else if (error.code === '22003') {
         throw new BadRequestException();
       } else {
-        console.log(error);
         throw new InternalServerErrorException();
       }
     }
@@ -72,10 +60,10 @@ export class CourseRepository extends Repository<CourseEntity> {
     query.leftJoinAndSelect('course.subjectentity', 'subjectentity');
     const courses = await query.getMany();
     function compare(a, b) {
-      if (a.created < b.created) {
+      if (a.created_at < b.created_at) {
         return -1;
       }
-      if (a.created > b.created) {
+      if (a.created_at > b.created_at) {
         return 1;
       }
       return 0;
@@ -108,7 +96,6 @@ export class CourseRepository extends Repository<CourseEntity> {
       } else if (error.code === '22003') {
         throw new BadRequestException();
       } else {
-        console.log(error);
         throw new InternalServerErrorException();
       }
     }

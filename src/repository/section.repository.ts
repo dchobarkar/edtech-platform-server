@@ -1,4 +1,7 @@
-import { InternalServerErrorException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotAcceptableException,
+} from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 
 import { CreateSectionDto } from '../tuser/dto/create-section.dto';
@@ -9,43 +12,42 @@ export class SectionRepository extends Repository<SectionEntity> {
   async createnewsection(
     id: string,
     createsectiondto: CreateSectionDto,
-  ): Promise<SectionEntity> {
+  ): Promise<Object> {
     const { sectiontitle, sectionintro } = createsectiondto;
-
     const NewSection = new SectionEntity();
-
     NewSection.sectiontitle = sectiontitle;
     NewSection.sectionintro = sectionintro;
-
     NewSection.courseentityCourseId = id;
-
     try {
       await NewSection.save();
     } catch (error) {
-      if (error.code === '23502') {
-        throw new InternalServerErrorException(
-          'Please provide all information',
-        );
-      } else if (error.code === '22001') {
-        throw new InternalServerErrorException('Value too long for given type');
+      if (error.code === '22P02') {
+        throw new NotAcceptableException();
       } else {
-        throw new InternalServerErrorException('Unknown');
+        throw new InternalServerErrorException();
       }
     }
-
-    return NewSection;
+    const newSection = {
+      section_id: NewSection.section_id,
+      sectiontitle: NewSection.sectiontitle,
+      sectionintro: NewSection.sectionintro,
+    };
+    return newSection;
   }
 
   async updatesection(
     createsectiondto: CreateSectionDto,
     ToBeUpdated: SectionEntity,
-  ): Promise<SectionEntity> {
+  ): Promise<Object> {
     const { sectiontitle, sectionintro } = createsectiondto;
-
     ToBeUpdated.sectiontitle = sectiontitle;
     ToBeUpdated.sectionintro = sectionintro;
-
     await ToBeUpdated.save();
-    return ToBeUpdated;
+    const updatedSection = {
+      section_id: ToBeUpdated.section_id,
+      sectiontitle: ToBeUpdated.sectiontitle,
+      sectionintro: ToBeUpdated.sectionintro,
+    };
+    return updatedSection;
   }
 }

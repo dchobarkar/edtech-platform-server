@@ -1,11 +1,14 @@
-import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
+import { MaxLength, Matches } from 'class-validator';
 
 export class CreateLectureDto {
-  @IsNotEmpty()
-  @IsString()
   @MaxLength(100)
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   lecturetitle: string;
 
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
+  )
   lectureintro: string;
 }

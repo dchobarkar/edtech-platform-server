@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   Unique,
+  CreateDateColumn,
 } from 'typeorm';
 
 import { UserEntity } from '../auth/user.entity';
@@ -66,8 +67,8 @@ export class CourseEntity extends BaseEntity {
   @Column({ type: 'integer' })
   noofrating: number;
 
-  @Column({ type: 'varchar', length: 19 })
-  created: string;
+  @CreateDateColumn({ type: 'timestamp without time zone' })
+  created_at: Date;
 
   @ManyToOne(
     type => UserEntity,

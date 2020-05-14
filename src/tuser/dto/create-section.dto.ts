@@ -1,11 +1,14 @@
-import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
+import { MaxLength, Matches } from 'class-validator';
 
 export class CreateSectionDto {
-  @IsNotEmpty()
-  @IsString()
   @MaxLength(100)
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   sectiontitle: string;
 
-  @IsString()
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
+  )
   sectionintro: string;
 }

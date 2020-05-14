@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  CreateDateColumn,
 } from 'typeorm';
 
 import { CourseEntity } from './course.entity';
@@ -21,6 +22,9 @@ export class SectionEntity extends BaseEntity {
 
   @Column({ type: 'text' })
   sectionintro: string;
+
+  @CreateDateColumn({ type: 'timestamp without time zone' })
+  created_at: Date;
 
   @ManyToOne(
     type => CourseEntity,

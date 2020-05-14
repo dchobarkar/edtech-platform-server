@@ -1,4 +1,3 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 
 import { CreateQuestionDto } from '../tuser/dto/create-question.dto';
@@ -10,11 +9,9 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     id: string,
     createquestiondto: CreateQuestionDto,
     imageUrl: string,
-  ): Promise<QuestionEntity> {
+  ): Promise<Object> {
     const { que, opt1, opt2, opt3, opt4, answer } = createquestiondto;
-
     const NewQuestion = new QuestionEntity();
-
     NewQuestion.que = que;
     NewQuestion.opt1 = opt1;
     NewQuestion.opt2 = opt2;
@@ -22,32 +19,27 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     NewQuestion.opt4 = opt4;
     NewQuestion.answer = answer;
     NewQuestion.queimage = imageUrl;
-
     NewQuestion.examentityExamId = id;
-
-    try {
-      await NewQuestion.save();
-    } catch (error) {
-      if (error.code === '23502') {
-        throw new InternalServerErrorException(
-          'Please provide all information',
-        );
-      } else if (error.code === '22001') {
-        throw new InternalServerErrorException('Value too long for given type');
-      } else {
-        throw new InternalServerErrorException('Unknown');
-      }
-    }
-    return NewQuestion;
+    await NewQuestion.save();
+    const newQuestion = {
+      que_id: NewQuestion.que_id,
+      que: NewQuestion.que,
+      opt1: NewQuestion.opt1,
+      opt2: NewQuestion.opt2,
+      opt3: NewQuestion.opt3,
+      opt4: NewQuestion.opt4,
+      answer: NewQuestion.answer,
+      queimage: NewQuestion.queimage,
+    };
+    return newQuestion;
   }
 
   async updatequestion(
     createquestiondto: CreateQuestionDto,
     ToBeUpdated: QuestionEntity,
     imageUrl: any,
-  ): Promise<QuestionEntity> {
+  ): Promise<Object> {
     const { que, opt1, opt2, opt3, opt4, answer } = createquestiondto;
-
     ToBeUpdated.que = que;
     ToBeUpdated.opt1 = opt1;
     ToBeUpdated.opt2 = opt2;
@@ -55,9 +47,17 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     ToBeUpdated.opt4 = opt4;
     ToBeUpdated.answer = answer;
     ToBeUpdated.queimage = imageUrl;
-
     await ToBeUpdated.save();
-
-    return ToBeUpdated;
+    const updatedQuestion = {
+      que_id: ToBeUpdated.que_id,
+      que: ToBeUpdated.que,
+      opt1: ToBeUpdated.opt1,
+      opt2: ToBeUpdated.opt2,
+      opt3: ToBeUpdated.opt3,
+      opt4: ToBeUpdated.opt4,
+      answer: ToBeUpdated.answer,
+      queimage: ToBeUpdated.queimage,
+    };
+    return updatedQuestion;
   }
 }

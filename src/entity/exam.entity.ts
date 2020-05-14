@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  CreateDateColumn,
 } from 'typeorm';
 
 import { SectionEntity } from './section.entity';
@@ -23,6 +24,9 @@ export class ExamEntity extends BaseEntity {
 
   @Column({ type: 'smallint' })
   duration: number;
+
+  @CreateDateColumn({ type: 'timestamp without time zone' })
+  created_at: Date;
 
   @ManyToOne(
     type => SectionEntity,

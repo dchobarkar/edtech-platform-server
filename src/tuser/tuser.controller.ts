@@ -16,8 +16,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CreateTuserDto } from './dto/create-tuser.dto';
 import { UserEntity } from '../auth/user.entity';
-import { CountryEntity, StateEntity } from '../entity/tuser.entity';
 import { TuserService } from './tuser.service';
+import { CountryEntity, StateEntity } from '../entity/tuser.entity';
+
 import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('tuser')

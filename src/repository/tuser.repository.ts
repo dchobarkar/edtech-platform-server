@@ -55,7 +55,6 @@ export class TuserRepository extends Repository<TuserEntity> {
       city,
       pincode,
     } = createtuserdto;
-
     ToBeUpdated.classintro = classintro;
     ToBeUpdated.address = address;
     ToBeUpdated.city = city;
