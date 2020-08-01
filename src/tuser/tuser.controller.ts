@@ -14,21 +14,22 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 
+import { UserEntity } from '../auth/user.entity';
+
 import { CreateTuserDto } from './dto/create-tuser.dto';
 import { TuserService } from './tuser.service';
-import { UserEntity } from '../auth/user.entity';
-import { CountryEntity, StateEntity } from '../entity/tuser.entity';
+import { CountryEntity, StateEntity } from './tuser.entity';
 
 import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('tuser')
 @UseGuards(AuthGuard())
 export class TuserController {
-  constructor(private tuserservice: TuserService) {}
+  constructor(private tUserService: TuserService) {}
 
   @Get('/profile')
   getUserProfile(@GetUser() user: UserEntity): Promise<Object> {
-    return this.tuserservice.getUserProfile(user);
+    return this.tUserService.getUserProfile(user);
   }
 
   @Patch('/update')
@@ -36,22 +37,23 @@ export class TuserController {
   @UsePipes(ValidationPipe)
   updateTuser(
     @GetUser() user: UserEntity,
-    @Body() createtuserdto: CreateTuserDto,
     @UploadedFile() bannerimg: any,
+    @Body() createTUserDto: CreateTuserDto,
   ): Promise<Object> {
-    return this.tuserservice.updateTuser(user, createtuserdto, bannerimg);
+    return this.tUserService.updateTuser(user, createTUserDto, bannerimg);
   }
 
+  // Only to be used while adding new country or state
   @Post('/country')
   createNewCountry(@Body('country') country: string): Promise<CountryEntity> {
-    return this.tuserservice.createNewCountry(country);
+    return this.tUserService.createNewCountry(country);
   }
 
   @Post('/state/:id')
   createNewState(
-    @Param('id') id: number,
+    @Param('id') country_id: number,
     @Body('state') state: string,
   ): Promise<StateEntity> {
-    return this.tuserservice.createNewState(id, state);
+    return this.tUserService.createNewState(country_id, state);
   }
 }

@@ -11,7 +11,7 @@ import { UserEntity } from './user.entity';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
-  async signup(authcredentialsdto: AuthCredentialsDto): Promise<void> {
+  async signup(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const {
       firstname,
       lastname,
@@ -19,7 +19,7 @@ export class UserRepository extends Repository<UserEntity> {
       mobile,
       email,
       password,
-    } = authcredentialsdto;
+    } = authCredentialsDto;
     const NewUser = new UserEntity();
     NewUser.firstname = firstname;
     NewUser.lastname = lastname;
@@ -39,17 +39,18 @@ export class UserRepository extends Repository<UserEntity> {
       }
     }
   }
-  private async hashPassword(password: string, salt: string): Promise<string> {
-    return bcrypt.hash(password, salt);
-  }
 
-  async validateuserpassword(authlogindto: AuthLoginDto): Promise<string> {
-    const { email, password } = authlogindto;
+  async validateuserpassword(authLoginDto: AuthLoginDto): Promise<string> {
+    const { email, password } = authLoginDto;
     const user = await this.findOne({ email });
     if (user && (await user.validatePassword(password))) {
       return user.id;
     } else {
       return null;
     }
+  }
+
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
   }
 }

@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AuthModule } from '../auth/auth.module';
+
 import { TuserController } from './tuser.controller';
 import { TuserService } from './tuser.service';
-import { TuserRepository } from '../repository/tuser.repository';
+import { TuserRepository } from './tuser.repository';
 
-import { AuthModule } from '../auth/auth.module';
 import { AwsHelper } from 'src/utils/AwsHelper';
 
 @Module({

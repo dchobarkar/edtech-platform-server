@@ -12,21 +12,21 @@ import { JwtPayload } from './jwt-payload.interface';
 export class AuthService {
   constructor(
     @InjectRepository(UserRepository)
-    private userrepository: UserRepository,
-    private jwtservice: JwtService,
+    private userRepository: UserRepository,
+    private jwtService: JwtService,
   ) {}
 
-  async signUp(authcredentialsdto: AuthCredentialsDto): Promise<void> {
-    return this.userrepository.signup(authcredentialsdto);
+  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    return this.userRepository.signup(authCredentialsDto);
   }
 
-  async logIn(authlogindto: AuthLoginDto): Promise<{ accessToken: string }> {
-    const userid = await this.userrepository.validateuserpassword(authlogindto);
-    if (!userid) {
+  async logIn(authLoginDto: AuthLoginDto): Promise<{ accessToken: string }> {
+    const id = await this.userRepository.validateuserpassword(authLoginDto);
+    if (!id) {
       throw new UnauthorizedException('Email or Password is wrong.');
     }
-    const payload: JwtPayload = { userid };
-    const accessToken = this.jwtservice.sign(payload);
+    const payload: JwtPayload = { id };
+    const accessToken = this.jwtService.sign(payload);
     return { accessToken };
   }
 }

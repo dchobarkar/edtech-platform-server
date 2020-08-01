@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { CreateTuserDto } from './dto/create-tuser.dto';
-import { TuserRepository } from '../repository/tuser.repository';
 import { UserEntity } from '../auth/user.entity';
-import { CountryEntity, StateEntity } from '../entity/tuser.entity';
+
+import { CreateTuserDto } from './dto/create-tuser.dto';
+import { TuserRepository } from './tuser.repository';
+import { CountryEntity, StateEntity } from './tuser.entity';
 
 import { AwsHelper } from 'src/utils/AwsHelper';
 
@@ -12,96 +13,98 @@ import { AwsHelper } from 'src/utils/AwsHelper';
 export class TuserService {
   constructor(
     @InjectRepository(TuserRepository)
-    private tuserrepository: TuserRepository,
+    private tUserRepository: TuserRepository,
     private awsHelper: AwsHelper,
   ) {}
 
   async getUserProfile(user: UserEntity): Promise<Object> {
-    const TuserInfo = await this.tuserrepository.tuserdetails(user);
-    let tuserid = null;
-    if (TuserInfo.length === 0) {
-      const tempuserprofile = {
-        classintro: '',
-        country_id: 1,
-        state_id: 1,
-        address: '',
-        city: '',
-        pincode: '',
-      };
-      tuserid = await this.tuserrepository.createnewtuser(
-        tempuserprofile,
-        user,
-      );
+    const temptuserinfo = await this.tUserRepository.tuserdetails(user);
+
+    // create a tuserentity if there is no profile present
+    let temptuserid = null;
+    if (temptuserinfo === undefined) {
+      temptuserid = await this.tUserRepository.createnewtuser(user);
     } else {
-      tuserid = TuserInfo[0].tuser_id;
+      temptuserid = temptuserinfo.tuser_id;
     }
-    const TuserProfile = await this.tuserrepository.findOne(
-      { tuser_id: tuserid },
+
+    // return needed information
+    const tuserprofile = await this.tUserRepository.findOne(
+      { tuser_id: temptuserid },
       {
         relations: ['userentity', 'countryentity', 'stateentity'],
       },
     );
-    const userProfile = {
-      firstname: TuserProfile.userentity.firstname,
-      lastname: TuserProfile.userentity.lastname,
-      classname: TuserProfile.userentity.classname,
-      classintro: TuserProfile.classintro,
-      mobile: TuserProfile.userentity.mobile,
-      email: TuserProfile.userentity.email,
-      country: TuserProfile.countryentity.country,
-      country_id: TuserProfile.countryentity.country_id,
-      state: TuserProfile.stateentity.state,
-      state_id: TuserProfile.stateentity.state_id,
-      address: TuserProfile.address,
-      city: TuserProfile.city,
-      pincode: TuserProfile.pincode,
-      bannerimgurl: TuserProfile.bannerimgurl,
+    const userprofile = {
+      firstname: tuserprofile.userentity.firstname,
+      lastname: tuserprofile.userentity.lastname,
+      classname: tuserprofile.userentity.classname,
+      classintro: tuserprofile.classintro,
+      mobile: tuserprofile.userentity.mobile,
+      email: tuserprofile.userentity.email,
+      country: tuserprofile.countryentity.country,
+      country_id: tuserprofile.countryentity.country_id,
+      state: tuserprofile.stateentity.state,
+      state_id: tuserprofile.stateentity.state_id,
+      address: tuserprofile.address,
+      city: tuserprofile.city,
+      pincode: tuserprofile.pincode,
+      bannerimgurl: tuserprofile.bannerimgurl,
     };
-    return userProfile;
+    return userprofile;
   }
 
   async updateTuser(
-    uesr: UserEntity,
-    createtuserdto: CreateTuserDto,
+    user: UserEntity,
+    createTUserDto: CreateTuserDto,
     bannerimg: any,
   ): Promise<Object> {
-    const ToBeUpdated = await this.tuserrepository.tuserdetails(uesr);
-    let bannerimgurl = ToBeUpdated[0].bannerimgurl;
+    const tobeupdated = await this.tUserRepository.tuserdetails(user);
+
+    // upload bannerimg to aws and get its url
+    let bannerimgurl = tobeupdated.bannerimgurl;
     if (bannerimg) {
-      const folderPath = `${ToBeUpdated[0].userentityId}/${'bannerimg'}`;
+      const folderPath = `${tobeupdated.userentityId}/${'bannerimg'}`;
       const imgData = await this.awsHelper.UPLOAD_IMAGE(bannerimg, folderPath);
       bannerimgurl = imgData.Location;
     }
-    const tuserid = await this.tuserrepository.updatetuser(
-      createtuserdto,
-      ToBeUpdated[0],
+
+    // update tuserprofile
+    const tuserid = await this.tUserRepository.updatetuser(
+      createTUserDto,
+      tobeupdated,
       bannerimgurl,
     );
-    const UpdatedTuserProfile = await this.tuserrepository.findOne(
+
+    // return needed information
+    const tempupdatedtuserprofile = await this.tUserRepository.findOne(
       { tuser_id: tuserid },
       {
         relations: ['countryentity', 'stateentity'],
       },
     );
-    const updatedTuserProfile = {
-      classintro: UpdatedTuserProfile.classintro,
-      country: UpdatedTuserProfile.countryentity.country,
-      country_id: UpdatedTuserProfile.countryentity.country_id,
-      state: UpdatedTuserProfile.stateentity.state,
-      state_id: UpdatedTuserProfile.stateentity.state_id,
-      address: UpdatedTuserProfile.address,
-      city: UpdatedTuserProfile.city,
-      pincode: UpdatedTuserProfile.pincode,
-      bannerimgurl: UpdatedTuserProfile.bannerimgurl,
+    const updatedtuserprofile = {
+      classintro: tempupdatedtuserprofile.classintro,
+      country: tempupdatedtuserprofile.countryentity.country,
+      country_id: tempupdatedtuserprofile.countryentity.country_id,
+      state: tempupdatedtuserprofile.stateentity.state,
+      state_id: tempupdatedtuserprofile.stateentity.state_id,
+      address: tempupdatedtuserprofile.address,
+      city: tempupdatedtuserprofile.city,
+      pincode: tempupdatedtuserprofile.pincode,
+      bannerimgurl: tempupdatedtuserprofile.bannerimgurl,
     };
-    return updatedTuserProfile;
+    return updatedtuserprofile;
   }
 
   async createNewCountry(country: string): Promise<CountryEntity> {
-    return this.tuserrepository.createnewcountry(country);
+    return this.tUserRepository.createnewcountry(country);
   }
 
-  async createNewState(id: number, state: string): Promise<StateEntity> {
-    return this.tuserrepository.createnewstate(id, state);
+  async createNewState(
+    country_id: number,
+    state: string,
+  ): Promise<StateEntity> {
+    return this.tUserRepository.createnewstate(country_id, state);
   }
 }

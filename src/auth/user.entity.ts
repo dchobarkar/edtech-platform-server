@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
-import { TuserEntity } from '../entity/tuser.entity';
-import { CourseEntity } from '../entity/course.entity';
+import { TuserEntity } from '../tuser/tuser.entity';
+import { CourseEntity } from '../course/course.entity';
 
 @Entity()
 @Unique(['mobile'])
