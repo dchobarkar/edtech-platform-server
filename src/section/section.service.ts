@@ -16,36 +16,36 @@ export class SectionService {
     createSectionDto: CreateSectionDto,
   ): Promise<object> {
     // save newsection
-    const tempnewsection = await this.sectionRepository.createnewsection(
+    const tempNewSection = await this.sectionRepository.createnewsection(
       course_id,
       createSectionDto,
     );
 
     // return needed data
-    const newsection = {
-      section_id: tempnewsection.section_id,
-      sectiontitle: tempnewsection.sectiontitle,
-      sectionintro: tempnewsection.sectionintro,
+    const newSection = {
+      section_id: tempNewSection.section_id,
+      sectionTitle: tempNewSection.sectionTitle,
+      sectionIntro: tempNewSection.sectionIntro,
     };
-    return newsection;
+    return newSection;
   }
 
   async updateSection(
     section_id: string,
     createSectionDto: CreateSectionDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     // updated section
-    const tempupdatedsection = await this.sectionRepository.updatesection(
+    const tempUpdatedSection = await this.sectionRepository.updatesection(
       section_id,
       createSectionDto,
     );
 
     // return needed data
-    const updatedsection = {
-      sectiontitle: tempupdatedsection.sectiontitle,
-      sectionintro: tempupdatedsection.sectionintro,
+    const updatedSection = {
+      sectionTitle: tempUpdatedSection.sectionTitle,
+      sectionIntro: tempUpdatedSection.sectionIntro,
     };
-    return updatedsection;
+    return updatedSection;
   }
 
   async deleteSection(section_id: string): Promise<void> {

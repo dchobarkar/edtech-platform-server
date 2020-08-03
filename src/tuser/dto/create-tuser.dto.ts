@@ -10,7 +10,7 @@ export class CreateTuserDto {
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
   )
-  classintro: string;
+  classIntro: string;
 
   @Matches(/^[\w\s @'",/ \. \( \) ]+$/)
   address: string;

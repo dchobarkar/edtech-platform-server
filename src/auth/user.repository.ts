@@ -13,23 +13,23 @@ import { UserEntity } from './user.entity';
 export class UserRepository extends Repository<UserEntity> {
   async signup(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const {
-      firstname,
-      lastname,
-      classname,
-      mobile,
+      firstName,
+      lastName,
+      className,
+      mobileNo,
       email,
       password,
     } = authCredentialsDto;
-    const NewUser = new UserEntity();
-    NewUser.firstname = firstname;
-    NewUser.lastname = lastname;
-    NewUser.classname = classname;
-    NewUser.mobile = mobile;
-    NewUser.email = email;
-    NewUser.salt = await bcrypt.genSalt();
-    NewUser.password = await this.hashPassword(password, NewUser.salt);
+    const newUser = new UserEntity();
+    newUser.firstName = firstName;
+    newUser.lastName = lastName;
+    newUser.className = className;
+    newUser.mobileNo = mobileNo;
+    newUser.email = email;
+    newUser.salt = await bcrypt.genSalt();
+    newUser.password = await this.hashPassword(password, newUser.salt);
     try {
-      await NewUser.save();
+      await newUser.save();
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Mobile No. or Email-id already exists.');

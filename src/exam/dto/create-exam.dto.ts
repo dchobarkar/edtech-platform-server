@@ -5,12 +5,12 @@ export class CreateExamDto {
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
   )
-  examtitle: string;
+  examTitle: string;
 
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
   )
-  examinstruction: string;
+  examInstruction: string;
 
   @Matches(/^[0-9]+$/)
   duration: number;

@@ -10,7 +10,7 @@ export class ExamRepository extends Repository<ExamEntity> {
     return this.findOne(
       { exam_id: exam_id },
       {
-        relations: ['questionentitys'],
+        relations: ['questionEntitys'],
       },
     );
   }
@@ -19,36 +19,36 @@ export class ExamRepository extends Repository<ExamEntity> {
     section_id: string,
     createExamDto: CreateExamDto,
   ): Promise<ExamEntity> {
-    const { examtitle, examinstruction, duration } = createExamDto;
-    const NewExam = new ExamEntity();
-    NewExam.examtitle = examtitle;
-    NewExam.examinstruction = examinstruction;
-    NewExam.duration = duration;
-    NewExam.sectionentitySectionId = section_id;
-    await NewExam.save();
-    return NewExam;
+    const { examTitle, examInstruction, duration } = createExamDto;
+    const newExam = new ExamEntity();
+    newExam.examTitle = examTitle;
+    newExam.examInstruction = examInstruction;
+    newExam.duration = duration;
+    newExam.sectionEntitySectionId = section_id;
+    await newExam.save();
+    return newExam;
   }
 
   async updateexam(
     exam_id: string,
     createExamDto: CreateExamDto,
   ): Promise<ExamEntity> {
-    const { examtitle, examinstruction, duration } = createExamDto;
+    const { examTitle, examInstruction, duration } = createExamDto;
 
     // search tobeupdated exam
-    const tobeupdatedexam = await this.findOne(exam_id);
+    const toBeUpdatedExam = await this.findOne(exam_id);
 
     // updated exam
-    tobeupdatedexam.examtitle = examtitle;
-    tobeupdatedexam.examinstruction = examinstruction;
-    tobeupdatedexam.duration = duration;
-    await tobeupdatedexam.save();
-    return tobeupdatedexam;
+    toBeUpdatedExam.examTitle = examTitle;
+    toBeUpdatedExam.examInstruction = examInstruction;
+    toBeUpdatedExam.duration = duration;
+    await toBeUpdatedExam.save();
+    return toBeUpdatedExam;
   }
 
   async deleteexam(exam_id: string): Promise<void> {
-    const deleted = await this.delete(exam_id);
-    if (deleted.affected === 0) {
+    const deletedExam = await this.delete(exam_id);
+    if (deletedExam.affected === 0) {
       throw new NotFoundException();
     }
   }

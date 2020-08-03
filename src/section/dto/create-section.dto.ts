@@ -5,10 +5,10 @@ export class CreateSectionDto {
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
   )
-  sectiontitle: string;
+  sectionTitle: string;
 
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
   )
-  sectionintro: string;
+  sectionIntro: string;
 }

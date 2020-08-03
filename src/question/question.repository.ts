@@ -12,17 +12,17 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     imageUrl: string,
   ): Promise<QuestionEntity> {
     const { que, opt1, opt2, opt3, opt4, answer } = createQuestionDto;
-    const NewQuestion = new QuestionEntity();
-    NewQuestion.que = que;
-    NewQuestion.opt1 = opt1;
-    NewQuestion.opt2 = opt2;
-    NewQuestion.opt3 = opt3;
-    NewQuestion.opt4 = opt4;
-    NewQuestion.answer = answer;
-    NewQuestion.queimage = imageUrl;
-    NewQuestion.examentityExamId = exam_id;
-    await NewQuestion.save();
-    return NewQuestion;
+    const newQuestion = new QuestionEntity();
+    newQuestion.que = que;
+    newQuestion.opt1 = opt1;
+    newQuestion.opt2 = opt2;
+    newQuestion.opt3 = opt3;
+    newQuestion.opt4 = opt4;
+    newQuestion.answer = answer;
+    newQuestion.queImage = imageUrl;
+    newQuestion.examEntityExamId = exam_id;
+    await newQuestion.save();
+    return newQuestion;
   }
 
   async getquestionbyid(question_id: string): Promise<QuestionEntity> {
@@ -31,24 +31,24 @@ export class QuestionRepository extends Repository<QuestionEntity> {
 
   async updatequestion(
     createQuestionDto: CreateQuestionDto,
-    tobeupdatedquestion: QuestionEntity,
+    toBeUpdatedQuestion: QuestionEntity,
     imageUrl: any,
   ): Promise<QuestionEntity> {
     const { que, opt1, opt2, opt3, opt4, answer } = createQuestionDto;
-    tobeupdatedquestion.que = que;
-    tobeupdatedquestion.opt1 = opt1;
-    tobeupdatedquestion.opt2 = opt2;
-    tobeupdatedquestion.opt3 = opt3;
-    tobeupdatedquestion.opt4 = opt4;
-    tobeupdatedquestion.answer = answer;
-    tobeupdatedquestion.queimage = imageUrl;
-    await tobeupdatedquestion.save();
-    return tobeupdatedquestion;
+    toBeUpdatedQuestion.que = que;
+    toBeUpdatedQuestion.opt1 = opt1;
+    toBeUpdatedQuestion.opt2 = opt2;
+    toBeUpdatedQuestion.opt3 = opt3;
+    toBeUpdatedQuestion.opt4 = opt4;
+    toBeUpdatedQuestion.answer = answer;
+    toBeUpdatedQuestion.queImage = imageUrl;
+    await toBeUpdatedQuestion.save();
+    return toBeUpdatedQuestion;
   }
 
   async deletequestion(question_id: string): Promise<void> {
-    const deleted = await this.delete(question_id);
-    if (deleted.affected === 0) {
+    const deletedQuestion = await this.delete(question_id);
+    if (deletedQuestion.affected === 0) {
       throw new NotFoundException();
     }
   }

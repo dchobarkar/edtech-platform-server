@@ -11,21 +11,21 @@ import {
 export class AuthCredentialsDto {
   @IsAlpha()
   @MaxLength(50)
-  firstname: string;
+  firstName: string;
 
   @IsAlpha()
   @MaxLength(50)
-  lastname: string;
+  lastName: string;
 
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
   )
   @MaxLength(100)
-  classname: string;
+  className: string;
 
   @IsNumberString()
   @Length(10, 10)
-  mobile: string;
+  mobileNo: string;
 
   @IsEmail()
   @MaxLength(50)

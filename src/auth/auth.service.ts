@@ -25,8 +25,8 @@ export class AuthService {
     if (!id) {
       throw new UnauthorizedException('Email or Password is wrong.');
     }
-    const payload: JwtPayload = { id };
-    const accessToken = this.jwtService.sign(payload);
+    const payLoad: JwtPayload = { id };
+    const accessToken = this.jwtService.sign(payLoad);
     return { accessToken };
   }
 }

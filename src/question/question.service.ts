@@ -34,94 +34,94 @@ export class QuestionService {
     exam_id: string,
     createQuestionDto: CreateQuestionDto,
     image: any,
-  ): Promise<Object> {
+  ): Promise<object> {
     // upload img to aws
-    let imgurl = 'none';
+    let imgUrl = 'none';
     if (image) {
       const examData = await this.examRepository.findOne(exam_id);
       const sectionData = await this.sectionRepository.findOne(
-        examData.sectionentitySectionId,
+        examData.sectionEntitySectionId,
       );
       const courseData = await this.courseRepository.findOne(
-        sectionData.courseentityCourseId,
+        sectionData.courseEntityCourseId,
       );
       const userData = await this.userRepository.findOne(
-        courseData.userentityId,
+        courseData.userEntityId,
       );
       const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${examData.exam_id}/${createQuestionDto.que}`;
       const imageData = await this.awsHelper.UPLOAD_IMAGE(image, folderPath);
-      imgurl = imageData.Location;
+      imgUrl = imageData.Location;
     }
 
     // create new question
-    const tempnewquestion = await this.questionRepository.createnewquestion(
+    const tempNewQuestion = await this.questionRepository.createnewquestion(
       exam_id,
       createQuestionDto,
-      imgurl,
+      imgUrl,
     );
 
     // return needed data
-    const newquestion = {
-      que_id: tempnewquestion.que_id,
-      que: tempnewquestion.que,
-      opt1: tempnewquestion.opt1,
-      opt2: tempnewquestion.opt2,
-      opt3: tempnewquestion.opt3,
-      opt4: tempnewquestion.opt4,
-      answer: tempnewquestion.answer,
-      queimage: tempnewquestion.queimage,
+    const newQuestion = {
+      que_id: tempNewQuestion.que_id,
+      que: tempNewQuestion.que,
+      opt1: tempNewQuestion.opt1,
+      opt2: tempNewQuestion.opt2,
+      opt3: tempNewQuestion.opt3,
+      opt4: tempNewQuestion.opt4,
+      answer: tempNewQuestion.answer,
+      queimage: tempNewQuestion.queImage,
     };
-    return newquestion;
+    return newQuestion;
   }
 
   async updateQuestion(
     question_id: string,
     createQuestionDto: CreateQuestionDto,
     image: any,
-  ): Promise<Object> {
+  ): Promise<object> {
     // search tobeupdated question
-    const tobeupdatedquestion = await this.questionRepository.getquestionbyid(
+    const toBeUpdatedQuestion = await this.questionRepository.getquestionbyid(
       question_id,
     );
 
     // upload img to the aws
-    let imgurl = tobeupdatedquestion.queimage;
+    let imgUrl = toBeUpdatedQuestion.queImage;
     if (image) {
       const examData = await this.examRepository.findOne(
-        tobeupdatedquestion.examentityExamId,
+        toBeUpdatedQuestion.examEntityExamId,
       );
       const sectionData = await this.sectionRepository.findOne(
-        examData.sectionentitySectionId,
+        examData.sectionEntitySectionId,
       );
       const courseData = await this.courseRepository.findOne(
-        sectionData.courseentityCourseId,
+        sectionData.courseEntityCourseId,
       );
       const userData = await this.userRepository.findOne(
-        courseData.userentityId,
+        courseData.userEntityId,
       );
       const folderPath = `${userData.id}/${courseData.course_id}/${sectionData.section_id}/${examData.exam_id}/${createQuestionDto.que}`;
       const imageData = await this.awsHelper.UPLOAD_IMAGE(image, folderPath);
-      imgurl = imageData.Location;
+      imgUrl = imageData.Location;
     }
 
     // update question
-    const tempupdatedquestion = await this.questionRepository.updatequestion(
+    const tempUpdatedQuestion = await this.questionRepository.updatequestion(
       createQuestionDto,
-      tobeupdatedquestion,
-      imgurl,
+      toBeUpdatedQuestion,
+      imgUrl,
     );
 
     // return needed data
-    const updatedquestion = {
-      que: tempupdatedquestion.que,
-      opt1: tempupdatedquestion.opt1,
-      opt2: tempupdatedquestion.opt2,
-      opt3: tempupdatedquestion.opt3,
-      opt4: tempupdatedquestion.opt4,
-      answer: tempupdatedquestion.answer,
-      queimage: tempupdatedquestion.queimage,
+    const updatedQuestion = {
+      que: tempUpdatedQuestion.que,
+      opt1: tempUpdatedQuestion.opt1,
+      opt2: tempUpdatedQuestion.opt2,
+      opt3: tempUpdatedQuestion.opt3,
+      opt4: tempUpdatedQuestion.opt4,
+      answer: tempUpdatedQuestion.answer,
+      queImage: tempUpdatedQuestion.queImage,
     };
-    return updatedquestion;
+    return updatedQuestion;
   }
 
   async deleteQuestion(question_id: string): Promise<void> {

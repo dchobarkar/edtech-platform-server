@@ -23,15 +23,15 @@ export class CountryEntity extends BaseEntity {
 
   @OneToMany(
     type => TuserEntity,
-    tuserentity => tuserentity.countryentity,
+    tUserEntity => tUserEntity.countryEntity,
   )
-  tuserentitys: TuserEntity[];
+  tUserEntitys: TuserEntity[];
 
   @OneToMany(
     type => StateEntity,
-    stateentity => stateentity.countryentity,
+    stateEntity => stateEntity.countryEntity,
   )
-  stateentitys: StateEntity[];
+  stateEntitys: StateEntity[];
 }
 
 @Entity()
@@ -44,17 +44,17 @@ export class StateEntity extends BaseEntity {
 
   @OneToMany(
     type => TuserEntity,
-    tuserentity => tuserentity.stateentity,
+    tUserEntity => tUserEntity.stateEntity,
   )
-  tuserentitys: TuserEntity[];
+  tUserEntitys: TuserEntity[];
 
   @ManyToOne(
     type => CountryEntity,
-    countryentity => countryentity.stateentitys,
+    countryEntity => countryEntity.stateEntitys,
   )
-  countryentity: CountryEntity;
+  countryEntity: CountryEntity;
   @Column()
-  countryentityCountryId: number;
+  countryEntityCountryId: number;
 }
 
 @Entity()
@@ -63,7 +63,7 @@ export class TuserEntity extends BaseEntity {
   tuser_id: string;
 
   @Column({ type: 'text' })
-  classintro: string;
+  classIntro: string;
 
   @Column({ type: 'text' })
   address: string;
@@ -75,30 +75,30 @@ export class TuserEntity extends BaseEntity {
   pincode: string;
 
   @Column({ type: 'varchar' })
-  bannerimgurl: string;
+  bannerImgUrl: string;
 
   @ManyToOne(
     type => CountryEntity,
-    countryentity => countryentity.tuserentitys,
+    countryEntity => countryEntity.tUserEntitys,
   )
-  countryentity: CountryEntity;
+  countryEntity: CountryEntity;
   @Column()
-  countryentityCountryId: number;
+  countryEntityCountryId: number;
 
   @ManyToOne(
     type => StateEntity,
-    stateentity => stateentity.tuserentitys,
+    stateEntity => stateEntity.tUserEntitys,
   )
-  stateentity: StateEntity;
+  stateEntity: StateEntity;
   @Column()
-  stateentityStateId: number;
+  stateEntityStateId: number;
 
   @OneToOne(
     type => UserEntity,
-    userentity => userentity.tuserentity,
+    userEntity => userEntity.tUserEntity,
   )
   @JoinColumn()
-  userentity: UserEntity;
+  userEntity: UserEntity;
   @Column()
-  userentityId: string;
+  userEntityId: string;
 }

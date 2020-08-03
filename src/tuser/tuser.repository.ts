@@ -8,62 +8,62 @@ import { TuserEntity, CountryEntity, StateEntity } from './tuser.entity';
 @EntityRepository(TuserEntity)
 export class TuserRepository extends Repository<TuserEntity> {
   async tuserdetails(user: UserEntity): Promise<TuserEntity> {
-    return this.findOne({ userentityId: user.id });
+    return this.findOne({ userEntityId: user.id });
   }
 
-  async createnewtuser(user: UserEntity): Promise<String> {
-    const NewTuser = new TuserEntity();
-    NewTuser.classintro = '';
-    NewTuser.address = '';
-    NewTuser.city = '';
-    NewTuser.pincode = '000000';
-    NewTuser.bannerimgurl = '';
-    NewTuser.countryentityCountryId = 1;
-    NewTuser.stateentityStateId = 1;
-    NewTuser.userentityId = user.id;
-    await NewTuser.save();
-    return NewTuser.tuser_id;
+  async createnewtuser(user: UserEntity): Promise<string> {
+    const newTuser = new TuserEntity();
+    newTuser.classIntro = '';
+    newTuser.address = '';
+    newTuser.city = '';
+    newTuser.pincode = '000000';
+    newTuser.bannerImgUrl = '';
+    newTuser.countryEntityCountryId = 1;
+    newTuser.stateEntityStateId = 1;
+    newTuser.userEntityId = user.id;
+    await newTuser.save();
+    return newTuser.tuser_id;
   }
 
   async updatetuser(
     createTUserDto: CreateTuserDto,
-    ToBeUpdated: TuserEntity,
-    bannerimgurl: string,
+    toBeUpdated: TuserEntity,
+    bannerImgUrl: string,
   ): Promise<string> {
     const {
-      classintro,
+      classIntro,
       country_id,
       state_id,
       address,
       city,
       pincode,
     } = createTUserDto;
-    ToBeUpdated.classintro = classintro;
-    ToBeUpdated.address = address;
-    ToBeUpdated.city = city;
-    ToBeUpdated.pincode = pincode;
-    ToBeUpdated.bannerimgurl = bannerimgurl;
-    ToBeUpdated.countryentityCountryId = country_id;
-    ToBeUpdated.stateentityStateId = state_id;
-    await ToBeUpdated.save();
-    return ToBeUpdated.tuser_id;
+    toBeUpdated.classIntro = classIntro;
+    toBeUpdated.address = address;
+    toBeUpdated.city = city;
+    toBeUpdated.pincode = pincode;
+    toBeUpdated.bannerImgUrl = bannerImgUrl;
+    toBeUpdated.countryEntityCountryId = country_id;
+    toBeUpdated.stateEntityStateId = state_id;
+    await toBeUpdated.save();
+    return toBeUpdated.tuser_id;
   }
 
   async createnewcountry(country: string): Promise<CountryEntity> {
-    const NewCountry = new CountryEntity();
-    NewCountry.country = country;
-    await NewCountry.save();
-    return NewCountry;
+    const newCountry = new CountryEntity();
+    newCountry.country = country;
+    await newCountry.save();
+    return newCountry;
   }
 
   async createnewstate(
     country_id: number,
     state: string,
   ): Promise<StateEntity> {
-    const NewState = new StateEntity();
-    NewState.state = state;
-    NewState.countryentityCountryId = country_id;
-    await NewState.save();
-    return NewState;
+    const newState = new StateEntity();
+    newState.state = state;
+    newState.countryEntityCountryId = country_id;
+    await newState.save();
+    return newState;
   }
 }

@@ -18,8 +18,8 @@ import {
 export class CourseRepository extends Repository<CourseEntity> {
   async getallcourses(user: UserEntity): Promise<CourseEntity[]> {
     return this.find({
-      where: { userentityId: user.id },
-      relations: ['targetaudienceentity', 'subjectentity'],
+      where: { userEntityId: user.id },
+      relations: ['targetAudienceEntity', 'subjectEntity'],
       order: { created_at: 'DESC' },
     });
   }
@@ -29,11 +29,11 @@ export class CourseRepository extends Repository<CourseEntity> {
       { course_id: course_id },
       {
         relations: [
-          'targetaudienceentity',
-          'subjectentity',
-          'sectionentitys',
-          'sectionentitys.lectureentitys',
-          'sectionentitys.examentitys',
+          'targetAudienceEntity',
+          'subjectEntity',
+          'sectionEntitys',
+          'sectionEntitys.lectureEntitys',
+          'sectionEntitys.examEntitys',
         ],
       },
     );
@@ -44,24 +44,24 @@ export class CourseRepository extends Repository<CourseEntity> {
     createCourseDto: CreateCourseDto,
   ): Promise<string> {
     const {
-      coursetitle,
-      courseintro,
-      targetaudience_id,
+      courseTitle,
+      courseIntro,
+      targetAudience_id,
       subject_id,
       fee,
     } = createCourseDto;
-    const NewCourse = new CourseEntity();
-    NewCourse.coursetitle = coursetitle;
-    NewCourse.courseintro = courseintro;
-    NewCourse.fee = fee;
-    NewCourse.studentsenrolled = 0;
-    NewCourse.ratingpoint = 0;
-    NewCourse.noofrating = 0;
-    NewCourse.userentityId = user.id;
-    NewCourse.targetaudienceentityTargetaudienceId = targetaudience_id;
-    NewCourse.subjectentitySubjectId = subject_id;
+    const newCourse = new CourseEntity();
+    newCourse.courseTitle = courseTitle;
+    newCourse.courseIntro = courseIntro;
+    newCourse.fee = fee;
+    newCourse.studentsEnrolled = 0;
+    newCourse.ratingPoint = 0;
+    newCourse.noOfRating = 0;
+    newCourse.userEntityId = user.id;
+    newCourse.targetAudienceEntityTargetAudienceId = targetAudience_id;
+    newCourse.subjectEntitySubjectId = subject_id;
     try {
-      await NewCourse.save();
+      await newCourse.save();
     } catch (error) {
       if (error.code === '23503') {
         console.log(error);
@@ -73,7 +73,7 @@ export class CourseRepository extends Repository<CourseEntity> {
         throw new InternalServerErrorException();
       }
     }
-    return NewCourse.course_id;
+    return newCourse.course_id;
   }
 
   async updatecourse(
@@ -82,28 +82,29 @@ export class CourseRepository extends Repository<CourseEntity> {
     createCourseDto: CreateCourseDto,
   ): Promise<CourseEntity> {
     const {
-      coursetitle,
-      courseintro,
-      targetaudience_id,
+      courseTitle,
+      courseIntro,
+      targetAudience_id,
       subject_id,
       fee,
     } = createCourseDto;
 
     // search for tobeupdated course
-    let tobeupdatedcourse = await this.findOne({
+    let toBeUpdatedCourse = await this.findOne({
       where: { course_id: course_id },
     });
 
     // update the course
-    tobeupdatedcourse.coursetitle = coursetitle;
-    tobeupdatedcourse.courseintro = courseintro;
-    tobeupdatedcourse.fee = fee;
-    tobeupdatedcourse.targetaudienceentityTargetaudienceId = targetaudience_id;
-    tobeupdatedcourse.subjectentitySubjectId = subject_id;
+    toBeUpdatedCourse.courseTitle = courseTitle;
+    toBeUpdatedCourse.courseIntro = courseIntro;
+    toBeUpdatedCourse.fee = fee;
+    toBeUpdatedCourse.targetAudienceEntityTargetAudienceId = targetAudience_id;
+    toBeUpdatedCourse.subjectEntitySubjectId = subject_id;
     try {
-      await tobeupdatedcourse.save();
+      await toBeUpdatedCourse.save();
     } catch (error) {
       if (error.code === '23503') {
+        console.log(error);
         throw new ForbiddenException();
       } else if (error.code === '22003') {
         throw new BadRequestException();
@@ -112,22 +113,22 @@ export class CourseRepository extends Repository<CourseEntity> {
         throw new InternalServerErrorException();
       }
     }
-    return tobeupdatedcourse;
+    return toBeUpdatedCourse;
   }
 
   async createnewtargetaudience(
-    targetaudience: string,
+    targetAudience: string,
   ): Promise<TargetAudienceEntity> {
-    const NewTargetAudience = new TargetAudienceEntity();
-    NewTargetAudience.targetaudience = targetaudience;
-    await NewTargetAudience.save();
-    return NewTargetAudience;
+    const newTargetAudience = new TargetAudienceEntity();
+    newTargetAudience.targetAudience = targetAudience;
+    await newTargetAudience.save();
+    return newTargetAudience;
   }
 
   async createnewsubject(subject: string): Promise<SubjectEntity> {
-    const NewSubject = new SubjectEntity();
-    NewSubject.subject = subject;
-    await NewSubject.save();
-    return NewSubject;
+    const newSubject = new SubjectEntity();
+    newSubject.subject = subject;
+    await newSubject.save();
+    return newSubject;
   }
 }

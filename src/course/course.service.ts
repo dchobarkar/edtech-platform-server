@@ -14,49 +14,49 @@ export class CourseService {
     private courseRepository: CourseRepository,
   ) {}
 
-  async getAllCourses(user: UserEntity): Promise<Object[]> {
+  async getAllCourses(user: UserEntity): Promise<object[]> {
     // get row courses data
-    const tempcourses = await this.courseRepository.getallcourses(user);
+    const tempCourses = await this.courseRepository.getallcourses(user);
 
     // return needed data
     let courses = [];
-    tempcourses.map(course => {
-      const tempcourse = {
+    tempCourses.map(course => {
+      const tempCourse = {
         course_id: course.course_id,
-        coursetitle: course.coursetitle,
+        courseTitle: course.courseTitle,
         fee: course.fee,
-        studentsenrolled: course.studentsenrolled,
-        ratingpoint: course.ratingpoint,
-        noofrating: course.noofrating,
-        targetaudience: course.targetaudienceentity.targetaudience,
-        subject: course.subjectentity.subject,
+        studentsEnrolled: course.studentsEnrolled,
+        ratingPoint: course.ratingPoint,
+        noOfRating: course.noOfRating,
+        targetAudience: course.targetAudienceEntity.targetAudience,
+        subject: course.subjectEntity.subject,
         created_at: course.created_at,
       };
-      courses.push(tempcourse);
+      courses.push(tempCourse);
     });
     return courses;
   }
 
-  async getAllSections(user: UserEntity, course_id: string): Promise<Object> {
+  async getAllSections(user: UserEntity, course_id: string): Promise<object> {
     // get row sections data
-    const tempsections = await this.courseRepository.getallsections(course_id);
+    const tempSections = await this.courseRepository.getallsections(course_id);
 
     // return needed data
-    const allsections = {
-      course_id: tempsections.course_id,
-      coursetitle: tempsections.coursetitle,
-      courseintro: tempsections.courseintro,
-      fee: tempsections.fee,
-      studentsenrolled: tempsections.studentsenrolled,
-      ratingpoint: tempsections.ratingpoint,
-      noofrating: tempsections.noofrating,
-      targetaudience_id: tempsections.targetaudienceentity.targetaudience_id,
-      targetaudience: tempsections.targetaudienceentity.targetaudience,
-      subject_id: tempsections.subjectentity.subject_id,
-      subject: tempsections.subjectentity.subject,
-      sections: tempsections.sectionentitys,
+    const allSections = {
+      course_id: tempSections.course_id,
+      courseTitle: tempSections.courseTitle,
+      courseIntro: tempSections.courseIntro,
+      fee: tempSections.fee,
+      studentsEnrolled: tempSections.studentsEnrolled,
+      ratingPoint: tempSections.ratingPoint,
+      noOfRating: tempSections.noOfRating,
+      targetAudience_id: tempSections.targetAudienceEntity.targetAudience_id,
+      targetAudience: tempSections.targetAudienceEntity.targetAudience,
+      subject_id: tempSections.subjectEntity.subject_id,
+      subject: tempSections.subjectEntity.subject,
+      sections: tempSections.sectionEntitys,
     };
-    return allsections;
+    return allSections;
   }
 
   async createNewCourse(
@@ -70,29 +70,29 @@ export class CourseService {
     user: UserEntity,
     course_id: string,
     createCourseDto: CreateCourseDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     // updatedcourse
-    const tempupdatedcourse = await this.courseRepository.updatecourse(
+    const tempUpdatedCourse = await this.courseRepository.updatecourse(
       user,
       course_id,
       createCourseDto,
     );
 
     // return needed data
-    const updatedcourse = {
-      coursetitle: tempupdatedcourse.coursetitle,
-      courseintro: tempupdatedcourse.courseintro,
-      fee: tempupdatedcourse.fee,
-      targetaudience_id: tempupdatedcourse.targetaudienceentityTargetaudienceId,
-      subject_id: tempupdatedcourse.subjectentitySubjectId,
+    const updatedCourse = {
+      courseTitle: tempUpdatedCourse.courseTitle,
+      courseIntro: tempUpdatedCourse.courseIntro,
+      fee: tempUpdatedCourse.fee,
+      targetAudience_id: tempUpdatedCourse.targetAudienceEntityTargetAudienceId,
+      subject_id: tempUpdatedCourse.subjectEntitySubjectId,
     };
-    return updatedcourse;
+    return updatedCourse;
   }
 
   async createNewTargetaudience(
-    targetaudience: string,
+    targetAudience: string,
   ): Promise<TargetAudienceEntity> {
-    return this.courseRepository.createnewtargetaudience(targetaudience);
+    return this.courseRepository.createnewtargetaudience(targetAudience);
   }
 
   async createNewSubject(subject: string): Promise<SubjectEntity> {

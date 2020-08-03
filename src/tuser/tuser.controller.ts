@@ -28,19 +28,19 @@ export class TuserController {
   constructor(private tUserService: TuserService) {}
 
   @Get('/profile')
-  getUserProfile(@GetUser() user: UserEntity): Promise<Object> {
+  getUserProfile(@GetUser() user: UserEntity): Promise<object> {
     return this.tUserService.getUserProfile(user);
   }
 
   @Patch('/update')
-  @UseInterceptors(FileInterceptor('bannerimg'))
+  @UseInterceptors(FileInterceptor('bannerImg'))
   @UsePipes(ValidationPipe)
   updateTuser(
     @GetUser() user: UserEntity,
-    @UploadedFile() bannerimg: any,
+    @UploadedFile() bannerImg: any,
     @Body() createTUserDto: CreateTuserDto,
-  ): Promise<Object> {
-    return this.tUserService.updateTuser(user, createTUserDto, bannerimg);
+  ): Promise<object> {
+    return this.tUserService.updateTuser(user, createTUserDto, bannerImg);
   }
 
   // Only to be used while adding new country or state
@@ -49,9 +49,9 @@ export class TuserController {
     return this.tUserService.createNewCountry(country);
   }
 
-  @Post('/state/:id')
+  @Post('/state/:country_id')
   createNewState(
-    @Param('id') country_id: number,
+    @Param('country_id') country_id: number,
     @Body('state') state: string,
   ): Promise<StateEntity> {
     return this.tUserService.createNewState(country_id, state);

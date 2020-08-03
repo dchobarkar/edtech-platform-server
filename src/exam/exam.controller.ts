@@ -24,38 +24,38 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class ExamController {
   constructor(private examService: ExamService) {}
 
-  @Get('/:id/allquestions')
+  @Get('/:exam_id/allquestions')
   geAllQuestions(
     @GetUser() user: UserEntity,
-    @Param('id') exam_id: string,
-  ): Promise<Object> {
+    @Param('exam_id') exam_id: string,
+  ): Promise<object> {
     return this.examService.getAllQuestions(exam_id);
   }
 
-  @Post('/:id')
+  @Post('/:section_id')
   @UsePipes(ValidationPipe)
   createNewExam(
     @GetUser() user: UserEntity,
-    @Param('id') section_id: string,
+    @Param('section_id') section_id: string,
     @Body() createExamDto: CreateExamDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.examService.createNewExam(section_id, createExamDto);
   }
 
-  @Patch('/:id/update')
+  @Patch('/:exam_id/update')
   @UsePipes(ValidationPipe)
   updateExam(
     @GetUser() user: UserEntity,
-    @Param('id') exam_id: string,
+    @Param('exam_id') exam_id: string,
     @Body() createExamDto: CreateExamDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.examService.updateExam(exam_id, createExamDto);
   }
 
-  @Delete('/:id')
+  @Delete('/:exam_id')
   deleteExam(
     @GetUser() user: UserEntity,
-    @Param('id') exam_id: string,
+    @Param('exam_id') exam_id: string,
   ): Promise<void> {
     return this.examService.deleteExam(exam_id);
   }

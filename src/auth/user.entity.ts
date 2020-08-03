@@ -13,23 +13,23 @@ import { TuserEntity } from '../tuser/tuser.entity';
 import { CourseEntity } from '../course/course.entity';
 
 @Entity()
-@Unique(['mobile'])
+@Unique(['mobileNo'])
 @Unique(['email'])
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: 50 })
-  firstname: string;
+  firstName: string;
 
   @Column({ type: 'varchar', length: 50 })
-  lastname: string;
+  lastName: string;
 
   @Column({ type: 'varchar', length: 100 })
-  classname: string;
+  className: string;
 
   @Column({ type: 'varchar', length: 10 })
-  mobile: string;
+  mobileNo: string;
 
   @Column({ type: 'varchar', length: 50 })
   email: string;
@@ -42,15 +42,15 @@ export class UserEntity extends BaseEntity {
 
   @OneToOne(
     type => TuserEntity,
-    tuserentity => tuserentity.userentity,
+    tUserEntity => tUserEntity.userEntity,
   )
-  tuserentity: TuserEntity;
+  tUserEntity: TuserEntity;
 
   @OneToMany(
     type => CourseEntity,
-    courseentity => courseentity.userentity,
+    courseEntity => courseEntity.userEntity,
   )
-  courseentitys: CourseEntity[];
+  courseEntitys: CourseEntity[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

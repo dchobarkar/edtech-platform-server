@@ -26,15 +26,15 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class LectureController {
   constructor(private lectureService: LectureService) {}
 
-  @Post('/:id')
+  @Post('/:section_id')
   @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
   createNewLecture(
     @GetUser() user: UserEntity,
     @UploadedFile() video: any,
-    @Param('id') section_id: string,
+    @Param('section_id') section_id: string,
     @Body() createLectureDto: CreateLectureDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.lectureService.createNewLecture(
       section_id,
       createLectureDto,
@@ -42,15 +42,15 @@ export class LectureController {
     );
   }
 
-  @Patch('/:id/update')
+  @Patch('/:lecture_id/update')
   @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
   updateLecture(
     @GetUser() user: UserEntity,
-    @Param('id') lecture_id: string,
+    @Param('lecture_id') lecture_id: string,
     @UploadedFile() video: any,
     @Body() createLectureDto: CreateLectureDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.lectureService.updateLecture(
       lecture_id,
       createLectureDto,
@@ -58,10 +58,10 @@ export class LectureController {
     );
   }
 
-  @Delete('/:id')
+  @Delete('/:lecture_id')
   deleteLecture(
     @GetUser() user: UserEntity,
-    @Param('id') lecture_id: string,
+    @Param('lecture_id') lecture_id: string,
   ): Promise<void> {
     return this.lectureService.deleteLecture(lecture_id);
   }

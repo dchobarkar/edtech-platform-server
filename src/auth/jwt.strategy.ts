@@ -12,7 +12,7 @@ import { JwtPayload } from './jwt-payload.interface';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(UserRepository)
-    private userrepository: UserRepository,
+    private userRepository: UserRepository,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,9 +20,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<UserEntity> {
-    const { id } = payload;
-    const user = await this.userrepository.findOne({ id });
+  async validate(payLoad: JwtPayload): Promise<UserEntity> {
+    const { id } = payLoad;
+    const user = await this.userRepository.findOne({ id });
     if (!user) {
       throw new UnauthorizedException();
     }

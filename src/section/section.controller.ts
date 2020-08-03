@@ -23,30 +23,30 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class SectionController {
   constructor(private sectionService: SectionService) {}
 
-  @Post('/:id')
+  @Post('/:course_id')
   @UsePipes(ValidationPipe)
   createNewSection(
     @GetUser() user: UserEntity,
-    @Param('id') course_id: string,
+    @Param('course_id') course_id: string,
     @Body() createSectionDto: CreateSectionDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.sectionService.createNewSection(course_id, createSectionDto);
   }
 
-  @Patch('/:id/update')
+  @Patch('/:section_id/update')
   @UsePipes(ValidationPipe)
   updateSection(
     @GetUser() user: UserEntity,
-    @Param('id') section_id: string,
+    @Param('section_id') section_id: string,
     @Body() createSectionDto: CreateSectionDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.sectionService.updateSection(section_id, createSectionDto);
   }
 
-  @Delete('/:id')
+  @Delete('/:section_id')
   deleteSection(
     @GetUser() user: UserEntity,
-    @Param('id') section_id: string,
+    @Param('section_id') section_id: string,
   ): Promise<void> {
     return this.sectionService.deleteSection(section_id);
   }

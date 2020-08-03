@@ -18,10 +18,10 @@ export class ExamEntity extends BaseEntity {
   exam_id: string;
 
   @Column({ type: 'varchar', length: 100 })
-  examtitle: string;
+  examTitle: string;
 
   @Column({ type: 'text' })
-  examinstruction: string;
+  examInstruction: string;
 
   @Column({ type: 'smallint' })
   duration: number;
@@ -31,16 +31,16 @@ export class ExamEntity extends BaseEntity {
 
   @ManyToOne(
     type => SectionEntity,
-    sectionentity => sectionentity.examentitys,
+    sectionEntity => sectionEntity.examEntitys,
     { onDelete: 'CASCADE' },
   )
-  sectionentity: SectionEntity;
+  sectionEntity: SectionEntity;
   @Column()
-  sectionentitySectionId: string;
+  sectionEntitySectionId: string;
 
   @OneToMany(
     type => QuestionEntity,
-    questionentity => questionentity.examentity,
+    questionEntity => questionEntity.examEntity,
   )
-  questionentitys: QuestionEntity[];
+  questionEntitys: QuestionEntity[];
 }

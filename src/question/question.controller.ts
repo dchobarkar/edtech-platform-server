@@ -19,14 +19,14 @@ import { QuestionService } from './question.service';
 export class QuestionController {
   constructor(private questionService: QuestionService) {}
 
-  @Post('/:id')
+  @Post('/:exam_id')
   @UseInterceptors(FileInterceptor('image'))
   @UsePipes(ValidationPipe)
   createNewQuestion(
     @UploadedFile() image: any,
-    @Param('id') exam_id: string,
+    @Param('exam_id') exam_id: string,
     @Body() createQuestionDto: CreateQuestionDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.questionService.createNewQuestion(
       exam_id,
       createQuestionDto,
@@ -34,14 +34,14 @@ export class QuestionController {
     );
   }
 
-  @Patch('/:id/update')
+  @Patch('/:question_id/update')
   @UseInterceptors(FileInterceptor('image'))
   @UsePipes(ValidationPipe)
   updateQuestion(
     @UploadedFile() image: any,
-    @Param('id') question_id: string,
+    @Param('question_id') question_id: string,
     @Body() createQuestionDto: CreateQuestionDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     return this.questionService.updateQuestion(
       question_id,
       createQuestionDto,
@@ -49,8 +49,8 @@ export class QuestionController {
     );
   }
 
-  @Delete('/:id')
-  deleteQuestion(@Param('id') question_id: string): Promise<void> {
+  @Delete('/:question_id')
+  deleteQuestion(@Param('question_id') question_id: string): Promise<void> {
     return this.questionService.deleteQuestion(question_id);
   }
 }

@@ -5,15 +5,15 @@ export class CreateCourseDto {
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
   )
-  coursetitle: string;
+  courseTitle: string;
 
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
   )
-  courseintro: string;
+  courseIntro: string;
 
   @Matches(/^[1-9]$/)
-  targetaudience_id: number;
+  targetAudience_id: number;
 
   @Matches(/^[1-9]$/)
   subject_id: number;

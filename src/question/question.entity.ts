@@ -33,17 +33,17 @@ export class QuestionEntity extends BaseEntity {
   answer: string;
 
   @Column({ type: 'varchar' })
-  queimage: string;
+  queImage: string;
 
   @CreateDateColumn({ type: 'timestamp without time zone' })
   created_at: Date;
 
   @ManyToOne(
     type => ExamEntity,
-    examentity => examentity.questionentitys,
+    examEntity => examEntity.questionEntitys,
     { onDelete: 'CASCADE' },
   )
-  examentity: ExamEntity;
+  examEntity: ExamEntity;
   @Column()
-  examentityExamId: string;
+  examEntityExamId: string;
 }

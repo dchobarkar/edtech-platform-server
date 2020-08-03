@@ -11,14 +11,14 @@ export class LectureRepository extends Repository<LectureEntity> {
     createLectureDto: CreateLectureDto,
     videoUrl: string,
   ): Promise<LectureEntity> {
-    const { lecturetitle, lectureintro } = createLectureDto;
-    const NewLecture = new LectureEntity();
-    NewLecture.lecturetitle = lecturetitle;
-    NewLecture.lectureintro = lectureintro;
-    NewLecture.lecturevideo = videoUrl;
-    NewLecture.sectionentitySectionId = section_id;
-    await NewLecture.save();
-    return NewLecture;
+    const { lectureTitle, lectureIntro } = createLectureDto;
+    const newLecture = new LectureEntity();
+    newLecture.lectureTitle = lectureTitle;
+    newLecture.lectureIntro = lectureIntro;
+    newLecture.lectureVideo = videoUrl;
+    newLecture.sectionEntitySectionId = section_id;
+    await newLecture.save();
+    return newLecture;
   }
 
   async getlecturebyid(lecture_id: string): Promise<LectureEntity> {
@@ -27,20 +27,20 @@ export class LectureRepository extends Repository<LectureEntity> {
 
   async updatelecture(
     createLectureDto: CreateLectureDto,
-    tobeupdatedlectue: LectureEntity,
+    toBeUpdatedLectue: LectureEntity,
     videoUrl: string,
   ): Promise<LectureEntity> {
-    const { lecturetitle, lectureintro } = createLectureDto;
-    tobeupdatedlectue.lecturetitle = lecturetitle;
-    tobeupdatedlectue.lectureintro = lectureintro;
-    tobeupdatedlectue.lecturevideo = videoUrl;
-    await tobeupdatedlectue.save();
-    return tobeupdatedlectue;
+    const { lectureTitle, lectureIntro } = createLectureDto;
+    toBeUpdatedLectue.lectureTitle = lectureTitle;
+    toBeUpdatedLectue.lectureIntro = lectureIntro;
+    toBeUpdatedLectue.lectureVideo = videoUrl;
+    await toBeUpdatedLectue.save();
+    return toBeUpdatedLectue;
   }
 
   async deletelecture(lecture_id: string): Promise<void> {
-    const deleted = await this.delete(lecture_id);
-    if (deleted.affected === 0) {
+    const deletedLecture = await this.delete(lecture_id);
+    if (deletedLecture.affected === 0) {
       throw new NotFoundException();
     }
   }

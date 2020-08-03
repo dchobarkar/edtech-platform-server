@@ -17,84 +17,84 @@ export class TuserService {
     private awsHelper: AwsHelper,
   ) {}
 
-  async getUserProfile(user: UserEntity): Promise<Object> {
-    const temptuserinfo = await this.tUserRepository.tuserdetails(user);
+  async getUserProfile(user: UserEntity): Promise<object> {
+    const tempTUserInfo = await this.tUserRepository.tuserdetails(user);
 
     // create a tuserentity if there is no profile present
-    let temptuserid = null;
-    if (temptuserinfo === undefined) {
-      temptuserid = await this.tUserRepository.createnewtuser(user);
+    let tempTUserId = null;
+    if (tempTUserInfo === undefined) {
+      tempTUserId = await this.tUserRepository.createnewtuser(user);
     } else {
-      temptuserid = temptuserinfo.tuser_id;
+      tempTUserId = tempTUserInfo.tuser_id;
     }
 
     // return needed information
-    const tuserprofile = await this.tUserRepository.findOne(
-      { tuser_id: temptuserid },
+    const tUserProfile = await this.tUserRepository.findOne(
+      { tuser_id: tempTUserId },
       {
-        relations: ['userentity', 'countryentity', 'stateentity'],
+        relations: ['userEntity', 'countryEntity', 'stateEntity'],
       },
     );
-    const userprofile = {
-      firstname: tuserprofile.userentity.firstname,
-      lastname: tuserprofile.userentity.lastname,
-      classname: tuserprofile.userentity.classname,
-      classintro: tuserprofile.classintro,
-      mobile: tuserprofile.userentity.mobile,
-      email: tuserprofile.userentity.email,
-      country: tuserprofile.countryentity.country,
-      country_id: tuserprofile.countryentity.country_id,
-      state: tuserprofile.stateentity.state,
-      state_id: tuserprofile.stateentity.state_id,
-      address: tuserprofile.address,
-      city: tuserprofile.city,
-      pincode: tuserprofile.pincode,
-      bannerimgurl: tuserprofile.bannerimgurl,
+    const userProfile = {
+      firstName: tUserProfile.userEntity.firstName,
+      lastName: tUserProfile.userEntity.lastName,
+      className: tUserProfile.userEntity.className,
+      classIntro: tUserProfile.classIntro,
+      mobileNo: tUserProfile.userEntity.mobileNo,
+      email: tUserProfile.userEntity.email,
+      country: tUserProfile.countryEntity.country,
+      country_id: tUserProfile.countryEntity.country_id,
+      state: tUserProfile.stateEntity.state,
+      state_id: tUserProfile.stateEntity.state_id,
+      address: tUserProfile.address,
+      city: tUserProfile.city,
+      pincode: tUserProfile.pincode,
+      bannerImgUrl: tUserProfile.bannerImgUrl,
     };
-    return userprofile;
+    return userProfile;
   }
 
   async updateTuser(
     user: UserEntity,
     createTUserDto: CreateTuserDto,
-    bannerimg: any,
-  ): Promise<Object> {
-    const tobeupdated = await this.tUserRepository.tuserdetails(user);
+    bannerImg: any,
+  ): Promise<object> {
+    const toBeUpdated = await this.tUserRepository.tuserdetails(user);
 
     // upload bannerimg to aws and get its url
-    let bannerimgurl = tobeupdated.bannerimgurl;
-    if (bannerimg) {
-      const folderPath = `${tobeupdated.userentityId}/${'bannerimg'}`;
-      const imgData = await this.awsHelper.UPLOAD_IMAGE(bannerimg, folderPath);
-      bannerimgurl = imgData.Location;
+    let bannerImgUrl = toBeUpdated.bannerImgUrl;
+    if (bannerImg) {
+      const folderPath = `${toBeUpdated.userEntityId}/${'bannerimg'}`;
+      const imgData = await this.awsHelper.UPLOAD_IMAGE(bannerImg, folderPath);
+      bannerImgUrl = imgData.Location;
     }
 
     // update tuserprofile
-    const tuserid = await this.tUserRepository.updatetuser(
+    const tUserId = await this.tUserRepository.updatetuser(
       createTUserDto,
-      tobeupdated,
-      bannerimgurl,
+      toBeUpdated,
+      bannerImgUrl,
     );
 
     // return needed information
-    const tempupdatedtuserprofile = await this.tUserRepository.findOne(
-      { tuser_id: tuserid },
+    const tempUpdatedTUserProfile = await this.tUserRepository.findOne(
+      { tuser_id: tUserId },
       {
-        relations: ['countryentity', 'stateentity'],
+        relations: ['countryEntity', 'stateEntity'],
       },
     );
-    const updatedtuserprofile = {
-      classintro: tempupdatedtuserprofile.classintro,
-      country: tempupdatedtuserprofile.countryentity.country,
-      country_id: tempupdatedtuserprofile.countryentity.country_id,
-      state: tempupdatedtuserprofile.stateentity.state,
-      state_id: tempupdatedtuserprofile.stateentity.state_id,
-      address: tempupdatedtuserprofile.address,
-      city: tempupdatedtuserprofile.city,
-      pincode: tempupdatedtuserprofile.pincode,
-      bannerimgurl: tempupdatedtuserprofile.bannerimgurl,
+    const updatedTUserProfile = {
+      classIntro: tempUpdatedTUserProfile.classIntro,
+      country: tempUpdatedTUserProfile.countryEntity.country,
+      country_id: tempUpdatedTUserProfile.countryEntity.country_id,
+      state: tempUpdatedTUserProfile.stateEntity.state,
+      state_id: tempUpdatedTUserProfile.stateEntity.state_id,
+      address: tempUpdatedTUserProfile.address,
+      city: tempUpdatedTUserProfile.city,
+      pincode: tempUpdatedTUserProfile.pincode,
+      bannerImgUrl: tempUpdatedTUserProfile.bannerImgUrl,
     };
-    return updatedtuserprofile;
+    return updatedTUserProfile;
   }
 
   async createNewCountry(country: string): Promise<CountryEntity> {

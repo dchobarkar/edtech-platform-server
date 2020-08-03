@@ -15,13 +15,13 @@ export class SectionRepository extends Repository<SectionEntity> {
     course_id: string,
     createSectionDto: CreateSectionDto,
   ): Promise<SectionEntity> {
-    const { sectiontitle, sectionintro } = createSectionDto;
-    const newsection = new SectionEntity();
-    newsection.sectiontitle = sectiontitle;
-    newsection.sectionintro = sectionintro;
-    newsection.courseentityCourseId = course_id;
+    const { sectionTitle, sectionIntro } = createSectionDto;
+    const newSection = new SectionEntity();
+    newSection.sectionTitle = sectionTitle;
+    newSection.sectionIntro = sectionIntro;
+    newSection.courseEntityCourseId = course_id;
     try {
-      await newsection.save();
+      await newSection.save();
     } catch (error) {
       if (error.code === '22P02') {
         throw new NotAcceptableException();
@@ -30,29 +30,29 @@ export class SectionRepository extends Repository<SectionEntity> {
         throw new InternalServerErrorException();
       }
     }
-    return newsection;
+    return newSection;
   }
 
   async updatesection(
     section_id: string,
     createSectionDto: CreateSectionDto,
   ): Promise<SectionEntity> {
-    const { sectiontitle, sectionintro } = createSectionDto;
+    const { sectionTitle, sectionIntro } = createSectionDto;
 
     // search for tobeupdated section
-    let tobeupdatedsection = await this.findOne({
+    let toBeUpdatedSection = await this.findOne({
       where: { section_id: section_id },
     });
 
-    tobeupdatedsection.sectiontitle = sectiontitle;
-    tobeupdatedsection.sectionintro = sectionintro;
-    await tobeupdatedsection.save();
-    return tobeupdatedsection;
+    toBeUpdatedSection.sectionTitle = sectionTitle;
+    toBeUpdatedSection.sectionIntro = sectionIntro;
+    await toBeUpdatedSection.save();
+    return toBeUpdatedSection;
   }
 
   async deletesection(section_id: string): Promise<void> {
-    const deleted = await this.delete(section_id);
-    if (deleted.affected === 0) {
+    const deletedSection = await this.delete(section_id);
+    if (deletedSection.affected === 0) {
       throw new NotFoundException();
     }
   }

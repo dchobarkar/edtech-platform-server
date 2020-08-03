@@ -11,57 +11,57 @@ export class ExamService {
     private examRepository: ExamRepository,
   ) {}
 
-  async getAllQuestions(exam_id: string): Promise<Object> {
+  async getAllQuestions(exam_id: string): Promise<object> {
     // get all questions row data
-    const tempallquestions = await this.examRepository.getallquestions(exam_id);
+    const tempAllQuestions = await this.examRepository.getallquestions(exam_id);
 
     // return needed data
-    const allquestions = {
-      exam_id: tempallquestions.exam_id,
-      examtitle: tempallquestions.examtitle,
-      examinstruction: tempallquestions.examinstruction,
-      duration: tempallquestions.duration,
-      questions: tempallquestions.questionentitys,
+    const allQuestions = {
+      exam_id: tempAllQuestions.exam_id,
+      examTitle: tempAllQuestions.examTitle,
+      examInstruction: tempAllQuestions.examInstruction,
+      duration: tempAllQuestions.duration,
+      questions: tempAllQuestions.questionEntitys,
     };
-    return allquestions;
+    return allQuestions;
   }
 
   async createNewExam(
     section_id: string,
     createExamDto: CreateExamDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     // create new exam
-    const tempnewexam = await this.examRepository.createnewexam(
+    const tempNewExam = await this.examRepository.createnewexam(
       section_id,
       createExamDto,
     );
 
     // return needed data
-    const newexam = {
-      exam_id: tempnewexam.exam_id,
-      examtitle: tempnewexam.examtitle,
-      examinstruction: tempnewexam.examinstruction,
+    const newExam = {
+      exam_id: tempNewExam.exam_id,
+      examtitle: tempNewExam.examTitle,
+      examinstruction: tempNewExam.examInstruction,
     };
-    return newexam;
+    return newExam;
   }
 
   async updateExam(
     exam_id: string,
     createExamDto: CreateExamDto,
-  ): Promise<Object> {
+  ): Promise<object> {
     // update exam
-    const tempupdatedexam = await this.examRepository.updateexam(
+    const tempUpdatedExam = await this.examRepository.updateexam(
       exam_id,
       createExamDto,
     );
 
     // return needed data
-    const updatedexam = {
-      examtitle: tempupdatedexam.examtitle,
-      examinstruction: tempupdatedexam.examinstruction,
-      duration: tempupdatedexam.duration,
+    const updatedExam = {
+      examTitle: tempUpdatedExam.examTitle,
+      examInstruction: tempUpdatedExam.examInstruction,
+      duration: tempUpdatedExam.duration,
     };
-    return updatedexam;
+    return updatedExam;
   }
 
   async deleteExam(exam_id: string): Promise<void> {

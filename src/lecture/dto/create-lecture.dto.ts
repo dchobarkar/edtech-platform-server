@@ -5,10 +5,10 @@ export class CreateLectureDto {
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
   )
-  lecturetitle: string;
+  lectureTitle: string;
 
   @Matches(
     /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
   )
-  lectureintro: string;
+  lectureIntro: string;
 }

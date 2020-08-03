@@ -15,23 +15,23 @@ export class LectureEntity extends BaseEntity {
   lecture_id: string;
 
   @Column({ type: 'varchar', length: 100 })
-  lecturetitle: string;
+  lectureTitle: string;
 
   @Column({ type: 'text' })
-  lectureintro: string;
+  lectureIntro: string;
 
   @Column({ type: 'varchar' })
-  lecturevideo: string;
+  lectureVideo: string;
 
   @CreateDateColumn({ type: 'timestamp without time zone' })
   created_at: Date;
 
   @ManyToOne(
     type => SectionEntity,
-    sectionentity => sectionentity.lectureentitys,
+    sectionEntity => sectionEntity.lectureEntitys,
     { onDelete: 'CASCADE' },
   )
-  sectionentity: SectionEntity;
+  sectionEntity: SectionEntity;
   @Column()
-  sectionentitySectionId: string;
+  sectionEntitySectionId: string;
 }

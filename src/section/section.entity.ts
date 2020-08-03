@@ -20,32 +20,32 @@ export class SectionEntity extends BaseEntity {
   section_id: string;
 
   @Column({ type: 'varchar', length: 100 })
-  sectiontitle: string;
+  sectionTitle: string;
 
   @Column({ type: 'text' })
-  sectionintro: string;
+  sectionIntro: string;
 
   @CreateDateColumn({ type: 'timestamp without time zone' })
   created_at: Date;
 
   @ManyToOne(
     type => CourseEntity,
-    courseentity => courseentity.sectionentitys,
+    courseEntity => courseEntity.sectionEntitys,
     { onDelete: 'CASCADE' },
   )
-  courseentity: CourseEntity;
+  courseEntity: CourseEntity;
   @Column()
-  courseentityCourseId: string;
+  courseEntityCourseId: string;
 
   @OneToMany(
     type => LectureEntity,
-    lectureentity => lectureentity.sectionentity,
+    lectureEntity => lectureEntity.sectionEntity,
   )
-  lectureentitys: LectureEntity[];
+  lectureEntitys: LectureEntity[];
 
   @OneToMany(
     type => ExamEntity,
-    examentity => examentity.sectionentity,
+    examEntity => examEntity.sectionEntity,
   )
-  examentitys: ExamEntity[];
+  examEntitys: ExamEntity[];
 }

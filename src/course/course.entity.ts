@@ -14,19 +14,19 @@ import { UserEntity } from '../auth/user.entity';
 import { SectionEntity } from '../section/section.entity';
 
 @Entity()
-@Unique(['targetaudience'])
+@Unique(['targetAudience'])
 export class TargetAudienceEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'smallint' })
-  targetaudience_id: number;
+  targetAudience_id: number;
 
   @Column({ type: 'varchar', length: 50 })
-  targetaudience: string;
+  targetAudience: string;
 
   @OneToMany(
     type => CourseEntity,
-    courseentity => courseentity.targetaudienceentity,
+    courseEntity => courseEntity.targetAudienceEntity,
   )
-  courseentitys: CourseEntity[];
+  courseEntitys: CourseEntity[];
 }
 
 @Entity()
@@ -40,9 +40,9 @@ export class SubjectEntity extends BaseEntity {
 
   @OneToMany(
     type => CourseEntity,
-    courseentity => courseentity.subjectentity,
+    courseEntity => courseEntity.subjectEntity,
   )
-  courseentitys: CourseEntity[];
+  courseEntitys: CourseEntity[];
 }
 
 @Entity()
@@ -51,53 +51,53 @@ export class CourseEntity extends BaseEntity {
   course_id: string;
 
   @Column({ type: 'varchar', length: 100 })
-  coursetitle: string;
+  courseTitle: string;
 
   @Column({ type: 'text' })
-  courseintro: string;
+  courseIntro: string;
 
   @Column({ type: 'integer' })
   fee: number;
 
   @Column({ type: 'integer' })
-  studentsenrolled: number;
+  studentsEnrolled: number;
 
   @Column({ type: 'integer' })
-  ratingpoint: number;
+  ratingPoint: number;
 
   @Column({ type: 'integer' })
-  noofrating: number;
+  noOfRating: number;
 
   @CreateDateColumn({ type: 'timestamp without time zone' })
   created_at: Date;
 
   @ManyToOne(
     type => UserEntity,
-    userentity => userentity.courseentitys,
+    userEntity => userEntity.courseEntitys,
   )
-  userentity: UserEntity;
+  userEntity: UserEntity;
   @Column()
-  userentityId: string;
+  userEntityId: string;
 
   @OneToMany(
     type => SectionEntity,
-    sectionentity => sectionentity.courseentity,
+    sectionEntity => sectionEntity.courseEntity,
   )
-  sectionentitys: SectionEntity[];
+  sectionEntitys: SectionEntity[];
 
   @ManyToOne(
     type => TargetAudienceEntity,
-    targetaudienceentity => targetaudienceentity.courseentitys,
+    targetAudienceEntity => targetAudienceEntity.courseEntitys,
   )
-  targetaudienceentity: TargetAudienceEntity;
+  targetAudienceEntity: TargetAudienceEntity;
   @Column()
-  targetaudienceentityTargetaudienceId: number;
+  targetAudienceEntityTargetAudienceId: number;
 
   @ManyToOne(
     type => SubjectEntity,
-    subjectentity => subjectentity.courseentitys,
+    subjectEntity => subjectEntity.courseEntitys,
   )
-  subjectentity: SubjectEntity;
+  subjectEntity: SubjectEntity;
   @Column()
-  subjectentitySubjectId: number;
+  subjectEntitySubjectId: number;
 }
