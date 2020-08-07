@@ -21,10 +21,14 @@ export class AuthService {
   }
 
   async logIn(authLoginDto: AuthLoginDto): Promise<{ accessToken: string }> {
+    // Get id of the user
     const id = await this.userRepository.validateuserpassword(authLoginDto);
+
     if (!id) {
       throw new UnauthorizedException('Email or Password is wrong.');
     }
+
+    // Send accessToken
     const payLoad: JwtPayload = { id };
     const accessToken = this.jwtService.sign(payLoad);
     return { accessToken };

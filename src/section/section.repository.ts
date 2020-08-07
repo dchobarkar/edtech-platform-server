@@ -26,7 +26,7 @@ export class SectionRepository extends Repository<SectionEntity> {
       if (error.code === '22P02') {
         throw new NotAcceptableException();
       } else {
-        console.log(error);
+        console.log(`Error in createnewsection\n${createSectionDto}\n${error}`);
         throw new InternalServerErrorException();
       }
     }

@@ -34,7 +34,7 @@ export class SectionService {
     section_id: string,
     createSectionDto: CreateSectionDto,
   ): Promise<object> {
-    // updated section
+    // update the section
     const tempUpdatedSection = await this.sectionRepository.updatesection(
       section_id,
       createSectionDto,

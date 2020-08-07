@@ -31,9 +31,9 @@ export class LectureController {
   @UsePipes(ValidationPipe)
   createNewLecture(
     @GetUser() user: UserEntity,
-    @UploadedFile() video: any,
     @Param('section_id') section_id: string,
     @Body() createLectureDto: CreateLectureDto,
+    @UploadedFile() video: any,
   ): Promise<object> {
     return this.lectureService.createNewLecture(
       section_id,
@@ -48,8 +48,8 @@ export class LectureController {
   updateLecture(
     @GetUser() user: UserEntity,
     @Param('lecture_id') lecture_id: string,
-    @UploadedFile() video: any,
     @Body() createLectureDto: CreateLectureDto,
+    @UploadedFile() video: any,
   ): Promise<object> {
     return this.lectureService.updateLecture(
       lecture_id,
@@ -66,17 +66,17 @@ export class LectureController {
     return this.lectureService.deleteLecture(lecture_id);
   }
 
-  // //For futute file upload feature
-  // // @Post('/files/:id')
-  // // @UseInterceptors(
-  // //   AnyFilesInterceptor()
-  // // )
-  // // @UsePipes(ValidationPipe)
-  // // addStudyDocuments(
-  // //   @UploadedFiles() files: any,
-  // //   @Param('id') id: string,
-  // //   @Body() createlecturedto: CreateLectureDto,
-  // // ): Promise<LectureEntity> {
-  // //   //return this.lectureservice.addStudyDocuments(id, createlecturedto, file);
-  // // }
+  //For futute file upload feature
+  // @Post('/files/:id')
+  // @UseInterceptors(
+  //   AnyFilesInterceptor()
+  // )
+  // @UsePipes(ValidationPipe)
+  // addStudyDocuments(
+  //   @UploadedFiles() files: any,
+  //   @Param('id') id: string,
+  //   @Body() createlecturedto: CreateLectureDto,
+  // ): Promise<LectureEntity> {
+  //   //return this.lectureservice.addStudyDocuments(id, createlecturedto, file);
+  // }
 }

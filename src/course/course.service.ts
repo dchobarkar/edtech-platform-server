@@ -7,11 +7,14 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { CourseRepository } from './course.repository';
 import { TargetAudienceEntity, SubjectEntity } from './course.entity';
 
+import { CustomFunctions } from '../utils/customFunctions';
+
 @Injectable()
 export class CourseService {
   constructor(
     @InjectRepository(CourseRepository)
     private courseRepository: CourseRepository,
+    private customFunctions: CustomFunctions,
   ) {}
 
   async getAllCourses(user: UserEntity): Promise<object[]> {
@@ -40,6 +43,24 @@ export class CourseService {
   async getAllSections(user: UserEntity, course_id: string): Promise<object> {
     // get row sections data
     const tempSections = await this.courseRepository.getallsections(course_id);
+
+    // Sort sectionEntitys
+    this.customFunctions.sortFunction(
+      tempSections.sectionEntitys,
+      'created_at',
+    );
+    tempSections.sectionEntitys.map(sectionEntity => {
+      // sort lectureEntitys
+      this.customFunctions.sortFunction(
+        sectionEntity.lectureEntitys,
+        'created_at',
+      );
+      // Sort examEntitys
+      this.customFunctions.sortFunction(
+        sectionEntity.examEntitys,
+        'created_at',
+      );
+    });
 
     // return needed data
     const allSections = {
@@ -71,7 +92,7 @@ export class CourseService {
     course_id: string,
     createCourseDto: CreateCourseDto,
   ): Promise<object> {
-    // updatedcourse
+    // update the course
     const tempUpdatedCourse = await this.courseRepository.updatecourse(
       user,
       course_id,

@@ -18,11 +18,13 @@ export class TuserService {
   ) {}
 
   async getUserProfile(user: UserEntity): Promise<object> {
+    // get tUseEntity from user_id
     const tempTUserInfo = await this.tUserRepository.tuserdetails(user);
 
-    // create a tuserentity if there is no profile present
+    // create a tUserEntity if there is no profile present
     let tempTUserId = null;
     if (tempTUserInfo === undefined) {
+      // create new tuserEntity with temporary values
       tempTUserId = await this.tUserRepository.createnewtuser(user);
     } else {
       tempTUserId = tempTUserInfo.tuser_id;
@@ -39,7 +41,6 @@ export class TuserService {
       firstName: tUserProfile.userEntity.firstName,
       lastName: tUserProfile.userEntity.lastName,
       className: tUserProfile.userEntity.className,
-      classIntro: tUserProfile.classIntro,
       mobileNo: tUserProfile.userEntity.mobileNo,
       email: tUserProfile.userEntity.email,
       country: tUserProfile.countryEntity.country,
@@ -50,6 +51,7 @@ export class TuserService {
       city: tUserProfile.city,
       pincode: tUserProfile.pincode,
       bannerImgUrl: tUserProfile.bannerImgUrl,
+      classIntro: tUserProfile.classIntro,
     };
     return userProfile;
   }
@@ -59,12 +61,13 @@ export class TuserService {
     createTUserDto: CreateTuserDto,
     bannerImg: any,
   ): Promise<object> {
+    // get tUseEntity from user_id
     const toBeUpdated = await this.tUserRepository.tuserdetails(user);
 
     // upload bannerimg to aws and get its url
     let bannerImgUrl = toBeUpdated.bannerImgUrl;
     if (bannerImg) {
-      const folderPath = `${toBeUpdated.userEntityId}/${'bannerimg'}`;
+      const folderPath = `${toBeUpdated.userEntityId}/${'bannerImg'}`;
       const imgData = await this.awsHelper.UPLOAD_IMAGE(bannerImg, folderPath);
       bannerImgUrl = imgData.Location;
     }
@@ -84,7 +87,6 @@ export class TuserService {
       },
     );
     const updatedTUserProfile = {
-      classIntro: tempUpdatedTUserProfile.classIntro,
       country: tempUpdatedTUserProfile.countryEntity.country,
       country_id: tempUpdatedTUserProfile.countryEntity.country_id,
       state: tempUpdatedTUserProfile.stateEntity.state,
@@ -93,6 +95,7 @@ export class TuserService {
       city: tempUpdatedTUserProfile.city,
       pincode: tempUpdatedTUserProfile.pincode,
       bannerImgUrl: tempUpdatedTUserProfile.bannerImgUrl,
+      classIntro: tempUpdatedTUserProfile.classIntro,
     };
     return updatedTUserProfile;
   }

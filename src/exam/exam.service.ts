@@ -39,8 +39,8 @@ export class ExamService {
     // return needed data
     const newExam = {
       exam_id: tempNewExam.exam_id,
-      examtitle: tempNewExam.examTitle,
-      examinstruction: tempNewExam.examInstruction,
+      examTitle: tempNewExam.examTitle,
+      examInstruction: tempNewExam.examInstruction,
     };
     return newExam;
   }

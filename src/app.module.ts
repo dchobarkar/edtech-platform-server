@@ -13,13 +13,13 @@ import { QuestionModule } from './question/question.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
+    AuthModule,
     TuserModule,
     CourseModule,
     SectionModule,
     LectureModule,
     ExamModule,
     QuestionModule,
-    AuthModule,
   ],
 })
 export class AppModule {}

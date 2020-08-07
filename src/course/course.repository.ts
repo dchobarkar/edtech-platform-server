@@ -64,12 +64,12 @@ export class CourseRepository extends Repository<CourseEntity> {
       await newCourse.save();
     } catch (error) {
       if (error.code === '23503') {
-        console.log(error);
+        console.log(`Error in createnewcourse\n${createCourseDto}\n${error}`);
         throw new ForbiddenException();
       } else if (error.code === '22003') {
         throw new BadRequestException();
       } else {
-        console.log(error);
+        console.log(`Error in createnewcourse\n${createCourseDto}\n${error}`);
         throw new InternalServerErrorException();
       }
     }
@@ -104,12 +104,12 @@ export class CourseRepository extends Repository<CourseEntity> {
       await toBeUpdatedCourse.save();
     } catch (error) {
       if (error.code === '23503') {
-        console.log(error);
+        console.log(`Error in updatecourse\n${createCourseDto}\n${error}`);
         throw new ForbiddenException();
       } else if (error.code === '22003') {
         throw new BadRequestException();
       } else {
-        console.log(error);
+        console.log(`Error in updatecourse\n${createCourseDto}\n${error}`);
         throw new InternalServerErrorException();
       }
     }

@@ -37,8 +37,8 @@ export class TuserController {
   @UsePipes(ValidationPipe)
   updateTuser(
     @GetUser() user: UserEntity,
-    @UploadedFile() bannerImg: any,
     @Body() createTUserDto: CreateTuserDto,
+    @UploadedFile() bannerImg: any,
   ): Promise<object> {
     return this.tUserService.updateTuser(user, createTUserDto, bannerImg);
   }
