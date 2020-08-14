@@ -24,11 +24,13 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class CourseController {
   constructor(private courseService: CourseService) {}
 
+  // Get all courses of current user
   @Get()
   getAllCourses(@GetUser() user: UserEntity): Promise<object[]> {
     return this.courseService.getAllCourses(user);
   }
 
+  // Get all sections of the given course
   @Get('/:course_id/allsections')
   getAllSections(
     @GetUser() user: UserEntity,
@@ -37,6 +39,7 @@ export class CourseController {
     return this.courseService.getAllSections(user, course_id);
   }
 
+  // Create new course
   @Post()
   @UsePipes(ValidationPipe)
   createNewCourse(
@@ -46,6 +49,7 @@ export class CourseController {
     return this.courseService.createNewCourse(user, createCourseDto);
   }
 
+  // Update new course
   @Patch('/:course_id/update')
   @UsePipes(ValidationPipe)
   updateCourse(

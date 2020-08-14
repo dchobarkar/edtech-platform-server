@@ -17,6 +17,7 @@ export class TuserService {
     private awsHelper: AwsHelper,
   ) {}
 
+  // Get profile of current user service
   async getUserProfile(user: UserEntity): Promise<object> {
     // get tUseEntity from user_id
     const tempTUserInfo = await this.tUserRepository.tuserdetails(user);
@@ -56,6 +57,7 @@ export class TuserService {
     return userProfile;
   }
 
+  // Update given profile service
   async updateTuser(
     user: UserEntity,
     createTUserDto: CreateTuserDto,

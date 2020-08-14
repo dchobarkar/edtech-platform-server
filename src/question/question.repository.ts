@@ -6,6 +6,7 @@ import { QuestionEntity } from './question.entity';
 
 @EntityRepository(QuestionEntity)
 export class QuestionRepository extends Repository<QuestionEntity> {
+  // Create new question from database
   async createnewquestion(
     exam_id: string,
     createQuestionDto: CreateQuestionDto,
@@ -25,10 +26,12 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     return newQuestion;
   }
 
+  // Get question of given id from database
   async getquestionbyid(question_id: string): Promise<QuestionEntity> {
     return this.findOne(question_id);
   }
 
+  // Update given question from database
   async updatequestion(
     createQuestionDto: CreateQuestionDto,
     toBeUpdatedQuestion: QuestionEntity,
@@ -46,6 +49,7 @@ export class QuestionRepository extends Repository<QuestionEntity> {
     return toBeUpdatedQuestion;
   }
 
+  // Delete given question from database
   async deletequestion(question_id: string): Promise<void> {
     const deletedQuestion = await this.delete(question_id);
     if (deletedQuestion.affected === 0) {

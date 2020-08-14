@@ -6,6 +6,7 @@ import { LectureEntity } from './lecture.entity';
 
 @EntityRepository(LectureEntity)
 export class LectureRepository extends Repository<LectureEntity> {
+  // Create new lecture from database
   async createnewlecture(
     section_id: string,
     createLectureDto: CreateLectureDto,
@@ -21,10 +22,12 @@ export class LectureRepository extends Repository<LectureEntity> {
     return newLecture;
   }
 
+  // Get lecture of given id from database
   async getlecturebyid(lecture_id: string): Promise<LectureEntity> {
     return this.findOne(lecture_id);
   }
 
+  // Update given lecture from database
   async updatelecture(
     createLectureDto: CreateLectureDto,
     toBeUpdatedLectue: LectureEntity,
@@ -38,6 +41,7 @@ export class LectureRepository extends Repository<LectureEntity> {
     return toBeUpdatedLectue;
   }
 
+  // Delete given lecture
   async deletelecture(lecture_id: string): Promise<void> {
     const deletedLecture = await this.delete(lecture_id);
     if (deletedLecture.affected === 0) {

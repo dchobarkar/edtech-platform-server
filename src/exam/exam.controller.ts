@@ -24,6 +24,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class ExamController {
   constructor(private examService: ExamService) {}
 
+  // Get all questions of given exam
   @Get('/:exam_id/allquestions')
   geAllQuestions(
     @GetUser() user: UserEntity,
@@ -32,6 +33,7 @@ export class ExamController {
     return this.examService.getAllQuestions(exam_id);
   }
 
+  // Create new exam
   @Post('/:section_id')
   @UsePipes(ValidationPipe)
   createNewExam(
@@ -42,6 +44,7 @@ export class ExamController {
     return this.examService.createNewExam(section_id, createExamDto);
   }
 
+  // Update given exam
   @Patch('/:exam_id/update')
   @UsePipes(ValidationPipe)
   updateExam(
@@ -52,6 +55,7 @@ export class ExamController {
     return this.examService.updateExam(exam_id, createExamDto);
   }
 
+  // Delete given exam
   @Delete('/:exam_id')
   deleteExam(
     @GetUser() user: UserEntity,

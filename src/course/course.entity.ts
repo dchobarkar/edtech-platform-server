@@ -13,6 +13,7 @@ import { UserEntity } from '../auth/user.entity';
 
 import { SectionEntity } from '../section/section.entity';
 
+// Target Audience Table
 @Entity()
 @Unique(['targetAudience'])
 export class TargetAudienceEntity extends BaseEntity {
@@ -22,6 +23,7 @@ export class TargetAudienceEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   targetAudience: string;
 
+  // CourseEntity Relation
   @OneToMany(
     type => CourseEntity,
     courseEntity => courseEntity.targetAudienceEntity,
@@ -29,6 +31,7 @@ export class TargetAudienceEntity extends BaseEntity {
   courseEntitys: CourseEntity[];
 }
 
+// Subject Table
 @Entity()
 @Unique(['subject'])
 export class SubjectEntity extends BaseEntity {
@@ -38,6 +41,7 @@ export class SubjectEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   subject: string;
 
+  // CourseEntity Relation
   @OneToMany(
     type => CourseEntity,
     courseEntity => courseEntity.subjectEntity,
@@ -45,6 +49,7 @@ export class SubjectEntity extends BaseEntity {
   courseEntitys: CourseEntity[];
 }
 
+// CourseEntity Table
 @Entity()
 export class CourseEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -71,6 +76,7 @@ export class CourseEntity extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp without time zone' })
   created_at: Date;
 
+  // UserEntity Relation
   @ManyToOne(
     type => UserEntity,
     userEntity => userEntity.courseEntitys,
@@ -79,12 +85,14 @@ export class CourseEntity extends BaseEntity {
   @Column()
   userEntityId: string;
 
+  // SectionEntity Relation
   @OneToMany(
     type => SectionEntity,
     sectionEntity => sectionEntity.courseEntity,
   )
   sectionEntitys: SectionEntity[];
 
+  // TargetAudience Relation
   @ManyToOne(
     type => TargetAudienceEntity,
     targetAudienceEntity => targetAudienceEntity.courseEntitys,
@@ -93,6 +101,7 @@ export class CourseEntity extends BaseEntity {
   @Column()
   targetAudienceEntityTargetAudienceId: number;
 
+  // SubjectEntity Relation
   @ManyToOne(
     type => SubjectEntity,
     subjectEntity => subjectEntity.courseEntitys,

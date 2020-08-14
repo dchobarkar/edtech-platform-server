@@ -12,6 +12,7 @@ import {
 
 import { UserEntity } from '../auth/user.entity';
 
+// Country Table
 @Entity()
 @Unique(['country'])
 export class CountryEntity extends BaseEntity {
@@ -21,12 +22,14 @@ export class CountryEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   country: string;
 
+  // TUserEntity Relation
   @OneToMany(
     type => TuserEntity,
     tUserEntity => tUserEntity.countryEntity,
   )
   tUserEntitys: TuserEntity[];
 
+  // StateEntity Relation
   @OneToMany(
     type => StateEntity,
     stateEntity => stateEntity.countryEntity,
@@ -34,6 +37,7 @@ export class CountryEntity extends BaseEntity {
   stateEntitys: StateEntity[];
 }
 
+// State Table
 @Entity()
 export class StateEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'smallint' })
@@ -42,12 +46,14 @@ export class StateEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   state: string;
 
+  // TUserEntity Table
   @OneToMany(
     type => TuserEntity,
     tUserEntity => tUserEntity.stateEntity,
   )
   tUserEntitys: TuserEntity[];
 
+  // CountryEntity Table
   @ManyToOne(
     type => CountryEntity,
     countryEntity => countryEntity.stateEntitys,
@@ -57,6 +63,7 @@ export class StateEntity extends BaseEntity {
   countryEntityCountryId: number;
 }
 
+// TUserEntity Table
 @Entity()
 export class TuserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -77,6 +84,7 @@ export class TuserEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   bannerImgUrl: string;
 
+  // Country Entity Relation
   @ManyToOne(
     type => CountryEntity,
     countryEntity => countryEntity.tUserEntitys,
@@ -85,6 +93,7 @@ export class TuserEntity extends BaseEntity {
   @Column()
   countryEntityCountryId: number;
 
+  // State Entity Relation
   @ManyToOne(
     type => StateEntity,
     stateEntity => stateEntity.tUserEntitys,
@@ -93,6 +102,7 @@ export class TuserEntity extends BaseEntity {
   @Column()
   stateEntityStateId: number;
 
+  // UserEntity Relation
   @OneToOne(
     type => UserEntity,
     userEntity => userEntity.tUserEntity,

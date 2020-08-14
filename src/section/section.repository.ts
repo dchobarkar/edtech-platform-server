@@ -11,6 +11,7 @@ import { SectionEntity } from './section.entity';
 
 @EntityRepository(SectionEntity)
 export class SectionRepository extends Repository<SectionEntity> {
+  // Create new section from database
   async createnewsection(
     course_id: string,
     createSectionDto: CreateSectionDto,
@@ -33,6 +34,7 @@ export class SectionRepository extends Repository<SectionEntity> {
     return newSection;
   }
 
+  // Update given section from database
   async updatesection(
     section_id: string,
     createSectionDto: CreateSectionDto,
@@ -50,6 +52,7 @@ export class SectionRepository extends Repository<SectionEntity> {
     return toBeUpdatedSection;
   }
 
+  // Delete given section from database
   async deletesection(section_id: string): Promise<void> {
     const deletedSection = await this.delete(section_id);
     if (deletedSection.affected === 0) {

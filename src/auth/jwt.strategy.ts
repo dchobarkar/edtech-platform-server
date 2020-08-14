@@ -20,6 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // Validate jwt token sent from client
   async validate(payLoad: JwtPayload): Promise<UserEntity> {
     const { id } = payLoad;
     const user = await this.userRepository.findOne({ id });

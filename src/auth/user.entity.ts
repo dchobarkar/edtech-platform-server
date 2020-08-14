@@ -40,12 +40,14 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   salt: string;
 
+  // TUserEntity relation
   @OneToOne(
     type => TuserEntity,
     tUserEntity => tUserEntity.userEntity,
   )
   tUserEntity: TuserEntity;
 
+  // CourseEntity Relation
   @OneToMany(
     type => CourseEntity,
     courseEntity => courseEntity.userEntity,

@@ -26,6 +26,7 @@ export class LectureEntity extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp without time zone' })
   created_at: Date;
 
+  // SectionEntity Relation
   @ManyToOne(
     type => SectionEntity,
     sectionEntity => sectionEntity.lectureEntitys,

@@ -7,10 +7,12 @@ import { TuserEntity, CountryEntity, StateEntity } from './tuser.entity';
 
 @EntityRepository(TuserEntity)
 export class TuserRepository extends Repository<TuserEntity> {
+  // Get profile of the current user from database
   async tuserdetails(user: UserEntity): Promise<TuserEntity> {
     return this.findOne({ userEntityId: user.id });
   }
 
+  // Create new profile for given user from database
   async createnewtuser(user: UserEntity): Promise<string> {
     const newTuser = new TuserEntity();
     newTuser.classIntro = '';
@@ -25,6 +27,7 @@ export class TuserRepository extends Repository<TuserEntity> {
     return newTuser.tuser_id;
   }
 
+  // Update given profile from database
   async updatetuser(
     createTUserDto: CreateTuserDto,
     toBeUpdated: TuserEntity,

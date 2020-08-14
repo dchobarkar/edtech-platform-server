@@ -19,6 +19,7 @@ import { QuestionService } from './question.service';
 export class QuestionController {
   constructor(private questionService: QuestionService) {}
 
+  // Create new question
   @Post('/:exam_id')
   @UseInterceptors(FileInterceptor('image'))
   @UsePipes(ValidationPipe)
@@ -34,6 +35,7 @@ export class QuestionController {
     );
   }
 
+  // Update given question
   @Patch('/:question_id/update')
   @UseInterceptors(FileInterceptor('image'))
   @UsePipes(ValidationPipe)
@@ -49,6 +51,7 @@ export class QuestionController {
     );
   }
 
+  // Delete given question
   @Delete('/:question_id')
   deleteQuestion(@Param('question_id') question_id: string): Promise<void> {
     return this.questionService.deleteQuestion(question_id);

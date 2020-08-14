@@ -11,6 +11,7 @@ import { UserEntity } from './user.entity';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
+  // Create new user
   async signup(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const {
       firstName,
@@ -42,6 +43,7 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
+  // Validate password against the email
   async validateuserpassword(authLoginDto: AuthLoginDto): Promise<string> {
     const { email, password } = authLoginDto;
 

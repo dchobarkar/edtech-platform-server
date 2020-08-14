@@ -28,6 +28,7 @@ export class SectionEntity extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp without time zone' })
   created_at: Date;
 
+  // CourseEntity Relation
   @ManyToOne(
     type => CourseEntity,
     courseEntity => courseEntity.sectionEntitys,
@@ -37,12 +38,14 @@ export class SectionEntity extends BaseEntity {
   @Column()
   courseEntityCourseId: string;
 
+  // LectureEntity Relation
   @OneToMany(
     type => LectureEntity,
     lectureEntity => lectureEntity.sectionEntity,
   )
   lectureEntitys: LectureEntity[];
 
+  // ExamEntity Relation
   @OneToMany(
     type => ExamEntity,
     examEntity => examEntity.sectionEntity,

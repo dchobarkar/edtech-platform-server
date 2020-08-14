@@ -17,6 +17,7 @@ export class CourseService {
     private customFunctions: CustomFunctions,
   ) {}
 
+  // Get all courses of current user service
   async getAllCourses(user: UserEntity): Promise<object[]> {
     // get row courses data
     const tempCourses = await this.courseRepository.getallcourses(user);
@@ -40,6 +41,7 @@ export class CourseService {
     return courses;
   }
 
+  // Get all sections of the given course service
   async getAllSections(user: UserEntity, course_id: string): Promise<object> {
     // get row sections data
     const tempSections = await this.courseRepository.getallsections(course_id);
@@ -80,6 +82,7 @@ export class CourseService {
     return allSections;
   }
 
+  // Create new course service
   async createNewCourse(
     user: UserEntity,
     createCourseDto: CreateCourseDto,
@@ -87,6 +90,7 @@ export class CourseService {
     return this.courseRepository.createnewcourse(user, createCourseDto);
   }
 
+  // Update  course service
   async updateCourse(
     user: UserEntity,
     course_id: string,

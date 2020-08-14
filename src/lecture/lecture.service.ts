@@ -26,6 +26,7 @@ export class LectureService {
     private awsHelper: AwsHelper,
   ) {}
 
+  // Create new lecture service
   async createNewLecture(
     section_id: string,
     createLectureDto: CreateLectureDto,
@@ -60,6 +61,7 @@ export class LectureService {
     return newLecture;
   }
 
+  // Update given lecture service
   async updateLecture(
     lecture_id: string,
     createLectureDto: CreateLectureDto,
@@ -103,6 +105,7 @@ export class LectureService {
     return updatedLecture;
   }
 
+  // Delete given lecture
   async deleteLecture(lecture_id: string): Promise<void> {
     return this.lectureRepository.deletelecture(lecture_id);
   }

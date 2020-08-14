@@ -27,11 +27,13 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class TuserController {
   constructor(private tUserService: TuserService) {}
 
+  // Get Profile of current user
   @Get('/profile')
   getUserProfile(@GetUser() user: UserEntity): Promise<object> {
     return this.tUserService.getUserProfile(user);
   }
 
+  // Update given profile
   @Patch('/update')
   @UseInterceptors(FileInterceptor('bannerImg'))
   @UsePipes(ValidationPipe)

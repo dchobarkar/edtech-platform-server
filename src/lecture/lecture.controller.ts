@@ -26,6 +26,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class LectureController {
   constructor(private lectureService: LectureService) {}
 
+  // Create new lecture
   @Post('/:section_id')
   @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
@@ -42,6 +43,7 @@ export class LectureController {
     );
   }
 
+  // Update given video lecture
   @Patch('/:lecture_id/update')
   @UseInterceptors(FileInterceptor('video'))
   @UsePipes(ValidationPipe)
@@ -58,6 +60,7 @@ export class LectureController {
     );
   }
 
+  // Delete given lecture
   @Delete('/:lecture_id')
   deleteLecture(
     @GetUser() user: UserEntity,

@@ -23,6 +23,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class SectionController {
   constructor(private sectionService: SectionService) {}
 
+  // Create new section
   @Post('/:course_id')
   @UsePipes(ValidationPipe)
   createNewSection(
@@ -33,6 +34,7 @@ export class SectionController {
     return this.sectionService.createNewSection(course_id, createSectionDto);
   }
 
+  // Update given section
   @Patch('/:section_id/update')
   @UsePipes(ValidationPipe)
   updateSection(
@@ -43,6 +45,7 @@ export class SectionController {
     return this.sectionService.updateSection(section_id, createSectionDto);
   }
 
+  // Delete given section
   @Delete('/:section_id')
   deleteSection(
     @GetUser() user: UserEntity,

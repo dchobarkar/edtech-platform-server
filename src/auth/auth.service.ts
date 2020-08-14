@@ -16,14 +16,17 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  // Create new user
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     return this.userRepository.signup(authCredentialsDto);
   }
 
+  // Login user
   async logIn(authLoginDto: AuthLoginDto): Promise<{ accessToken: string }> {
     // Get id of the user
     const id = await this.userRepository.validateuserpassword(authLoginDto);
 
+    // If no id present, its a invalid login attempt
     if (!id) {
       throw new UnauthorizedException('Email or Password is wrong.');
     }

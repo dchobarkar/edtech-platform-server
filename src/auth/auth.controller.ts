@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-
+  // Create new user
   @Post('/signup')
   signUp(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
@@ -15,6 +15,7 @@ export class AuthController {
     return this.authService.signUp(authCredentialsDto);
   }
 
+  // Login user
   @Post('/login')
   logIn(
     @Body(ValidationPipe) authLoginDto: AuthLoginDto,

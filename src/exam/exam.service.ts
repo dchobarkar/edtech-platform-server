@@ -4,16 +4,27 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { ExamRepository } from './exam.repository';
 
+import { CustomFunctions } from '../utils/customFunctions';
+import { QuestionEntity } from '../question/question.entity';
+
 @Injectable()
 export class ExamService {
   constructor(
     @InjectRepository(ExamRepository)
     private examRepository: ExamRepository,
+    private customFunctions: CustomFunctions,
   ) {}
 
+  // Get all questions of given exam service
   async getAllQuestions(exam_id: string): Promise<object> {
     // get all questions row data
     const tempAllQuestions = await this.examRepository.getallquestions(exam_id);
+
+    // Sort QuestionEntitys
+    this.customFunctions.sortFunction(
+      tempAllQuestions.questionEntitys,
+      'created_at',
+    );
 
     // return needed data
     const allQuestions = {
@@ -26,6 +37,7 @@ export class ExamService {
     return allQuestions;
   }
 
+  // Create new exam service
   async createNewExam(
     section_id: string,
     createExamDto: CreateExamDto,
@@ -45,6 +57,7 @@ export class ExamService {
     return newExam;
   }
 
+  // Update given exam service
   async updateExam(
     exam_id: string,
     createExamDto: CreateExamDto,
@@ -64,6 +77,7 @@ export class ExamService {
     return updatedExam;
   }
 
+  // Delete given exam service
   async deleteExam(exam_id: string): Promise<void> {
     return this.examRepository.deleteexam(exam_id);
   }

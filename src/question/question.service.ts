@@ -30,6 +30,7 @@ export class QuestionService {
     private awsHelper: AwsHelper,
   ) {}
 
+  // Create new question service
   async createNewQuestion(
     exam_id: string,
     createQuestionDto: CreateQuestionDto,
@@ -74,6 +75,7 @@ export class QuestionService {
     return newQuestion;
   }
 
+  // Update given question service
   async updateQuestion(
     question_id: string,
     createQuestionDto: CreateQuestionDto,
@@ -124,6 +126,7 @@ export class QuestionService {
     return updatedQuestion;
   }
 
+  // Delete given question service
   async deleteQuestion(question_id: string): Promise<void> {
     return this.questionRepository.deletequestion(question_id);
   }

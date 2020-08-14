@@ -6,6 +6,7 @@ import { ExamEntity } from './exam.entity';
 
 @EntityRepository(ExamEntity)
 export class ExamRepository extends Repository<ExamEntity> {
+  // Get all questions of given exam from database
   async getallquestions(exam_id: string): Promise<ExamEntity> {
     return this.findOne(
       { exam_id: exam_id },
@@ -15,6 +16,7 @@ export class ExamRepository extends Repository<ExamEntity> {
     );
   }
 
+  // Create new exam from database
   async createnewexam(
     section_id: string,
     createExamDto: CreateExamDto,
@@ -29,6 +31,7 @@ export class ExamRepository extends Repository<ExamEntity> {
     return newExam;
   }
 
+  // Update given exam from database
   async updateexam(
     exam_id: string,
     createExamDto: CreateExamDto,
@@ -46,6 +49,7 @@ export class ExamRepository extends Repository<ExamEntity> {
     return toBeUpdatedExam;
   }
 
+  // Delete given exam from database
   async deleteexam(exam_id: string): Promise<void> {
     const deletedExam = await this.delete(exam_id);
     if (deletedExam.affected === 0) {

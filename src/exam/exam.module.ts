@@ -7,9 +7,11 @@ import { ExamRepository } from './exam.repository';
 
 import { AuthModule } from '../auth/auth.module';
 
+import { CustomFunctions } from 'src/utils/customFunctions';
+
 @Module({
   imports: [TypeOrmModule.forFeature([ExamRepository]), AuthModule],
   controllers: [ExamController],
-  providers: [ExamService],
+  providers: [ExamService, CustomFunctions],
 })
 export class ExamModule {}

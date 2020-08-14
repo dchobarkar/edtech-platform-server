@@ -16,6 +16,7 @@ import {
 
 @EntityRepository(CourseEntity)
 export class CourseRepository extends Repository<CourseEntity> {
+  // Get all courses of current user from database
   async getallcourses(user: UserEntity): Promise<CourseEntity[]> {
     return this.find({
       where: { userEntityId: user.id },
@@ -24,6 +25,7 @@ export class CourseRepository extends Repository<CourseEntity> {
     });
   }
 
+  // Get all sections of the given course from database
   async getallsections(course_id: string): Promise<CourseEntity> {
     return this.findOne(
       { course_id: course_id },
@@ -39,6 +41,7 @@ export class CourseRepository extends Repository<CourseEntity> {
     );
   }
 
+  // Create new course from database
   async createnewcourse(
     user: UserEntity,
     createCourseDto: CreateCourseDto,
@@ -76,6 +79,7 @@ export class CourseRepository extends Repository<CourseEntity> {
     return newCourse.course_id;
   }
 
+  // Update  course from database
   async updatecourse(
     user: UserEntity,
     course_id: string,

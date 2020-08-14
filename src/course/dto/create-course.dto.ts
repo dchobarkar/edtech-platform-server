@@ -12,12 +12,12 @@ export class CreateCourseDto {
   )
   courseIntro: string;
 
-  // @Matches(/^[1-9]$/)
+  @Matches(/^[1-9]+$/)
   targetAudience_id: number;
 
-  // @Matches(/^[1-9]$/)
+  @Matches(/^[1-9]+$/)
   subject_id: number;
 
-  // @Matches(/^[0-9]+$/)
+  @Matches(/^[0-9]+$/)
   fee: number;
 }

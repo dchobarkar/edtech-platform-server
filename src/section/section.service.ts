@@ -11,6 +11,7 @@ export class SectionService {
     private sectionRepository: SectionRepository,
   ) {}
 
+  // Create new section service
   async createNewSection(
     course_id: string,
     createSectionDto: CreateSectionDto,
@@ -30,6 +31,7 @@ export class SectionService {
     return newSection;
   }
 
+  // Update given section service
   async updateSection(
     section_id: string,
     createSectionDto: CreateSectionDto,
@@ -48,6 +50,7 @@ export class SectionService {
     return updatedSection;
   }
 
+  // Delete given section service
   async deleteSection(section_id: string): Promise<void> {
     return this.sectionRepository.deletesection(section_id);
   }
