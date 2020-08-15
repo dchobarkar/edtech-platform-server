@@ -9,13 +9,16 @@ import {
   Patch,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { QuestionService } from './question.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/question')
+@UseGuards(AuthGuard())
 export class QuestionController {
   constructor(private questionService: QuestionService) {}
 

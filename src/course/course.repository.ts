@@ -120,6 +120,42 @@ export class CourseRepository extends Repository<CourseEntity> {
     return toBeUpdatedCourse;
   }
 
+  //   Get all courses to browse for any user from data
+  async getbrowsecourses(): Promise<CourseEntity[]> {
+    return this.find({
+      select: [
+        'course_id',
+        'courseTitle',
+        'courseIntro',
+        'fee',
+        'studentsEnrolled',
+        'ratingPoint',
+        'noOfRating',
+        'created_at',
+      ],
+      order: { created_at: 'ASC' },
+      relations: ['userEntity', 'targetAudienceEntity', 'subjectEntity'],
+    });
+  }
+
+  // Get coursedetails to browse for any user from database
+  async getbrowsecoursedetails(course_id: string): Promise<CourseEntity> {
+    return this.findOne({
+      where: { course_id: course_id },
+      relations: [
+        'targetAudienceEntity',
+        'subjectEntity',
+        'sectionEntitys',
+        'sectionEntitys.lectureEntitys',
+        'sectionEntitys.examEntitys',
+        'sectionEntitys.examEntitys.questionEntitys',
+        'userEntity',
+        'userEntity.tUserEntity',
+      ],
+    });
+  }
+
+  // only to be used while adding new target audience or subject
   async createnewtargetaudience(
     targetAudience: string,
   ): Promise<TargetAudienceEntity> {

@@ -10,6 +10,8 @@ import { LectureModule } from './lecture/lecture.module';
 import { ExamModule } from './exam/exam.module';
 import { QuestionModule } from './question/question.module';
 
+import { BrowseCoursesModule } from './Common/browsecourses/browsecourses.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -20,6 +22,7 @@ import { QuestionModule } from './question/question.module';
     LectureModule,
     ExamModule,
     QuestionModule,
+    BrowseCoursesModule,
   ],
 })
 export class AppModule {}
