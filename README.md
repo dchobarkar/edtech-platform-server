@@ -2,10 +2,10 @@
   A platform to bridge the gap between Teachers and Students.
     
 ### Technology Stack
-  TypeScript  
-  JavaScript  
-  Based on Nest framework  
-  Database - PostgreSQL
+ * TypeScript  
+ * JavaScript  
+ * Based on Nest framework  
+ * Database - PostgreSQL
     
 ### Installation
     $ npm install
