@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 import { typeOrmConfig } from './config/typeorm.config';
 
 import { AuthModule } from './auth/auth.module';
@@ -23,6 +26,11 @@ import { BrowseCoursesModule } from './Common/browsecourses/browsecourses.module
     ExamModule,
     QuestionModule,
     BrowseCoursesModule,
+
+    // Serve static files
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
   ],
 })
 export class AppModule {}
