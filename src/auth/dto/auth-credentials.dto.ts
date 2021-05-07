@@ -5,25 +5,27 @@ import {
   IsAlpha,
   MinLength,
   MaxLength,
+  Length,
 } from 'class-validator';
 
 export class AuthCredentialsDto {
   @IsAlpha()
   @MaxLength(50)
-  firstname: string;
+  firstName: string;
 
   @IsAlpha()
   @MaxLength(50)
-  lastname: string;
+  lastName: string;
 
-  @MinLength(1)
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]+$/,
+  )
   @MaxLength(100)
-  classname: string;
+  className: string;
 
   @IsNumberString()
-  @MinLength(10)
-  @MaxLength(10)
-  mobile: string;
+  @Length(10, 10)
+  mobileNo: string;
 
   @IsEmail()
   @MaxLength(50)
@@ -31,8 +33,6 @@ export class AuthCredentialsDto {
 
   @MinLength(8)
   @MaxLength(20)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Password too weak',
-  })
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
   password: string;
 }

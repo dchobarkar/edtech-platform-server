@@ -11,48 +11,54 @@ import { UserEntity } from './user.entity';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
-  async signup(authcredentialsdto: AuthCredentialsDto): Promise<void> {
+  // Create new user
+  async signup(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const {
-      firstname,
-      lastname,
-      classname,
-      mobile,
+      firstName,
+      lastName,
+      className,
+      mobileNo,
       email,
       password,
-    } = authcredentialsdto;
+    } = authCredentialsDto;
+    const newUser = new UserEntity();
+    newUser.firstName = firstName;
+    newUser.lastName = lastName;
+    newUser.className = className;
+    newUser.mobileNo = mobileNo;
+    newUser.email = email;
 
-    const NewUser = new UserEntity();
-
-    NewUser.firstname = firstname;
-    NewUser.lastname = lastname;
-    NewUser.classname = classname;
-    NewUser.mobile = mobile;
-    NewUser.email = email;
-    NewUser.salt = await bcrypt.genSalt();
-    NewUser.password = await this.hashPassword(password, NewUser.salt);
-
+    // Create a salt (random) value and use it along password to create a hash value
+    newUser.salt = await bcrypt.genSalt();
+    newUser.password = await this.hashPassword(password, newUser.salt);
     try {
-      await NewUser.save();
+      await newUser.save();
     } catch (error) {
       if (error.code === '23505') {
-        throw new ConflictException('Mobile No. or Email-id already exists.');
+        throw new ConflictException('Mobile No. or Email id already exists.');
       } else {
+        console.log(`Error in signup\n${authCredentialsDto}\n${error}`);
         throw new InternalServerErrorException();
       }
     }
   }
 
-  private async hashPassword(password: string, salt: string): Promise<string> {
-    return bcrypt.hash(password, salt);
-  }
+  // Validate password against the email
+  async validateuserpassword(authLoginDto: AuthLoginDto): Promise<string> {
+    const { email, password } = authLoginDto;
 
-  async validateuserpassword(authlogindto: AuthLoginDto): Promise<string> {
-    const { email, password } = authlogindto;
+    // Return id if the credentials are correct for given email.
+    // Else return null.
     const user = await this.findOne({ email });
     if (user && (await user.validatePassword(password))) {
       return user.id;
     } else {
       return null;
     }
+  }
+
+  // Return a hash value from password and salt string.
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
   }
 }

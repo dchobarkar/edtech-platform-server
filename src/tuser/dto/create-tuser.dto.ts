@@ -1,34 +1,31 @@
 import {
-  IsNotEmpty,
-  IsString,
-  IsUrl,
   MaxLength,
-  MinLength,
   IsNumberString,
+  Matches,
+  IsAlpha,
+  Length,
 } from 'class-validator';
 
 export class CreateTuserDto {
-  @IsString()
-  classintro: string;
+  @Matches(
+    /^[\w\s !@#%&-=;:'",/<> \\ \^ \$ \. \| \? \* \+ \( \) \[ \] \{ \} ]*$/,
+  )
+  classIntro: string;
 
-  @IsString()
+  @Matches(/^[\w\s @'",/ \. \( \) ]+$/)
   address: string;
 
-  @IsString()
+  @IsAlpha()
   @MaxLength(50)
   city: string;
 
   @IsNumberString()
-  @MinLength(6)
-  @MaxLength(6)
+  @Length(6, 6)
   pincode: string;
 
-  @IsUrl()
-  bannerimgurl: string;
-
-  @IsNotEmpty()
+  @Matches(/[2]/)
   country_id: number;
 
-  @IsNotEmpty()
+  @Matches(/^[0 1 2 3][0-9]$/)
   state_id: number;
 }

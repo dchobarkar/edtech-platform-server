@@ -5,27 +5,35 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { UserRepository } from './user.repository';
+
 import { JwtPayload } from './jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserRepository)
-    private userrepository: UserRepository,
-    private jwtservice: JwtService,
+    private userRepository: UserRepository,
+    private jwtService: JwtService,
   ) {}
 
-  async signUp(authcredentialsdto: AuthCredentialsDto): Promise<void> {
-    return this.userrepository.signup(authcredentialsdto);
+  // Create new user
+  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    return this.userRepository.signup(authCredentialsDto);
   }
 
-  async logIn(authlogindto: AuthLoginDto): Promise<{ accessToken: string }> {
-    const userid = await this.userrepository.validateuserpassword(authlogindto);
-    if (!userid) {
+  // Login user
+  async logIn(authLoginDto: AuthLoginDto): Promise<{ accessToken: string }> {
+    // Get id of the user
+    const id = await this.userRepository.validateuserpassword(authLoginDto);
+
+    // If no id present, its a invalid login attempt
+    if (!id) {
       throw new UnauthorizedException('Email or Password is wrong.');
     }
-    const payload: JwtPayload = { userid };
-    const accessToken = this.jwtservice.sign(payload);
+
+    // Send accessToken
+    const payLoad: JwtPayload = { id };
+    const accessToken = this.jwtService.sign(payLoad);
     return { accessToken };
   }
 }

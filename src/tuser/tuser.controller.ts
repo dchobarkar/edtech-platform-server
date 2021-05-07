@@ -8,44 +8,54 @@ import {
   UsePipes,
   ValidationPipe,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
+
+import { UserEntity } from '../auth/user.entity';
 
 import { CreateTuserDto } from './dto/create-tuser.dto';
 import { TuserService } from './tuser.service';
-import { TuserEntity, CountryEntity, StateEntity } from './entity/tuser.entity';
-import { UserEntity } from '../auth/user.entity';
+import { CountryEntity, StateEntity } from './tuser.entity';
+
 import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('tuser')
 @UseGuards(AuthGuard())
 export class TuserController {
-  constructor(private tuserservice: TuserService) {}
+  constructor(private tUserService: TuserService) {}
 
+  // Get Profile of current user
   @Get('/profile')
-  getUserProfile(@GetUser() user: UserEntity): Promise<TuserEntity> {
-    return this.tuserservice.getUserProfile(user);
+  getUserProfile(@GetUser() user: UserEntity): Promise<object> {
+    return this.tUserService.getUserProfile(user);
   }
 
+  // Update given profile
   @Patch('/update')
+  @UseInterceptors(FileInterceptor('bannerImg'))
   @UsePipes(ValidationPipe)
   updateTuser(
     @GetUser() user: UserEntity,
-    @Body() createtuserdto: CreateTuserDto,
-  ): Promise<TuserEntity> {
-    return this.tuserservice.updateTuser(user, createtuserdto);
+    @Body() createTUserDto: CreateTuserDto,
+    @UploadedFile() bannerImg: any,
+  ): Promise<object> {
+    return this.tUserService.updateTuser(user, createTUserDto, bannerImg);
   }
 
+  // Only to be used while adding new country or state
   @Post('/country')
   createNewCountry(@Body('country') country: string): Promise<CountryEntity> {
-    return this.tuserservice.createNewCountry(country);
+    return this.tUserService.createNewCountry(country);
   }
 
-  @Post('/state/:id')
+  @Post('/state/:country_id')
   createNewState(
-    @Param('id') id: number,
+    @Param('country_id') country_id: number,
     @Body('state') state: string,
   ): Promise<StateEntity> {
-    return this.tuserservice.createNewState(id, state);
+    return this.tUserService.createNewState(country_id, state);
   }
 }
