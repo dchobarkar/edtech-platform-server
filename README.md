@@ -24,5 +24,5 @@
   2. Browse through the available courses and sign up for any course you like  
 
 ### Credits  
-* Author - [Darshan Chobarkar](www.linkedin.com/in/dchobarkar)
+* Author - [Darshan Chobarkar](https://www.linkedin.com/in/dchobarkar/)
 * Contributor - [Saurabh Lodha](https://github.com/saurabh-lodha-16)
