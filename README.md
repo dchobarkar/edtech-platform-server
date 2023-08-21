@@ -2,7 +2,7 @@
   <h2 align="center">EdTech Platform Server</h2>
 
   <p align="center">
-   A react app to track and submit data
+   Backend for an edtech platform
     <br />
     <br />
     <a href="https://github.com/dchobarkar/edtech-platform-server/">View Demo</a>
