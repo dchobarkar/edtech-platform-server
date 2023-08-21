@@ -1,15 +1,16 @@
 {
-  "name": "edtech_platform_server",
-  "version": "0.1.0",
-  "description": "Online Course Platform",
+  "name": "edtech-platform-server",
+  "description": "backend for an edtech platform",
+  "version": "1.0.0",
+  "author": "Darshan Chobarkar <contact@darshanwebdev.com> (https://darshanwebdev.com)",
+  "license": "MIT",
+  "private": true,
   "keywords": [
     "Course",
     "EdTech",
     "Classes",
     "Tutions"
   ],
-  "author": "Darshan Chobarkar",
-  "email": "dchobarkar@gmail.com",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
